@@ -1,4 +1,4 @@
-{
+{ 
   "expo": {
     "name": "Cook-Smart",
     "slug": "Cook-Smart",
@@ -24,7 +24,12 @@
       }
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
-    }
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "your-app-scheme"
   }
 }
