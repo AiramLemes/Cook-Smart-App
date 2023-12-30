@@ -1,28 +1,34 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import LogoSVG from "../assets/landing/LogoSVG";
 import React from "react";
 import Colors from "../constants/Colors";
 import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../assets/landing/PoweredSVG";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+// @ts-ignore
+const IndexScreen = ({navigation}) => {
 
-const IndexScreen = () => {
-  
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{...styles.container, paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,}}>
        <BackgroundSVG style={styles.background}></BackgroundSVG>
     
-        <LogoSVG style={styles.brand}/>
+        <LogoSVG/>
         <Text style={styles.title} >COOK SMART !</Text>
 
        
-          <Pressable style={styles.logInButton}>
+          <Pressable style={styles.logInButton}  onPress={() => navigation.navigate('Login')}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </Pressable>
      
   
-          <Pressable style={styles.registerButton}>
+          <Pressable style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.buttonText}>Registrarse</Text>
           </Pressable>
        
@@ -35,7 +41,7 @@ const IndexScreen = () => {
 
         <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
 
-      </View>
+      </SafeAreaView>
   );
 }
 
@@ -47,7 +53,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background
+    justifyContent: 'center',
+    backgroundColor: Colors.background,
   },
   
   title: {
@@ -97,10 +104,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'space-around',
     marginTop: 20 // Opcional: para ajustar el espacio en la parte superior
-  },
-
-  brand: {
-    marginTop: 120
   },
   
   poweredSectionSVG: {

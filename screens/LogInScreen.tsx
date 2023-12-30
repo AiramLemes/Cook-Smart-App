@@ -1,21 +1,25 @@
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
 import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import LogoSVG from "../assets/landing/LogoSVG";
 import React from "react";
 import Colors from "../constants/Colors";
 import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../assets/landing/PoweredSVG";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const LoginScreen = () => {
-  
+// @ts-ignore
+const LoginScreen = ({navigation}) => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-       
-  
+    <SafeAreaView style={{...styles.container, paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,}}>
       <BackgroundSVG style={styles.background}></BackgroundSVG>
      
     
-      <LogoSVG style={styles.brand}/>
+      <LogoSVG/>
 
       <Text style={styles.title} >COOK SMART !</Text>
 
@@ -36,7 +40,9 @@ const LoginScreen = () => {
 
         <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
 
-    </View>
+        <Text style={styles.registerNav} onPress={() => navigation.navigate('Register')}>Registrarse</Text>
+
+    </SafeAreaView>
   );
 }
 
@@ -47,7 +53,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.background
   },
 
   title: {
@@ -113,10 +121,6 @@ const styles = StyleSheet.create({
     marginTop: 20 // Opcional: para ajustar el espacio en la parte superior
   },
 
-  brand: {
-    marginTop: 100
-  },
-
   poweredSectionSVG: {
     width: 40,
     height: 40,
@@ -124,7 +128,15 @@ const styles = StyleSheet.create({
   },
 
   poweredIATitle: {
-    fontSize: 18,
+    fontSize: 14,
     margin: 50
+  },
+
+  registerNav: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    margin: 16, 
+    textDecorationLine: "underline"
   }
 });
