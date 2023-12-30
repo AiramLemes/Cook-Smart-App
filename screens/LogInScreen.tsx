@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import LogoSVG from "../assets/landing/LogoSVG";
 import React from "react";
@@ -6,23 +6,27 @@ import Colors from "../constants/Colors";
 import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../assets/landing/PoweredSVG";
 
-export default function Page() {
+const LoginScreen = () => {
   
   return (
     <View style={styles.container}>
-       <BackgroundSVG style={styles.background}></BackgroundSVG>
+       
+  
+      <BackgroundSVG style={styles.background}></BackgroundSVG>
+     
     
-        <LogoSVG style={styles.brand}>
-        </LogoSVG>
-        <Text style={styles.title} >COOK SMART !</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        </Pressable>
+      <LogoSVG style={styles.brand}/>
 
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </Pressable>
-        
+      <Text style={styles.title} >COOK SMART !</Text>
+
+      <TextInput style={styles.emailInput} placeholder="Correo Electrónico"/>
+
+      <TextInput style={styles.passwordInput} placeholder="Contraseña" secureTextEntry={true} autoCorrect={false}/>
+
+      <Pressable style={styles.logInButton}>
+        <Text style={styles.buttonText}>Iniciar sesión</Text>
+      </Pressable>
+      
 
         <View style={styles.poweredSection}>
 
@@ -32,9 +36,11 @@ export default function Page() {
 
         <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
 
-      </View>
+    </View>
   );
 }
+
+export default LoginScreen;
 
 
 const styles = StyleSheet.create({
@@ -43,16 +49,18 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center'
   },
-  
+
   title: {
     fontSize: 22,
     padding: 20
   },
+
   background: {
     ...StyleSheet.absoluteFillObject
   },
-  
-  button: {
+
+
+  emailInput: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -63,15 +71,40 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 30
   },
-  
+
+  passwordInput: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: Colors.secondary,
+    width: 300,
+    marginTop: 30
+  },
+
+  logInButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: Colors.terciary,
+    width: 300,
+    marginTop: 30
+  },
+
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'black',
+    textDecorationLine: 'underline',
   },
-  
+
   poweredSection: {
     flexDirection: 'row',
     width: 200,
@@ -81,9 +114,9 @@ const styles = StyleSheet.create({
   },
 
   brand: {
-    marginTop: 150
+    marginTop: 100
   },
-  
+
   poweredSectionSVG: {
     width: 40,
     height: 40,

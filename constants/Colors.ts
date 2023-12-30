@@ -2,8 +2,10 @@
 
 const Colors = {
     
-    primary: '#FDDD80',
-    secondary: '#2ecc71',
+    primary: '#FECB43',
+    secondary: '#FDDD80',
+    terciary: '#FFF0C4',
+    cuaternary: '#FFFAEA', 
 
     textPrimary: '#000000',
     textSecondary: '#777',
