@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import IndexScreen from './screens/IndexScreen';
 import LoginScreen from './screens/LogInScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -11,6 +10,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <RootSiblingParent>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Index">
           <Stack.Screen
@@ -33,7 +33,7 @@ function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
- 
+    </RootSiblingParent>
   );
 }
 

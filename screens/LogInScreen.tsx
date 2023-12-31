@@ -1,17 +1,74 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
 import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import LogoSVG from "../assets/landing/LogoSVG";
-import React from "react";
+import React, { useState } from "react";
 import Colors from "../constants/Colors";
 import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebaseConfig";
+import Toast from "react-native-root-toast";
+import ToastUtil from "../utils/ToastUtil";
+
+
 
 // @ts-ignore
 const LoginScreen = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
+  const [email, setEmail] = useState<string | undefined>();
+  const [password, setPassword] = useState<string | undefined>();
+  const [emailError, setEmailError] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+
+  function logIn() {
+
+    if (email && password) {
+
+      const isValidEmail = checkEmail();
+      const isValidPassword= checkPassword();
+
+      if (isValidEmail && isValidPassword) {
+
+        signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          ToastUtil.showToast("Sesión iniciada", Toast.durations.SHORT); 
+        })
+        .catch(() => 
+        
+          ToastUtil.showToast("Se ha producido un error al iniciar sesión, comprube el email y la contraseña",
+          Toast.durations.SHORT)
+        );
+      }
+
+      else {
+        ToastUtil.showToast("Por favor, revise todos los campos",
+          Toast.durations.SHORT)
+      }
+    }
+
+    else {
+      ToastUtil.showToast("Debes rellenar todos los campos!", Toast.durations.SHORT);
+    }
+  }
+
+  function checkEmail(): boolean {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailPattern.test(email!!);
+    setEmailError(!isValid);
+    return isValid;
+  }
+
+  function checkPassword(): boolean {
+    const isValid = password!!.length >= 6;
+    setPasswordError(!isValid);
+    return isValid;
+  }
+
+
   return (
+
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
@@ -23,11 +80,24 @@ const LoginScreen = ({navigation}) => {
 
       <Text style={styles.title} >COOK SMART !</Text>
 
-      <TextInput style={styles.emailInput} placeholder="Correo Electrónico"/>
+      <TextInput style={[styles.emailInput, emailError && styles.errorInput]}
+        value={email} inputMode="email" autoCapitalize="none" 
+        keyboardType="email-address" onChangeText={setEmail} placeholder="Correo Electrónico"/>
 
-      <TextInput style={styles.passwordInput} placeholder="Contraseña" secureTextEntry={true} autoCorrect={false}/>
+        {emailError && (
+          <Text style={styles.errorMessage}>Correo electrónico inválido</Text>
+        )}
+        
 
-      <Pressable style={styles.logInButton}>
+      <TextInput style={[styles.passwordInput, passwordError && styles.errorInput]}
+        value={password} onChangeText={setPassword} placeholder="Contraseña"
+        secureTextEntry={true} autoCorrect={false}/>
+
+        {passwordError && (
+          <Text style={styles.errorMessage}>La contraseña debe tener un mínimo de 6 caracteres</Text>
+        )}
+
+      <Pressable style={styles.logInButton} onPress={logIn}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </Pressable>
       
@@ -64,7 +134,12 @@ const styles = StyleSheet.create({
   },
 
   background: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 
 
@@ -90,6 +165,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     width: 300,
     marginTop: 30
+  },
+
+  errorInput: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
+
+  errorMessage: {
+    fontSize: 10,
+    color: Colors.error
   },
 
   logInButton: {
