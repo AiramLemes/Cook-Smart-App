@@ -19,7 +19,9 @@ const Colors = {
     error: '#dc3545',
     warning: '#ffc107',
 
-    toasts: '#FDDD80'
+    toasts: '#FDDD80',
+
+    imageBorder: '#7B7B7B'
   };
   
   export default Colors;

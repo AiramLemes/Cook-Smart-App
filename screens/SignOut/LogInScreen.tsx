@@ -1,15 +1,15 @@
 import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
-import BackgroundSVG from "../assets/landing/BackgroundSVG";
-import LogoSVG from "../assets/landing/LogoSVG";
+import BackgroundSVG from "../../assets/landing/BackgroundSVG";
+import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useState } from "react";
-import Colors from "../constants/Colors";
-import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
-import PoweredSVG from "../assets/landing/PoweredSVG";
+import Colors from "../../constants/Colors";
+import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
+import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import Toast from "react-native-root-toast";
-import ToastUtil from "../utils/ToastUtil";
+import ToastUtil from "../../utils/ToastUtil";
 
 
 

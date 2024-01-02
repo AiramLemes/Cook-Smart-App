@@ -1,16 +1,17 @@
 import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
-import BackgroundSVG from "../assets/landing/BackgroundSVG";
-import LogoSVG from "../assets/landing/LogoSVG";
+import BackgroundSVG from "../../assets/landing/BackgroundSVG";
+import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useState } from "react";
-import Colors from "../constants/Colors";
-import ChatGPTSVG from "../assets/landing/ChatGPTSVG";
-import PoweredSVG from "../assets/landing/PoweredSVG";
+import Colors from "../../constants/Colors";
+import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
+import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { auth, firestore } from "../firebaseConfig";
+import { auth, firestore } from "../../firebaseConfig";
 import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
-import ToastUtil from "../utils/ToastUtil";
+import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import User from "../../model/user";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
@@ -77,14 +78,16 @@ const RegisterScreen = ({navigation}) => {
       if (isValidEmail && isValidPassword && isValidUserName) {
         try {
           const userId = (await createUserWithEmailAndPassword(auth, email, password)).user.uid
-          const usersDoc = doc(collection(firestore, 'users'), userId);
-          await setDoc(usersDoc, {
+
+          const newUser: User = {
             userName: userName,
             email: email,
             imageURL: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0'
-          }).then(() => {
+          };
+
+          const usersDoc = doc(collection(firestore, 'users'), userId);
+          await setDoc(usersDoc, newUser).then(() => {
             ToastUtil.showToast("Usuario creado correctamente!", Toast.durations.SHORT);
-            navigation.navigate("Home");
           })
         } catch(e) {
           ToastUtil.showToast("Se ha producido un error, por favor, inténtelo de nuevo", Toast.durations.SHORT)
