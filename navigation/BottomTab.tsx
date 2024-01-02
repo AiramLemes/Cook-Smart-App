@@ -7,7 +7,7 @@ import SearchScreen from "../screens/SearchScreen";
 import React from "react";
 import Colors from "../constants/Colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Header from "./Header";
+import { Iconify } from "react-native-iconify";
 
 
 const Tab = createBottomTabNavigator();
@@ -75,7 +75,7 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="brain" color={color} size={size} />
+            <Iconify icon="fluent:brain-circuit-24-regular" size={size} color={color}/>
             ),
           }}
       />

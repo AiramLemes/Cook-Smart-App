@@ -1,15 +1,15 @@
-import { SafeAreaView, StyleSheet, Image, Text } from "react-native";
+import { SafeAreaView, StyleSheet, Image, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import getUserImage from "../model/FirebaseUser";
 import { useNavigation } from "@react-navigation/native";
+import { getUserImage } from "../model/FirebaseUser";
 
 const Header = () => {
   
   const insets = useSafeAreaInsets();
-  const [imageURL, setImageURL] = useState('');
+  const [imageURL, setImageURL] = useState('https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0');
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Header = () => {
       try {
         const image = await getUserImage();
         setImageURL(image);
-      } catch (error) { setImageURL(" ") }
+      } catch (error) {}
     };
 
     fetchUserImage();
@@ -25,10 +25,13 @@ const Header = () => {
 
   return (
     <SafeAreaView style={{ ...styles.container, paddingTop: insets.top }}>
-      <Image
-        source={{ uri: imageURL }}
-        style={styles.userImage}
-      />
+      
+      <Pressable onPress={() => navigation.navigate('UserProfile' as never)}>
+        <Image
+          source={{ uri: imageURL }}
+          style={styles.userImage}
+        />
+      </Pressable>
       <Text style={styles.title}>COOK SMART</Text>
       <MaterialCommunityIcons
         style={styles.settings}

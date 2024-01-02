@@ -1,37 +1,32 @@
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import React from "react";
-import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebaseConfig";
-import ToastUtil from "../utils/ToastUtil";
-import Toast from "react-native-root-toast";
+import Colors from "../constants/Colors";
+import { Iconify } from "react-native-iconify";
 
 // @ts-ignore
-const HomeScreen = ({navigation}) => {
+const UserProfileScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
-
-  function logOut() {
-    signOut(auth).then( result => {
-      ToastUtil.showToast(result!!, Toast.durations.SHORT)
-      console.log("Sesión cerrada")
-    })
-    
-  }
-
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.right,}}>
-        <Text style={{color: Colors.textPrimary}}>HOME</Text>
+
+        <Pressable style={styles.backButton} onPress={() => {navigation.goBack()}}>
+          <Iconify icon="lets-icons:back" size={33} color="black"/>
+        </Pressable>
+
+        <Text style={styles.title} >PROFILE</Text>
+        
+       
+    
       </SafeAreaView>
   );
 }
 
-export default HomeScreen;
+export default UserProfileScreen;
 
 
 const styles = StyleSheet.create({
@@ -42,9 +37,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.background,
   },
-
-  background: {
-    ...StyleSheet.absoluteFillObject
+  
+  title: {
+    fontSize: 22,
+    padding: 20
   },
   
+  backButton: {
+    position: 'absolute',
+    top: 5,
+    left: 10,
+    padding: 10,
+  }
 });

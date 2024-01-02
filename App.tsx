@@ -10,6 +10,7 @@ import RegisterScreen from './screens/SignOut/RegisterScreen';
 import BottomTab from './navigation/BottomTab';
 import Header from './navigation/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import StackNav from './navigation/StackNav';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,7 @@ function App() {
           {isSignedIn() ? (
             <>
             <Header/>
-              <BottomTab/>
+              <StackNav navigation={undefined}/>
             </>
           ) : (
             <>
