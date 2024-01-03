@@ -2,7 +2,7 @@ import { Pressable, SafeAreaView, StyleSheet, Text, View, Image } from "react-na
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
-import User from "../model/user";
+import User from "../model/UserInterface";
 import { getUserData, loadUserData } from "../model/FirebaseUser";
 import { auth } from "../firebaseConfig";
 import { Iconify } from 'react-native-iconify';

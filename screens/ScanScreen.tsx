@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, SafeAreaView } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native';
+import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
-
+import { getProduct } from '../model/FirebaseProduct';
+import Product from '../model/ProductInterface';
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
-
+  const [productExists, setProductExists] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
+  const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  let currentProductId = "";
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -23,11 +27,20 @@ const ScanScreen = ({ navigation }) => {
     getBarCodeScannerPermissions();
   }, []);
 
-
+  
   // @ts-ignore
-  const handleBarCodeScanned = ({ type, data }) => {
-    console.log(data);
+  const handleBarCodeScanned = async ({ data }) => {
+    if (data != currentProductId) {
+      const product = await getProduct(data);
+      if (product != null) {
+        setProductExists(true);
+        setScannedProduct(product);
+        currentProductId = data;
+        setIsHidden(false);
+      }
+    }
   };
+
 
   return (
     <SafeAreaView
@@ -40,7 +53,6 @@ const ScanScreen = ({ navigation }) => {
     >
       {isFocused && (
         <View style={styles.barcode}>
-          <Text style={styles.title}>Prueba a escanear algún producto!</Text>
           {hasPermission === null ? (
             <Text>Requesting for camera permission</Text>
           ) : hasPermission === false ? (
@@ -52,8 +64,35 @@ const ScanScreen = ({ navigation }) => {
               onBarCodeScanned={handleBarCodeScanned}
             />
           )}
+
         </View>
       )}
+
+    {productExists && !isHidden && (
+      <View style={styles.productCard}>
+        <View style={styles.column}>
+          <Image source={{ uri: scannedProduct.image }} style={styles.productImage} />
+        </View>
+        <View style={{ ...styles.column, flex: 3, left: 10}}>
+          <Text>{scannedProduct.productName}</Text>
+          <Text>{scannedProduct.brand}</Text>
+          <View>
+            <View></View>
+            <Text>{scannedProduct.rate}</Text>
+          </View>
+        </View>
+        <View style={styles.column}>
+          <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
+            <Iconify icon="material-symbols:close" size={24} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.goButton}>
+            <Iconify icon="carbon:next-filled" size={33} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+  )}
+
     </SafeAreaView>
   )
 };
@@ -66,18 +105,56 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.background,
   },
-
   title: {
-    fontSize: 20
+    fontSize: 20,
   },
-
   barcode: {
     width: '100%',
     height: '100%',
-    start: 0,
+  },
+  productCardContainer: {
+    position: 'absolute',
     bottom: 0,
-  }
+    width: '100%',
+    alignItems: 'center',
+    zIndex: 1
+  },
+  productCard: {
+    width: '85%',
+    flexDirection: 'row',
+    borderColor: Colors.primary,
+    borderWidth: 4,
+    borderRadius: 10,
+    backgroundColor: Colors.background,
+    zIndex: 1,
+    position: 'absolute',
+    bottom: 50,
+  },
+  column: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  productImage: {
+    width: 60,
+    height: 60,
+    borderColor: Colors.primary,
+    borderWidth: 1,
+    borderRadius: 10,
+    marginLeft: 30,
+  },
+  closeButton: {
+    padding: 5,
+    position: 'absolute',
+    top: 5,
+    right: 5,
+  },
+  goButton: {
+    padding: 5,
+    marginTop: 30,
+  },
 });
 
-
 export default ScanScreen;
+

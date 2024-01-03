@@ -11,7 +11,7 @@ import { collection, doc, getDocs, query, setDoc, where } from "firebase/firesto
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import User from "../../model/user";
+import User from "../../model/UserInterface";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
