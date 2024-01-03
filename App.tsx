@@ -7,16 +7,16 @@ import { User } from 'firebase/auth';
 import IndexScreen from './screens/SignOut/IndexScreen';
 import LoginScreen from './screens/SignOut/LogInScreen';
 import RegisterScreen from './screens/SignOut/RegisterScreen';
-import BottomTab from './navigation/BottomTab';
 import Header from './navigation/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import StackNav from './navigation/StackNav';
+import { useState } from 'react';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [user, setUser] = React.useState<User | null>(null);
-
+  const [user, setUser] = useState<User | null>(null);
+  
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);

@@ -2,12 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import HomeScreen from "../screens/HomeScreen";
 import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
-import QRScreen from "../screens/QRScreen";
+import QRScreen from "../screens/ScanScreen";
 import SearchScreen from "../screens/SearchScreen";
 import React from "react";
 import Colors from "../constants/Colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Iconify } from "react-native-iconify";
+import ScanScreen from "../screens/ScanScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -59,8 +60,8 @@ const BottomTab = () => {
 
 
       <Tab.Screen
-        name='QR'
-        component={QRScreen}
+        name='Scan'
+        component={ScanScreen}
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (

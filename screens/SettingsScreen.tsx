@@ -2,11 +2,9 @@ import { Pressable, SafeAreaView, StyleSheet, Text, View, Image } from "react-na
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
-import BackIcon from "../assets/icons/BackIcon";
 import User from "../model/user";
 import { getUserData, loadUserData } from "../model/FirebaseUser";
 import { auth } from "../firebaseConfig";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Iconify } from 'react-native-iconify';
 
 // @ts-ignore
