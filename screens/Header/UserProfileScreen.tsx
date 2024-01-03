@@ -1,7 +1,7 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { Iconify } from "react-native-iconify";
 
 // @ts-ignore
@@ -14,9 +14,9 @@ const UserProfileScreen = ({navigation}) => {
       paddingLeft: insets.left,
       paddingRight: insets.right,}}>
 
-        <Pressable style={styles.backButton} onPress={() => {navigation.goBack()}}>
+        <TouchableOpacity style={styles.backButton} onPress={() => {navigation.goBack()}}>
           <Iconify icon="lets-icons:back" size={33} color="black"/>
-        </Pressable>
+        </TouchableOpacity>
 
         <Text style={styles.title} >PROFILE</Text>
         

@@ -1,10 +1,10 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "../constants/Colors";
-import User from "../model/UserInterface";
-import { getUserData, loadUserData } from "../model/FirebaseUser";
-import { auth } from "../firebaseConfig";
+import Colors from "../../constants/Colors";
+import User from "../../model/UserInterface";
+import { getUserData, loadUserData } from "../../model/FirebaseUser";
+import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
 
 // @ts-ignore
@@ -32,9 +32,9 @@ const SettingsScreen = ({navigation}) => {
         paddingLeft: insets.left,
         paddingRight: insets.right,}}>
   
-        <Pressable style={styles.backButton} onPress={() => {navigation.goBack()}}>
+        <TouchableOpacity style={styles.backButton} onPress={() => {navigation.goBack()}}>
           <Iconify icon="lets-icons:back" size={33} color="black"/>
-        </Pressable>
+        </TouchableOpacity>
   
         <View style={{marginBottom: 20}}>
           <Image
@@ -46,36 +46,36 @@ const SettingsScreen = ({navigation}) => {
         </View>
   
         <View>
-          <Pressable style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon}>
             <Text style={styles.buttonText}>Idioma</Text>
             <Iconify icon="emojione-v1:flag-for-spain" size={24} color="black"/>
-          </Pressable>
+          </TouchableOpacity>
   
-          <Pressable style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon}>
             <Text style={styles.buttonText}>Contáctanos</Text>
             <Iconify icon="game-icons:talk" size={24} color="black"/>
-          </Pressable>
+          </TouchableOpacity>
 
-          <Pressable style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon}>
             <Text style={styles.buttonText}>Tema</Text>
             <Iconify icon="fluent:dark-theme-24-regular" size={24} color="black"/>
-          </Pressable>
+          </TouchableOpacity>
 
-          <Pressable style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon}>
             <Text style={styles.buttonText}>Sobre la app</Text>
             <Iconify icon="material-symbols:info-outline" size={24} color="black"/>
-          </Pressable>
+          </TouchableOpacity>
 
-          <Pressable style={styles.buttonWithIcon} onPress={() => {navigation.navigate('UserProfile')}}>
+          <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {navigation.navigate('UserProfile')}}>
             <Text style={styles.buttonText}>Mi Perfil</Text>
             <Iconify icon="mdi:user" size={24} color="black"/>
-          </Pressable>
+          </TouchableOpacity>
   
         </View>
   
-        <Pressable style={{...styles.logOutButton, backgroundColor: Colors.secondary}} onPress={() => {auth.signOut()}}>
+        <TouchableOpacity style={{...styles.logOutButton, backgroundColor: Colors.secondary}} onPress={() => {auth.signOut()}}>
           <Text style={styles.buttonText}>Cerrar Sesión</Text>
-        </Pressable>
+        </TouchableOpacity>
   
       </SafeAreaView>
     );

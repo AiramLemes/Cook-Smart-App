@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useState } from "react";
@@ -141,9 +141,9 @@ const RegisterScreen = ({navigation}) => {
         )}
 
 
-      <Pressable style={styles.registerButton} onPress={register}>
+      <TouchableOpacity style={styles.registerButton} onPress={register}>
         <Text style={styles.buttonText}>Registrarse</Text>
-      </Pressable>
+      </TouchableOpacity>
       
 
         <View style={styles.poweredSection}>

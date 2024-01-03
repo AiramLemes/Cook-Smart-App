@@ -1,8 +1,8 @@
 import React from "react";
-import SettingsScreen from "../screens/SettingsScreen";
+import SettingsScreen from "../screens/Header/SettingsScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomTab from "./BottomTab";
-import UserProfileScreen from "../screens/UserProfileScreen";
+import UserProfileScreen from "../screens/Header/UserProfileScreen";
 
 const Stack = createNativeStackNavigator();
 

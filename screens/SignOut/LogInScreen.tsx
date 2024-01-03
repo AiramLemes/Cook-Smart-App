@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useState } from "react";
@@ -97,9 +97,9 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.errorMessage}>La contraseña debe tener un mínimo de 6 caracteres</Text>
         )}
 
-      <Pressable style={styles.logInButton} onPress={logIn}>
+      <TouchableOpacity style={styles.logInButton} onPress={logIn}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
-      </Pressable>
+      </TouchableOpacity>
       
 
         <View style={styles.poweredSection}>

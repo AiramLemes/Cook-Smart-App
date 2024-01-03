@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
 import React from "react";
@@ -22,14 +22,14 @@ const IndexScreen = ({navigation}) => {
         <Text style={styles.title} >COOK SMART !</Text>
 
        
-          <Pressable style={styles.logInButton}  onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.logInButton}  onPress={() => navigation.navigate('Login')}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </Pressable>
+          </TouchableOpacity>
      
   
-          <Pressable style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.buttonText}>Registrarse</Text>
-          </Pressable>
+          </TouchableOpacity>
        
 
         <View style={styles.poweredSection}>
