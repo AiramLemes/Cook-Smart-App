@@ -3,6 +3,7 @@ import SettingsScreen from "../screens/Header/SettingsScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomTab from "./BottomTab";
 import UserProfileScreen from "../screens/Header/UserProfileScreen";
+import ProductScreen from "../screens/ProductScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,13 @@ const StackNav = ({navigation}) => (
       component={UserProfileScreen}
       options={{ headerShown: false}}
     />
+
+    <Stack.Screen
+      name="Product"
+      component={ProductScreen}
+      options={{ headerShown: false}}
+    />
+
   </Stack.Navigator>
 );
 

@@ -7,6 +7,7 @@ import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { getProduct } from '../model/FirebaseProduct';
 import Product from '../model/ProductInterface';
+import FaceColor from '../utils/RatingFaceColor';
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -27,7 +28,6 @@ const ScanScreen = ({ navigation }) => {
     getBarCodeScannerPermissions();
   }, []);
 
-  
   // @ts-ignore
   const handleBarCodeScanned = async ({ data }) => {
     if (data != currentProductId) {
@@ -40,7 +40,10 @@ const ScanScreen = ({ navigation }) => {
       }
     }
   };
-
+  // navigation.navigate('Product', scannedProduct)
+  const handleGoButtonPress = () => {
+    navigation.navigate('Product', scannedProduct);
+  };
 
   return (
     <SafeAreaView
@@ -67,18 +70,18 @@ const ScanScreen = ({ navigation }) => {
 
         </View>
       )}
-
-    {productExists && !isHidden && (
+{/* productExists */}
+    { productExists && !isHidden && (
       <View style={styles.productCard}>
         <View style={styles.column}>
-          <Image source={{ uri: scannedProduct.image }} style={styles.productImage} />
+          <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
         </View>
         <View style={{ ...styles.column, flex: 3, left: 10}}>
-          <Text>{scannedProduct.productName}</Text>
-          <Text>{scannedProduct.brand}</Text>
-          <View>
-            <View></View>
-            <Text>{scannedProduct.rate}</Text>
+          <Text style={{fontSize: 17}} >{scannedProduct!!.name}</Text>
+          <Text>{scannedProduct!!.brand}</Text>
+          <View style={styles.rating}>
+            <FaceColor rate={scannedProduct!!.rate} size={20}/>
+            <Text>  {scannedProduct!!.rate}/100</Text>
           </View>
         </View>
         <View style={styles.column}>
@@ -86,7 +89,7 @@ const ScanScreen = ({ navigation }) => {
             <Iconify icon="material-symbols:close" size={24} color="black" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.goButton}>
+          <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
             <Iconify icon="carbon:next-filled" size={33} color="black" />
           </TouchableOpacity>
         </View>
@@ -154,6 +157,12 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 30,
   },
+  rating:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    textAlign: 'center',
+  }
 });
 
 export default ScanScreen;

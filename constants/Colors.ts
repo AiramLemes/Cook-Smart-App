@@ -21,7 +21,9 @@ const Colors = {
 
     toasts: '#FDDD80',
 
-    imageBorder: '#7B7B7B'
+    imageBorder: '#7B7B7B',
+
+    black: '#000000',
   };
   
   export default Colors;
