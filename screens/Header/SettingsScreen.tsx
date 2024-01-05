@@ -38,7 +38,7 @@ const SettingsScreen = ({navigation}) => {
   
         <View style={{marginBottom: 20}}>
           <Image
-            source={{ uri: userData?.imageURL }}
+            source={{ uri: userData?.image }}
             style={styles.userImage}
           />
   

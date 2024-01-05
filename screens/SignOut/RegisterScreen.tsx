@@ -12,68 +12,33 @@ import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import User from "../../model/UserInterface";
+import { checkEmailPattern, checkPassword, checkUserName } from "../../model/FirebaseUser";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
-  const [userName, setUserName] = useState<string | undefined>();
-  const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
+  const [userName, setUserName] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const [emailError, setEmailError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [usedEmail, setUsedEmail] = useState<boolean>(false);
 
-  async function checkEmail(): Promise<boolean> {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailPattern.test(email!!);
   
-    try {
-      const users = collection(firestore, 'users');
-      const q = query(users, where('email', '==', email));
-      const result = (await getDocs(q)).size > 0;
-  
-      setEmailError(result || !isValid);
-      setUsedEmail(result);
-  
-      return !result && isValid;
-    } catch (error) {
-      ToastUtil.showToast("Se ha producido un error al verificar el correo electrónico, por favor, inténtelo de nuevo", Toast.durations.SHORT);
-      return false;
-    }
-  }
-
-  function checkPassword(): boolean {
-    const isValid = password!!.length >= 6;
-    setPasswordError(!isValid);
-    return isValid;
-  }
-
-  async function checkUserName(): Promise<Boolean> {
-    try {
-      const users = collection(firestore, 'users');
-  
-      const q = query(users, where('userName', '==', userName));
-      const result = (await getDocs(q)).size > 0;
-      setUserNameError(result)
-      return !result;
-
-    } catch (error) {
-      ToastUtil.showToast("Se ha producido un error al verificar el usuario, por favor, inténtelo de nuevo",
-        Toast.durations.LONG);
-      return false;
-    }
-  };
 
 
   async function register() {
     
     if (email && password && userName) {
 
-      const isValidEmail = await checkEmail();
-      const isValidPassword= checkPassword();
-      const isValidUserName = await checkUserName();
+      const isValidEmail = checkEmailPattern(email);
+      setEmailError(!isValidEmail);
+      const isValidPassword= checkPassword(password);
+      setPasswordError(!isValidEmail);
+      const isValidUserName = await checkUserName(userName);
+      setUserNameError(!isValidUserName);
 
       if (isValidEmail && isValidPassword && isValidUserName) {
         try {
@@ -82,7 +47,7 @@ const RegisterScreen = ({navigation}) => {
           const newUser: User = {
             userName: userName,
             email: email,
-            imageURL: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0'
+            image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0'
           };
 
           const usersDoc = doc(collection(firestore, 'users'), userId);

@@ -6,10 +6,10 @@ import Colors from "../../constants/Colors";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
 import Toast from "react-native-root-toast";
 import ToastUtil from "../../utils/ToastUtil";
+import { checkEmailPattern } from "../../model/FirebaseUser";
+import { logIn, checkPassword } from "../../model/FirebaseUser";
 
 
 
@@ -17,29 +17,23 @@ import ToastUtil from "../../utils/ToastUtil";
 const LoginScreen = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
-  const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const [emailError, setEmailError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
 
-  function logIn() {
+  async function handleLogIn() {
 
     if (email && password) {
 
-      const isValidEmail = checkEmail();
-      const isValidPassword= checkPassword();
+      const isValidEmail = checkEmailPattern(email);
+      setEmailError(!isValidEmail)
+      const isValidPassword= checkPassword(password);
+      setPasswordError(!isValidPassword)
 
       if (isValidEmail && isValidPassword) {
-
-        signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          ToastUtil.showToast("Sesión iniciada", Toast.durations.SHORT); 
-        })
-        .catch(() => 
-        
-          ToastUtil.showToast("Se ha producido un error al iniciar sesión, comprube el email y la contraseña",
-          Toast.durations.SHORT)
-        );
+        await logIn(email, password)? ToastUtil.showToast("Sesión iniciada", Toast.durations.SHORT) : 
+        ToastUtil.showToast("Se ha producido un error al iniciar sesión, comprube el email y la contraseña", Toast.durations.SHORT)
       }
 
       else {
@@ -51,19 +45,6 @@ const LoginScreen = ({navigation}) => {
     else {
       ToastUtil.showToast("Debes rellenar todos los campos!", Toast.durations.SHORT);
     }
-  }
-
-  function checkEmail(): boolean {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailPattern.test(email!!);
-    setEmailError(!isValid);
-    return isValid;
-  }
-
-  function checkPassword(): boolean {
-    const isValid = password!!.length >= 6;
-    setPasswordError(!isValid);
-    return isValid;
   }
 
 
@@ -97,7 +78,7 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.errorMessage}>La contraseña debe tener un mínimo de 6 caracteres</Text>
         )}
 
-      <TouchableOpacity style={styles.logInButton} onPress={logIn}>
+      <TouchableOpacity style={styles.logInButton} onPress={handleLogIn}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
       

@@ -1,7 +1,7 @@
 interface User {
     userName: string;
     email: string;
-    imageURL: string;
+    image: string;
   }
   
 export default User;

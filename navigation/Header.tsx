@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { getUserImage } from "../model/FirebaseUser";
+import ToastUtil from "../utils/ToastUtil";
+import Toast from "react-native-root-toast";
 
 const Header = () => {
   
@@ -14,14 +16,13 @@ const Header = () => {
 
   useEffect(() => {
     const fetchUserImage = async () => {
-      try {
-        const image = await getUserImage();
+      getUserImage((image: string) => {
         setImageURL(image);
-      } catch (error) {}
+      });
     };
-
+  
     fetchUserImage();
-  }, []); 
+  }, []);
 
   return (
     <SafeAreaView style={{ ...styles.container, paddingTop: insets.top }}>
