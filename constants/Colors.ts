@@ -24,6 +24,7 @@ const Colors = {
     imageBorder: '#7B7B7B',
 
     black: '#000000',
+    gray: '#D9D9D9',
   };
   
   export default Colors;

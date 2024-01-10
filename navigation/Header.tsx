@@ -4,7 +4,7 @@ import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import { getUserImage } from "../model/FirebaseUser";
+import { getUserImage } from "../repository/FirebaseUser";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 

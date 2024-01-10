@@ -8,8 +8,8 @@ import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-root-toast";
 import ToastUtil from "../../utils/ToastUtil";
-import { checkEmailPattern } from "../../model/FirebaseUser";
-import { logIn, checkPassword } from "../../model/FirebaseUser";
+import { checkEmailPattern } from "../../repository/FirebaseUser";
+import { logIn, checkPassword } from "../../repository/FirebaseUser";
 
 
 

@@ -3,7 +3,7 @@ import { auth, firestore } from "../firebaseConfig";
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"; 
 import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres únicos
 
-import User from "./UserInterface";
+import User from "../model/User";
 import Toast from "react-native-root-toast";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import ToastUtil from "../utils/ToastUtil";

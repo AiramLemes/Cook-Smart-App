@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
+import Product from '../model/Product';
 
-const Table = (props: any) => {
+const Table = (props: { product: Product }) => {
 
   const nutritionalInfo = props.product?.nutritionalInformation || {};
   

@@ -5,8 +5,8 @@ import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
-import { getProduct } from '../model/FirebaseProduct';
-import Product from '../model/ProductInterface';
+import { getProduct } from '../repository/FirebaseProduct';
+import Product from '../model/Product';
 import FaceColor from '../utils/RatingFaceColor';
 
 // @ts-ignore

@@ -2,8 +2,8 @@ import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from "r
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
-import User from "../../model/UserInterface";
-import { getUserData, loadUserData } from "../../model/FirebaseUser";
+import User from "../../model/User";
+import { getUserData, loadUserData } from "../../repository/FirebaseUser";
 import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
 
@@ -27,16 +27,13 @@ const SettingsScreen = ({navigation}) => {
 
 
     return (
-      <SafeAreaView style={{...styles.container, paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,}}>
+      <View style={styles.container}>
   
         <TouchableOpacity style={styles.backButton} onPress={() => {navigation.goBack()}}>
           <Iconify icon="lets-icons:back" size={33} color="black"/>
         </TouchableOpacity>
   
-        <View style={{marginBottom: 20}}>
+        <View>
           <Image
             source={{ uri: userData?.image }}
             style={styles.userImage}
@@ -77,7 +74,7 @@ const SettingsScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Cerrar Sesión</Text>
         </TouchableOpacity>
   
-      </SafeAreaView>
+      </View>
     );
 }
 
@@ -106,8 +103,8 @@ const styles = StyleSheet.create({
   },
 
   userImage: {
-    width: 140,
-    height: 140,
+    width: 160,
+    height: 160,
     borderRadius: 90,
     borderWidth: 1,
     borderColor: Colors.imageBorder,

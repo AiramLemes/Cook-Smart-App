@@ -2,13 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import HomeScreen from "../screens/HomeScreen";
 import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
-import QRScreen from "../screens/ScanScreen";
 import SearchScreen from "../screens/SearchScreen";
 import React from "react";
 import Colors from "../constants/Colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Iconify } from "react-native-iconify";
 import ScanScreen from "../screens/ScanScreen";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 
 const Tab = createBottomTabNavigator();
@@ -16,6 +16,10 @@ const Tab = createBottomTabNavigator();
 const BottomTab = () => {
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <Tab.Navigator
     initialRouteName="Home"
       screenOptions={{
@@ -82,6 +86,7 @@ const BottomTab = () => {
       />
 
     </Tab.Navigator>
+    </KeyboardAvoidingView>
   );
 
 }

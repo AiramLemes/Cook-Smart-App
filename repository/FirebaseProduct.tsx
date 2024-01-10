@@ -1,6 +1,6 @@
-import { firestore } from "./../firebaseConfig";
+import { firestore } from "../firebaseConfig";
 import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import Product from "./ProductInterface";
+import Product from "../model/Product";
 
 
 async function getProduct(barcode: string): Promise<Product|null> {

@@ -5,8 +5,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Iconify } from "react-native-iconify";
 import Collapsible from 'react-native-collapsible';
 import Table from "../components/Table";
-import { getBetterProducts } from "../model/FirebaseProduct";
-import Product from "../model/ProductInterface";
+import { getBetterProducts } from "../repository/FirebaseProduct";
+import Product from "../model/Product";
 import FaceColor from "../utils/RatingFaceColor";
 
 // @ts-ignore
