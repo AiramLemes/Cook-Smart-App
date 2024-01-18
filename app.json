@@ -1,4 +1,4 @@
-{ 
+{
   "expo": {
     "name": "Cook-Smart",
     "slug": "Cook-Smart",
@@ -28,8 +28,19 @@
       "bundler": "metro"
     },
     "plugins": [
-      ["expo-barcode-scanner", { "cameraPermission": "Allow $(PRODUCT_NAME) to access camera." }],
-      ["expo-image-picker", { "photosPermission": "Allow $(PRODUCT_NAME) to access your photos." }]
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos."
+        }
+      ],
+      "expo-localization"
     ]
   }
 }

@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Iconify } from "react-native-iconify";
 import ScanScreen from "../screens/ScanScreen";
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { Strings } from "../constants/Strings";
 
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +30,7 @@ const BottomTab = () => {
       }}
     >
       <Tab.Screen
-        name='Home'
+        name={Strings.t('home')}
         component={HomeScreen}
         options={{ 
           headerShown: false,
@@ -41,7 +42,7 @@ const BottomTab = () => {
 
 
       <Tab.Screen
-        name='Pantry'
+        name={Strings.t('pantry')}
         component={PantryScreen}
         options={{ 
           headerShown: false,
@@ -52,7 +53,7 @@ const BottomTab = () => {
       />
 
       <Tab.Screen
-        name='Search'
+        name={Strings.t('search')}
         component={SearchScreen}
         options={{ 
           headerShown: false,
@@ -64,7 +65,7 @@ const BottomTab = () => {
 
 
       <Tab.Screen
-        name='Scan'
+        name={Strings.t('scan')}
         component={ScanScreen}
         options={{ 
           headerShown: false,
@@ -75,7 +76,7 @@ const BottomTab = () => {
       />
 
       <Tab.Screen
-        name='IA'
+        name={Strings.t('ai')}
         component={IAScreen}
         options={{ 
           headerShown: false,

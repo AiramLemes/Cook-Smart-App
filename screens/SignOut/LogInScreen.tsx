@@ -10,6 +10,7 @@ import Toast from "react-native-root-toast";
 import ToastUtil from "../../utils/ToastUtil";
 import { checkEmailPattern } from "../../repository/FirebaseUser";
 import { logIn, checkPassword } from "../../repository/FirebaseUser";
+import { Strings } from "../../constants/Strings";
 
 
 
@@ -27,23 +28,22 @@ const LoginScreen = ({navigation}) => {
     if (email && password) {
 
       const isValidEmail = checkEmailPattern(email);
-      setEmailError(!isValidEmail)
+      setEmailError(!isValidEmail);
       const isValidPassword= checkPassword(password);
-      setPasswordError(!isValidPassword)
+      setPasswordError(!isValidPassword);
 
       if (isValidEmail && isValidPassword) {
-        await logIn(email, password)? ToastUtil.showToast("Sesión iniciada", Toast.durations.SHORT) : 
-        ToastUtil.showToast("Se ha producido un error al iniciar sesión, comprube el email y la contraseña", Toast.durations.SHORT)
+        await logIn(email, password)? ToastUtil.showToast(Strings.t('logInMessage'), Toast.durations.SHORT) : 
+        ToastUtil.showToast(Strings.t('wrongLogInMessage'), Toast.durations.SHORT);
       }
 
       else {
-        ToastUtil.showToast("Por favor, revise todos los campos",
-          Toast.durations.SHORT)
+        ToastUtil.showToast(Strings.t('emptyInputs'), Toast.durations.SHORT);
       }
     }
 
     else {
-      ToastUtil.showToast("Debes rellenar todos los campos!", Toast.durations.SHORT);
+      ToastUtil.showToast(Strings.t('emptyInputs'), Toast.durations.SHORT);
     }
   }
 
@@ -63,23 +63,23 @@ const LoginScreen = ({navigation}) => {
 
       <TextInput style={[styles.emailInput, emailError && styles.errorInput]}
         value={email} inputMode="email" autoCapitalize="none" 
-        keyboardType="email-address" onChangeText={setEmail} placeholder="Correo Electrónico"/>
+        keyboardType="email-address" onChangeText={setEmail} placeholder={Strings.t('email')}/>
 
         {emailError && (
-          <Text style={styles.errorMessage}>Correo electrónico inválido</Text>
+          <Text style={styles.errorMessage}>{Strings.t('invalidEmail')}</Text>
         )}
         
 
       <TextInput style={[styles.passwordInput, passwordError && styles.errorInput]}
-        value={password} onChangeText={setPassword} placeholder="Contraseña"
+        value={password} onChangeText={setPassword} placeholder={Strings.t('password')}
         secureTextEntry={true} autoCorrect={false}/>
 
         {passwordError && (
-          <Text style={styles.errorMessage}>La contraseña debe tener un mínimo de 6 caracteres</Text>
+          <Text style={styles.errorMessage}>{Strings.t('invalidPassword')}</Text>
         )}
 
       <TouchableOpacity style={styles.logInButton} onPress={handleLogIn}>
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
+        <Text style={styles.buttonText}>{Strings.t('logIn')}</Text>
       </TouchableOpacity>
       
 
@@ -89,9 +89,9 @@ const LoginScreen = ({navigation}) => {
           <PoweredSVG style={styles.poweredSectionSVG}/>
         </View>
 
-        <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
+        <Text style={styles.poweredIATitle}>{Strings.t('powered')}</Text>
 
-        <Text style={styles.registerNav} onPress={() => navigation.navigate('Register')}>Registrarse</Text>
+        <Text style={styles.registerNav} onPress={() => navigation.navigate('Register')}>{Strings.t('register')}</Text>
 
     </SafeAreaView>
   );

@@ -6,7 +6,7 @@ import Colors from "../../constants/Colors";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { Strings } from "../../constants/Strings";
 // @ts-ignore
 const IndexScreen = ({navigation}) => {
 
@@ -23,12 +23,12 @@ const IndexScreen = ({navigation}) => {
 
        
           <TouchableOpacity style={styles.logInButton}  onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            <Text style={styles.buttonText}>{Strings.t('logIn')}</Text>
           </TouchableOpacity>
      
   
           <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.buttonText}>Registrarse</Text>
+            <Text style={styles.buttonText}>{Strings.t('register')}</Text>
           </TouchableOpacity>
        
 
@@ -38,7 +38,7 @@ const IndexScreen = ({navigation}) => {
           <PoweredSVG style={styles.poweredSectionSVG}/>
         </View>
 
-        <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
+        <Text style={styles.poweredIATitle}>{Strings.t('powered')}</Text>
 
       </SafeAreaView>
   );

@@ -10,6 +10,7 @@ import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { auth } from "../../firebaseConfig";
 import { sendPasswordResetEmail, updateCurrentUser, updateEmail, verifyPasswordResetCode } from "firebase/auth";
+import { Strings } from "../../constants/Strings";
 
 
 //@ts-ignore
@@ -46,10 +47,10 @@ const UserProfileScreen = ({ navigation }) => {
 
       if (await uploadImageAsync(uri)) {
         setImage(uri);
-        ToastUtil.showToast('Imagen actualizada correctamente!', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('updateImage'), Toast.durations.SHORT);
       }
       else {
-        ToastUtil.showToast('Error actualizando la imagen', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('errorUpdatingImage'), Toast.durations.SHORT);
       }
       
     }
@@ -62,23 +63,23 @@ const UserProfileScreen = ({ navigation }) => {
 
         if (await checkEmail(email)) {
           updateEmail(auth.currentUser!!, email).then(() => {
-            ToastUtil.showToast("Correo electrónico actualizado correctamente", Toast.durations.SHORT);
+            ToastUtil.showToast(Strings.t('updateEmailMsg'), Toast.durations.SHORT);
           }).catch((e) => {
             console.log(e)
-            ToastUtil.showToast("Se ha producido un error al actualizar el correo electrónico, por favor, inténtelo de nuevo", Toast.durations.SHORT);
+            ToastUtil.showToast(Strings.t('errorUpdatingEmail'), Toast.durations.SHORT);
           });
         }
     
         else {
-          ToastUtil.showToast("Se ha producido un error al verificar el correo electrónico, por favor, inténtelo de nuevo", Toast.durations.SHORT);
+          ToastUtil.showToast(Strings.t('errorCheckinEmail'), Toast.durations.SHORT);
         }
       }
       else {
-        ToastUtil.showToast("Email inválido", Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('invalidEmail'), Toast.durations.SHORT);
       }
     }
     else {
-      ToastUtil.showToast("Email vacío!", Toast.durations.SHORT);
+      ToastUtil.showToast(Strings.t('emptyEmail'), Toast.durations.SHORT);
     }
    
   }
@@ -88,7 +89,7 @@ const UserProfileScreen = ({ navigation }) => {
       if (await checkUserName(userName)) {
         let message;
         const result = await updateUserName(userName)
-        result ? message = "Nombre de usuario actualizado correctamente" : message = 'Se ha producido un error al actualizar el nombre de usuario';
+        result ? message = Strings.t('changeUserNameMsg') : message = Strings.t('errorChangingUserName');
           ToastUtil.showToast(message, Toast.durations.SHORT);
         
         if (result) {
@@ -102,17 +103,17 @@ const UserProfileScreen = ({ navigation }) => {
         }
       }
       else {
-        ToastUtil.showToast("Nombre de usuario en uso!", Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('usedUserName'), Toast.durations.SHORT);
       }
     }
     else {
-      ToastUtil.showToast("Nombre de usuario vacío!", Toast.durations.SHORT);
+      ToastUtil.showToast(Strings.t('emptyUserName'), Toast.durations.SHORT);
     }
   }
 
   function handleChangePassword() {
     sendPasswordResetEmail(auth, userData!!.email)
-    ToastUtil.showToast("Se ha enviado un correo para recuperar la contraseña", Toast.durations.SHORT);
+    ToastUtil.showToast(Strings.t('recoverPasswordMsg'), Toast.durations.SHORT);
   }
 
   return (
@@ -126,10 +127,10 @@ const UserProfileScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.imageSection} onPress={pickImage}>
           <Image source={{ uri: image }} style={styles.userImage} />
         </TouchableOpacity>
-          <Text style={styles.imageSectionText}>Toca para cambiar la foto de perfil!</Text>
+          <Text style={styles.imageSectionText}>{Strings.t('changeProfileImage')}</Text>
 
         <View style={styles.sectionUserData}>
-          <Text style={styles.userDataTitle}>Nombre de usuario</Text>
+          <Text style={styles.userDataTitle}>{Strings.t('userName')}</Text>
           <View style={styles.userDataInputWithIcon}>
             <Text style={styles.userDataInputText}>{userData?.userName}</Text>
             <Iconify icon="mdi:user" size={24} color="black" />
@@ -137,7 +138,7 @@ const UserProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.sectionUserData}>
-          <Text style={styles.userDataTitle}>Email</Text>
+          <Text style={styles.userDataTitle}>{Strings.t('email')}</Text>
           <View style={styles.userDataInputWithIcon}>
             <Text style={styles.userDataInputText}>{userData?.email}</Text>
             <Iconify icon="ic:baseline-email" size={24} color="black" />
@@ -145,30 +146,30 @@ const UserProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.sectionUserData}>
-          <Text style={styles.userDataTitle}>Cambiar email</Text>
+          <Text style={styles.userDataTitle}>{Strings.t('changeEmail')}</Text>
           <TextInput style={styles.userDataInputWithIcon} value={email} onChangeText={setEmail} placeholder="prueba@prueba.com"/>          
         </View>
 
         <View style={styles.sectionUserData}>
-          <Text style={styles.userDataTitle}>Cambiar nombre de usuario</Text>
+          <Text style={styles.userDataTitle}>{Strings.t('changeUserName')}</Text>
           <TextInput style={styles.userDataInputWithIcon} value={userName} onChangeText={setUserName} placeholder="@NuevoNombreUsuario"/>          
         </View>
 
         <View style={styles.sectionUserData}>
           <TouchableOpacity style={styles.button} onPress={() => {handleUpdateEmail()}}>
-            <Text style={styles.buttonText}>Actualizar email</Text>
+            <Text style={styles.buttonText}>{Strings.t('updateEmail')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.sectionUserData}>
           <TouchableOpacity style={styles.button} onPress={() => {handleUpdateUserName()}}>
-            <Text style={styles.buttonText}>Actualizar nombre de usuario</Text>
+            <Text style={styles.buttonText}>{Strings.t('updateUserName')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.sectionUserData}>
           <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-            <Text style={styles.buttonText}>Cambiar contraseña</Text>
+            <Text style={styles.buttonText}>{Strings.t('changePassword')}</Text>
           </TouchableOpacity>
         </View>
       </View>

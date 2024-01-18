@@ -8,6 +8,7 @@ import Table from "../components/Table";
 import { getBetterProducts } from "../repository/FirebaseProduct";
 import Product from "../model/Product";
 import FaceColor from "../utils/RatingFaceColor";
+import { Strings } from "../constants/Strings";
 
 // @ts-ignore
 const ProductScreen = ({ navigation, route }) => {
@@ -54,7 +55,7 @@ const ProductScreen = ({ navigation, route }) => {
         <View style={styles.sectionContainer}>
           <TouchableOpacity onPress={() => setIsIngredientsCollapsed(!isIngredientsCollapsed)}>
             <View style={styles.sections}>
-              <Text style={styles.sectionTitle}>Ingredientes</Text>
+              <Text style={styles.sectionTitle}>{Strings.t('ingredients')}</Text>
               {isIngredientsCollapsed ? (
                 <Iconify icon="bxs:right-arrow" style={{ marginTop: 3 }} size={14} color="black" />
               ) : (
@@ -71,7 +72,7 @@ const ProductScreen = ({ navigation, route }) => {
         <View style={styles.sectionContainer}>
           <TouchableOpacity onPress={() => setIsNutritionalValuesCollapsed(!isNutritionalValuesCollapsed)}>
             <View style={styles.sections}>
-              <Text style={styles.sectionTitle}>Información Nutricional</Text>
+              <Text style={styles.sectionTitle}>{Strings.t('nutritionalValues')}</Text>
               {isNutritionalValuesCollapsed ? (
                 <Iconify icon="bxs:right-arrow" style={{ marginTop: 3 }} size={14} color="black" />
                 ) : (
@@ -87,7 +88,7 @@ const ProductScreen = ({ navigation, route }) => {
 
         <View style={styles.sectionContainer}>
           <View style={styles.sections}>
-              <Text style={styles.sectionTitle}>Productos mejor valorados:</Text>
+              <Text style={styles.sectionTitle}>{Strings.t('betterProducts')}</Text>
           </View>
           <View style={styles.thirdSectionBody}>
 
@@ -114,7 +115,7 @@ const ProductScreen = ({ navigation, route }) => {
 
             </View>
             ) : (
-              <Text style={{marginTop: 20}}>No hay productos disponibles</Text>
+              <Text style={{marginTop: 20}}>{Strings.t('noBetterProductsAvailable')}</Text>
             )}
           </View>
         </View>
