@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
@@ -6,12 +6,15 @@ import User from "../../model/User";
 import { getUserData, loadUserData } from "../../repository/FirebaseUser";
 import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
+import { Strings } from "../../constants/Strings";
+import LanguagePicker from "../../components/LanguagePicker";
 
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
   const [userData, setUserData] = useState<User | null>(null);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,35 +46,33 @@ const SettingsScreen = ({navigation}) => {
         </View>
   
         <View>
+
+          <LanguagePicker/>
+
           <TouchableOpacity style={styles.buttonWithIcon}>
-            <Text style={styles.buttonText}>Idioma</Text>
-            <Iconify icon="emojione-v1:flag-for-spain" size={24} color="black"/>
-          </TouchableOpacity>
-  
-          <TouchableOpacity style={styles.buttonWithIcon}>
-            <Text style={styles.buttonText}>Contáctanos</Text>
+            <Text style={styles.buttonText}>{Strings.t('contactUs')}</Text>
             <Iconify icon="game-icons:talk" size={24} color="black"/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.buttonWithIcon}>
-            <Text style={styles.buttonText}>Tema</Text>
+            <Text style={styles.buttonText}>{Strings.t('theme')}</Text>
             <Iconify icon="fluent:dark-theme-24-regular" size={24} color="black"/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.buttonWithIcon}>
-            <Text style={styles.buttonText}>Sobre la app</Text>
+            <Text style={styles.buttonText}>{Strings.t('aboutApp')}</Text>
             <Iconify icon="material-symbols:info-outline" size={24} color="black"/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {navigation.navigate('UserProfile')}}>
-            <Text style={styles.buttonText}>Mi Perfil</Text>
+            <Text style={styles.buttonText}>{Strings.t('profile')}</Text>
             <Iconify icon="mdi:user" size={24} color="black"/>
           </TouchableOpacity>
   
         </View>
   
         <TouchableOpacity style={{...styles.logOutButton, backgroundColor: Colors.secondary}} onPress={() => {auth.signOut()}}>
-          <Text style={styles.buttonText}>Cerrar Sesión</Text>
+          <Text style={styles.buttonText}>{Strings.t('logOut')}</Text>
         </TouchableOpacity>
   
       </View>
@@ -109,6 +110,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.imageBorder,
     marginBottom: 20,
+  },
+
+  picker: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(254, 211, 77, 0.28)',
+    borderRadius: 100,
+    width: 330,
+    height: 40,
+    marginTop: 25,
+    // paddingHorizontal: 10, // Añade algún espacio entre el texto y el icono
   },
 
   buttonWithIcon: {

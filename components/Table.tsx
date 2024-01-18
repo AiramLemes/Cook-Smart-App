@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import Product from '../model/Product';
+import { Strings } from '../constants/Strings';
 
 const Table = (props: { product: Product }) => {
 
@@ -11,16 +12,16 @@ const Table = (props: { product: Product }) => {
     <View style={styles.table}>
       <View style={styles.tableRow}>
         <View style={styles.tableCellHeader}>
-          <Text style={styles.headerText}>Información nutricional</Text>
+          <Text style={styles.headerText}>{Strings.t('nutritionalValues')}</Text>
         </View>
         <View style={styles.tableCellHeader}>
-          <Text style={styles.headerText}>Por cada 100 g</Text>
+          <Text style={styles.headerText}>{Strings.t('scale')}</Text>
         </View>
       </View>
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Valor energético</Text>
+          <Text>{Strings.t('energy')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[0]} kJ/{nutritionalInfo[1]} Kcal</Text>
@@ -29,7 +30,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Grasas</Text>
+          <Text>{Strings.t('fats')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[2]} g</Text>
@@ -38,7 +39,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Saturadas</Text>
+          <Text>{Strings.t('saturated')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[3]} g</Text>
@@ -47,7 +48,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Hidratos de carbono</Text>
+          <Text>{Strings.t('carbohydrates')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[4]} g</Text>
@@ -56,7 +57,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Azúcares</Text>
+          <Text>{Strings.t('sugars')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[5]} g</Text>
@@ -65,7 +66,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Fibra</Text>
+          <Text>{Strings.t('fibre')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[6]} g</Text>
@@ -74,7 +75,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Proteína</Text>
+          <Text>{Strings.t('protein')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[7]} g</Text>
@@ -83,7 +84,7 @@ const Table = (props: { product: Product }) => {
 
       <View style={styles.tableRow}>
         <View style={styles.tableCell}>
-          <Text>Sal</Text>
+          <Text>{Strings.t('salt')}</Text>
         </View>
         <View style={styles.tableCell}>
           <Text>{nutritionalInfo[8]} g</Text>

@@ -13,6 +13,7 @@ import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import User from "../../model/User";
 import { checkEmailPattern, checkPassword, checkUserName } from "../../repository/FirebaseUser";
+import { Strings } from "../../constants/Strings";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
@@ -52,16 +53,15 @@ const RegisterScreen = ({navigation}) => {
 
           const usersDoc = doc(collection(firestore, 'users'), userId);
           await setDoc(usersDoc, newUser).then(() => {
-            ToastUtil.showToast("Usuario creado correctamente!", Toast.durations.SHORT);
+            ToastUtil.showToast(Strings.t('createUser'), Toast.durations.SHORT);
           })
         } catch(e) {
-          ToastUtil.showToast("Se ha producido un error, por favor, inténtelo de nuevo", Toast.durations.SHORT)
+          ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT)
         }
       }
 
       else {
-        ToastUtil.showToast("Por favor, revise todos los campos",
-          Toast.durations.SHORT)
+        ToastUtil.showToast(Strings.t('emptyInputs'), Toast.durations.SHORT)
       }
     }
 
@@ -82,19 +82,19 @@ const RegisterScreen = ({navigation}) => {
 
       <Text style={styles.title} >COOK SMART !</Text>
 
-      <TextInput style={[styles.userNameInput, userNameError && styles.errorInput]} placeholder="Nombre de usuario"
+      <TextInput style={[styles.userNameInput, userNameError && styles.errorInput]} placeholder={Strings.t('userName')}
         value={userName} onChangeText={setUserName}/>
         {userNameError && (
-          <Text style={styles.errorMessage}>Nombre de usuario en uso!</Text>
+          <Text style={styles.errorMessage}>{Strings.t('invalidUserName')}</Text>
         )}
 
 
       <TextInput style={[styles.emailInput, emailError && styles.errorInput]}
         value={email} inputMode="email" autoCapitalize="none" 
-        keyboardType="email-address" onChangeText={setEmail} placeholder="Correo Electrónico"/>
+        keyboardType="email-address" onChangeText={setEmail} placeholder={Strings.t('email')}/>
 
         {emailError && (
-          <Text style={styles.errorMessage}>Correo electrónico {usedEmail? "invalido": "en uso"}</Text>
+          <Text style={styles.errorMessage}>{usedEmail? Strings.t('invalidEmail'): Strings.t('usedEmail')}</Text>
         )}
 
       <TextInput style={[styles.passwordInput, passwordError && styles.errorInput]}
@@ -102,12 +102,12 @@ const RegisterScreen = ({navigation}) => {
         secureTextEntry={true} autoCorrect={false}/>
 
         {passwordError && (
-          <Text style={styles.errorMessage}>La contraseña debe tener un mínimo de 6 caracteres</Text>
+          <Text style={styles.errorMessage}>{Strings.t('invalidPassword')}</Text>
         )}
 
 
       <TouchableOpacity style={styles.registerButton} onPress={register}>
-        <Text style={styles.buttonText}>Registrarse</Text>
+        <Text style={styles.buttonText}>{Strings.t('register')}</Text>
       </TouchableOpacity>
       
 
@@ -117,9 +117,9 @@ const RegisterScreen = ({navigation}) => {
           <PoweredSVG style={styles.poweredSectionSVG}/>
         </View>
 
-        <Text style={styles.poweredIATitle}>Potenciado por IA</Text>
+        <Text style={styles.poweredIATitle}>{Strings.t('powered')}</Text>
 
-        <Text style={styles.LogInNav} onPress={() => navigation.navigate('Login')}>Iniciar sesión</Text>
+        <Text style={styles.LogInNav} onPress={() => navigation.navigate('Login')}>{Strings.t('logIn')}</Text>
     </SafeAreaView>
   );
 }

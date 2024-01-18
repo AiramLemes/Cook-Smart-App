@@ -5,6 +5,7 @@ import { Searchbar } from 'react-native-paper';
 import { getAllRecipes } from "../repository/FirebaseRecipes";
 import RecipeItem from "../components/Recipe";
 import Recipe from "../model/Recipe";
+import { Strings } from "../constants/Strings";
 
 const SearchScreen = () => {
   const [search, setSearch] = useState('');
@@ -72,7 +73,7 @@ const SearchScreen = () => {
       <View style={styles.searchBarContainer}>
         <Searchbar
           style={styles.searchbar}
-          placeholder="Search"
+          placeholder={Strings.t('search') + '...'}
           onChangeText={handleSearch}
           value={search}
         />
