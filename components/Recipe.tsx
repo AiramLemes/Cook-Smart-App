@@ -4,15 +4,16 @@ import Colors from "../constants/Colors";
 import { Shadow } from 'react-native-shadow-2';
 import Stars from "./Stars";
 import Recipe from "../model/Recipe";
+import { useNavigation } from "@react-navigation/native";
 
 const RecipeItem = (props: {recipe: Recipe}) => {
   
   const recipe = props.recipe;
-  
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View>
-        <TouchableOpacity style={styles.recipe}>
+        <TouchableOpacity onPress={() => {navigation.navigate('Recipe', recipe)}} style={styles.recipe}>
           <Shadow distance={4} offset={[0, 2]}>
             <Image
               source={{

@@ -7,6 +7,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
+import traducirTexto from "../services/TransaltionService";
 
 // @ts-ignore
 const HomeScreen = ({navigation}) => {
@@ -20,6 +21,8 @@ const HomeScreen = ({navigation}) => {
     })
     
   }
+
+  traducirTexto()
 
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
