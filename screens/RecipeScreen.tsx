@@ -9,6 +9,43 @@ import IngredientItem from '../components/IngredientItem';
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
   const recipe: Recipe = route.params;
+
+  const numberedSteps = recipe.steps.map((step, index) => `${index + 1}. ${step}`);
+  const formattedSteps = numberedSteps.join('\n\n');
+
+  // let ingredients = [
+  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber',
+  //   'onion', 'garlic', 'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus',
+  //   'peas', 'corn', 'strawberry', 'orange', 'lemon', 'lime', 'blueberry', 'raspberry',
+  //   'cherry', 'watermelon', 'melon', 'kiwi', 'pineapple', 'mango', 'avocado', 'olive',
+  //   'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab', 'lobster', 'oyster',
+  //   'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit', 'snail',
+  //   'tofu', 'soymilk', 'quinoa', 'water'
+  // ];
+
+  // const ingredients = [
+  //   'banana', 'cumin', 'coriander', 'turmeric', 'paprika', 'cinnamon', 'ginger',
+  //   'garlicpowder', 'onionpowder', 'blackpepper', 'oregano', 'thyme',
+  //   'rosemary', 'basil', 'parsley', 'cilantro', 'dill', 'cayenne',
+  //   'mustard', 'nutmeg', 'pumpkinspice', 'vanilla', 'saffron',
+  //   'cloves', 'cardamom', 'fennel', 'caraway', 'allspice', 'bayleaf',
+  //   'chilipowder', 'currypowder', 'whitepepper', 'turmeric', 'smokedpaprika',
+  //   'sumac', 'tarragon', 'sage', 'juniper', 'anise', 'marjoram',
+  //   'fenugreek', 'poppyseed', 'sesameseed', 'lavender', 'wasabi', 'sichuanpepper',
+  //   'chervil', 'lovage', 'savory', 'thaispice', 'garammasala', 'celeryseed', 'quinoa', 'yeast',
+  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber', 'onion', 'garlic',
+  //   'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus', 'peas', 'corn', 'strawberry',
+  //   'orange', 'lemon', 'lime', 'blueberry', 'raspberry', 'cherry', 'watermelon', 'melon', 'kiwi',
+  //   'pineapple', 'mango', 'avocado', 'olive', 'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab',
+  //   'lobster', 'oyster', 'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit',
+  //   'snail', 'tofu', 'soymilk', 'salt', 'sugar', 'pepper', 'oil', 'wine', 'vinegar', 'cheese', 'tomato',
+  //   'egg', 'flour', 'yogurt', 'coffee', 'water', 'beans', 'carrot', 'broccoli', 'greenbean', 'eggplant',
+  //   'mushroom', 'pepperoni', 'sausage', 'bacon', 'mayo', 'mustard', 'ketchup', 'pickles', 'soysauce',
+  //   'honey', 'jalapeno', 'salsa', 'guacamole', 'sourcream'
+  // ];
+
+
+
   return (
     <ScrollView style={styles.container}>
 
@@ -78,41 +115,50 @@ const RecipeScreen = ({ navigation, route }) => {
             </View>
           </View>
 
-              PONLO AQUÍ
-
           <FlatList
             data={recipe.ingredients}
             renderItem={({ item }) => (
-              <IngredientItem icon={item.icon} title={item.title} duration={item.duration} />
+              <IngredientItem name={item} size={30}/>
             )}
-            keyExtractor={(item) => item.title}
+            keyExtractor={(item) => item}
           />
+          
+
           {/* <View style={styles.preparationItem}>
             <View style={styles.preparationItemIcon}>
-              <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
+            <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
             <Text style={styles.preparationItemText}>Preparación</Text>
             <Text style={styles.preparationItemDuration}>0 m</Text>
-          </View>
-º
-          <View style={styles.preparationItem}>
+            </View>
+            º
+            <View style={styles.preparationItem}>
             <View style={styles.preparationItemIcon}>
-              <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
+            <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
             <Text style={styles.preparationItemText}>Cocinado</Text>
             <Text style={styles.preparationItemDuration}>0 m</Text>
-          </View>
-
-          <View style={styles.preparationItem}>
+            </View>
+            
+            <View style={styles.preparationItem}>
             <View style={styles.preparationItemIcon}>
-              <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
+            <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
             <Text style={styles.preparationItemText}>Reposo</Text>
             <Text style={styles.preparationItemDuration}>0 m</Text>
           </View> */}
 
         </View>
-        
+
+        <View style={styles.preparation}>
+          <View style={styles.preparationGeneralInfo}>
+            <Text>Pasos</Text>
+          </View>
+
+          <View style={styles.stepsSection}>
+            <Text style={styles.stepsText}>{formattedSteps}</Text>
+          </View>
+        </View>
 
       </View>
     </ScrollView>
@@ -123,7 +169,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    
   },
 
   scrollViewContent: {
@@ -138,10 +183,7 @@ const styles = StyleSheet.create({
     paddingRight: 10, 
     paddingTop: 20,
   },
-  
-  backButton: {
-     
-  },
+
 
   title: {
     textAlign: 'center',
@@ -216,20 +258,28 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 15,
     position: 'absolute',
-    left: '85%',
+    right: 25,
     top: '20%'
   },
 
-  ingredientsText: {
+  stepsSection: {
+    width: '98%',
+    minHeight: 40,
+    backgroundColor: '#FBF8F8',
+    borderColor: 'black',
     borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 8,
-    padding: 10,
-    height: 200,
-    width: '100%',
-    textAlignVertical: 'top', // Alinear el texto en la parte superior
+    borderRadius: 10,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    marginBottom: 25
   },
-  
+
+  stepsText: {
+    padding: 20,
+    textAlign: 'justify'
+  }
+
+
 });
 
 export default RecipeScreen;

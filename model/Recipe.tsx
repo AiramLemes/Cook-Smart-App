@@ -3,7 +3,9 @@ interface Recipe {
     mainImage: string,
     assessment: number,
     id: string,
-    images: []
+    images: string[],
+    ingredients: string[],
+    steps: string[]
   }
   
 export default Recipe;
