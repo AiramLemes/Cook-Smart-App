@@ -87,7 +87,22 @@ const translations = {
       generalError: 'Se ha producido un error, por favor, inténtelo de nuevo',
       invalidPassword: 'La contraseña debe tener un mínimo de 6 caracteres', 
       usedEmail: 'Correo electrónico en uso',
-      invalidUserName: 'Nombre de usuario en uso'
+      invalidUserName: 'Nombre de usuario en uso',
+
+
+    // Recipe
+    translating: 'Traduciendo...',
+    preparation: 'Preparación',
+    cooking: 'Cocinado',
+    rest: 'Reposo',
+      // Difficulty
+      easy: 'Fácil',
+      normal: 'Normal',
+      difficult: 'Difícil',
+    steps: 'Pasos',
+    serving: 'persona',
+    servings: 'personas'
+
 
 
   },
@@ -174,7 +189,22 @@ const translations = {
       generalError: 'An error occurred, please try again',
       invalidPassword: 'Password must be at least 6 characters long',
       usedEmail: 'Email in use',
-      invalidUserName: 'Username in use'
+      invalidUserName: 'Username in use',
+
+
+    // Recipe
+    translating: 'Translating...',
+    preparation: 'Preparation',
+    cooking: 'Cooking',
+    rest: 'Rest',
+      // Difficulty
+      easy: 'Easy',
+      normal: 'Normal',
+      difficult: 'Difficult',
+    steps: 'Steps',
+    serving: 'person',
+    servings: 'people',
+
 
     
   },
@@ -254,7 +284,22 @@ const translations = {
       generalError: "Une erreur s'est produite, veuillez réessayer",
       invalidPassword: "Le mot de passe doit comporter au moins 6 caractères",
       usedEmail: "E-mail déjà utilisé",
-      invalidUserName: "Nom d'utilisateur déjà utilisé"
+      invalidUserName: "Nom d'utilisateur déjà utilisé",
+
+
+    // Recipe
+    translating: 'Traduire...',
+    preparation: 'Préparation',
+    cooking: 'Cuisiné',
+    rest: 'Rest',
+      // Difficulty
+      easy: 'Facile',
+      normal: 'Normal',
+      difficult: 'Difficile',
+    steps: 'Steps',
+    serving: 'personne',
+    servings: 'personnes'
+
   },
 
 
@@ -332,7 +377,22 @@ const translations = {
       generalError: 'Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut',
       invalidPassword: 'Das Passwort muss mindestens 6 Zeichen lang sein',
       usedEmail: 'E-Mail bereits in Verwendung',
-      invalidUserName: 'Benutzername bereits in Verwendung'
+      invalidUserName: 'Benutzername bereits in Verwendung',
+
+
+    // Recipe
+    translating: 'Übersetzen...',
+    preparation: 'Zubereitung',
+    cooking: 'Gekocht',
+    rest: 'Rest',
+      // Difficulty
+      easy: 'Leicht',
+      normal: 'Normal',
+      difficult: 'Schwierig',
+    steps: 'Stufen',
+    serving: 'person',
+    servings: 'personen'
+
   },
 
 
@@ -390,29 +450,44 @@ const translations = {
     cancel: 'Cancelar',
 
     // Messages
-    // Profile
-    updateImage: 'Imagem atualizada com sucesso!',
-    errorUpdatingImage: 'Erro ao atualizar a imagem',
-    updateEmailMsg: 'E-mail atualizado com sucesso',
-    errorUpdatingEmail: 'Ocorreu um erro ao atualizar o e-mail, por favor, tente novamente',
-    errorCheckinEmail: 'Ocorreu um erro ao verificar o e-mail, por favor, tente novamente',
-    invalidEmail: 'E-mail inválido',
-    emptyEmail: 'E-mail vazio!',
-    changeUserNameMsg: 'Nome de usuário atualizado com sucesso',
-    errorChangingUserName: 'Ocorreu um erro ao atualizar o nome de usuário',
-    usedUserName: 'Nome de usuário em uso!',
-    emptyUserName: 'Nome de usuário vazio',
-    recoverPasswordMsg: 'Um e-mail de recuperação de senha foi enviado',
+      // Profile
+      updateImage: 'Imagem atualizada com sucesso!',
+      errorUpdatingImage: 'Erro ao atualizar a imagem',
+      updateEmailMsg: 'E-mail atualizado com sucesso',
+      errorUpdatingEmail: 'Ocorreu um erro ao atualizar o e-mail, por favor, tente novamente',
+      errorCheckinEmail: 'Ocorreu um erro ao verificar o e-mail, por favor, tente novamente',
+      invalidEmail: 'E-mail inválido',
+      emptyEmail: 'E-mail vazio!',
+      changeUserNameMsg: 'Nome de usuário atualizado com sucesso',
+      errorChangingUserName: 'Ocorreu um erro ao atualizar o nome de usuário',
+      usedUserName: 'Nome de usuário em uso!',
+      emptyUserName: 'Nome de usuário vazio',
+      recoverPasswordMsg: 'Um e-mail de recuperação de senha foi enviado',
 
-    // Register && Login
-    createUser: 'Usuário criado com sucesso!',
-    emptyInputs: 'Por favor, reveja todos os campos',
-    logInMessage: 'Sessão iniciada',
-    wrongLogInMessage: 'Ocorreu um erro ao fazer login, verifique o e-mail e a senha',
-    generalError: 'Ocorreu um erro, por favor, tente novamente',
-    invalidPassword: 'A senha deve ter pelo menos 6 caracteres',
-    usedEmail: 'E-mail em uso',
-    invalidUserName: 'Nome de usuário em uso'
+      // Register && Login
+      createUser: 'Usuário criado com sucesso!',
+      emptyInputs: 'Por favor, reveja todos os campos',
+      logInMessage: 'Sessão iniciada',
+      wrongLogInMessage: 'Ocorreu um erro ao fazer login, verifique o e-mail e a senha',
+      generalError: 'Ocorreu um erro, por favor, tente novamente',
+      invalidPassword: 'A senha deve ter pelo menos 6 caracteres',
+      usedEmail: 'E-mail em uso',
+      invalidUserName: 'Nome de usuário em uso',
+
+
+    // Recipe
+    translating: 'Traduzindo...',
+    preparation: 'Preparação',
+    cooking: 'Cozinhado',
+    rest: 'Repouso',
+      // Difficulty
+      easy: 'Fácil',
+      normal: 'Normal',
+      difficult: 'Difícil',
+    steps: 'Steps',
+    serving: 'pessoa',
+    servings: 'pessoas'
+
   },
 
 
@@ -490,7 +565,22 @@ const translations = {
       generalError: 'Si è verificato un errore, riprova',
       invalidPassword: 'La password deve essere lunga almeno 6 caratteri',
       usedEmail: 'E-mail già in uso',
-      invalidUserName: 'Nome utente già in uso'
+      invalidUserName: 'Nome utente già in uso',
+
+
+    // Recipe
+    translating: 'Tradurre...',
+    preparation: 'Preparazione',
+    cooking: 'Cotto',
+    rest: 'Riposo',
+      // Difficulty
+      easy: 'Facile',
+      normal: 'Normale',
+      difficult: 'Difficile',
+    steps: 'Passi',
+    serving: 'persona',
+    servings: 'persone'
+
   }
 
 
@@ -531,5 +621,4 @@ async function changeLanguage(language: string) {
 // Cargar la preferencia de idioma al inicio de la aplicación
 loadLanguagePreference();
 
-console.log(Strings.t('password'))
 export { Strings, changeLanguage }

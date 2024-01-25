@@ -1,17 +1,49 @@
-import React from 'react';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, VirtualizedList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
 import Recipe from '../model/Recipe';
 import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
+import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
+import { Strings } from '../constants/Strings';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
   const recipe: Recipe = route.params;
 
-  const numberedSteps = recipe.steps.map((step, index) => `${index + 1}. ${step}`);
-  const formattedSteps = numberedSteps.join('\n\n');
+  const [renderRecipe, setRenderRecipe] = useState(recipe);
+  const [loading, setLoading] = useState(false);
+  const [translatedIngredientsToEnglish, setTranslatedIngredientsToEnglish] = useState(recipe.ingredients);
+  const [steps, setSteps] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {  
+      if (recipe.lang != Strings.locale) {
+        setLoading(true);
+        try {
+          const translatedRecipe = await translateRecipe(recipe.lang, recipe);
+          setRenderRecipe(translatedRecipe);
+          const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
+          setTranslatedIngredientsToEnglish(translatedIngredients);
+          // console.log('trad: ', translation); 
+          // const recipe1 = translation;
+        } catch (error) {
+          console.error('Error al traducir:', error);
+        }
+        setLoading(false);
+      }
+    
+      else if (recipe.lang != 'en-US') {
+        const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
+        setTranslatedIngredientsToEnglish(translatedIngredients);
+      }
+
+    };
+
+  
+    fetchData(); 
+  }, []); 
+
 
   // let ingredients = [
   //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber',
@@ -46,6 +78,15 @@ const RecipeScreen = ({ navigation, route }) => {
 
 
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+        <Text style={styles.loadingText}>{Strings.t('translating')}</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container}>
 
@@ -54,7 +95,7 @@ const RecipeScreen = ({ navigation, route }) => {
           <Iconify icon="lets-icons:back" size={33} color="black" />
         </TouchableOpacity>
 
-        <Text style={styles.title}>{recipe.title}</Text>
+        <Text style={styles.title}>{renderRecipe.title}</Text>
 
         <TouchableOpacity>
           <Iconify icon="mdi:favourite-border" size={33} color="red" />
@@ -66,7 +107,7 @@ const RecipeScreen = ({ navigation, route }) => {
         <FlatList
           horizontal
           style={styles.imagesList}
-          data={recipe.images}
+          data={renderRecipe.images}
           renderItem={({ item }) => <Image source={{ uri: item }} style={styles.images} />}
           keyExtractor={(item) => item}
         />
@@ -74,9 +115,9 @@ const RecipeScreen = ({ navigation, route }) => {
 
         <View style={styles.preparation}>
           <View style={styles.preparationGeneralInfo}>
-            <Text>Preparación</Text>
+            <Text>{Strings.t('preparation')}</Text>
             <View style={styles.preparationPeopleInfo}>
-              <Dificulty dificulty={2} size={25}/>
+              <Dificulty dificulty={recipe.difficulty} size={25}/>
             </View>
           </View>
 
@@ -84,79 +125,53 @@ const RecipeScreen = ({ navigation, route }) => {
             <View style={styles.preparationItemIcon}>
               <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
-            <Text style={styles.preparationItemText}>Preparación</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
+            <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
+            <Text style={styles.preparationItemDuration}>{recipe.preparation}</Text>
           </View>
 
           <View style={styles.preparationItem}>
             <View style={styles.preparationItemIcon}>
               <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
-            <Text style={styles.preparationItemText}>Cocinado</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
+            <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
+            <Text style={styles.preparationItemDuration}>{recipe.cooking}</Text>
           </View>
 
           <View style={styles.preparationItem}>
             <View style={styles.preparationItemIcon}>
               <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
             </View>
-            <Text style={styles.preparationItemText}>Reposo</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
+            <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
+            <Text style={styles.preparationItemDuration}>{recipe.rest}</Text>
           </View>
 
         </View>
         
         <View style={styles.preparation}>
           <View style={styles.preparationGeneralInfo}>
-            <Text>Ingredientes</Text>
+            <Text>{Strings.t('ingredients')}</Text>
             <View style={styles.preparationPeopleInfo}>
-              <Text style={styles.personText}>4 personas</Text>
+              <Text style={styles.personText}>{ recipe.serving + ' ' + (recipe.serving > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
               <Iconify icon="pepicons-pencil:people" size={30} color="black" />
             </View>
           </View>
 
           <FlatList
-            data={recipe.ingredients}
-            renderItem={({ item }) => (
-              <IngredientItem name={item} size={30}/>
+            data={renderRecipe.ingredients}
+            renderItem={({ item, index }) => (
+              <IngredientItem name={item} size={30} englishVersion={translatedIngredientsToEnglish[index]}/>
             )}
             keyExtractor={(item) => item}
           />
-          
-
-          {/* <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-            <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>Preparación</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
-            </View>
-            º
-            <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-            <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>Cocinado</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
-            </View>
-            
-            <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-            <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>Reposo</Text>
-            <Text style={styles.preparationItemDuration}>0 m</Text>
-          </View> */}
-
         </View>
 
         <View style={styles.preparation}>
           <View style={styles.preparationGeneralInfo}>
-            <Text>Pasos</Text>
+            <Text>{Strings.t('steps')}</Text>
           </View>
 
           <View style={styles.stepsSection}>
-            <Text style={styles.stepsText}>{formattedSteps}</Text>
+            <Text style={styles.stepsText}>{renderRecipe.steps.map((item, index) => `${index + 1}.- ${item}\n\n`).join('')}</Text>
           </View>
         </View>
 
@@ -277,7 +292,19 @@ const styles = StyleSheet.create({
   stepsText: {
     padding: 20,
     textAlign: 'justify'
-  }
+  },
+
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: Colors.primary,
+  },
 
 
 });

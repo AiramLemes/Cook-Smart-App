@@ -1,19 +1,22 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Colors from '../constants/Colors';
 
-const IngredientItem = (props: { name: string, size: number }) => {
-  const { name, size} = props;
+const IngredientItem = (props: { name: string, size: number, englishVersion: string }) => {
+  const { name, size, englishVersion } = props;
   const [ingredientName, amount] = name.split(',');
 
   return (
-    <View style={styles.ingredientContainer}>
-      <View style={styles.ingredientIcon}>
-        {getIngredientIcon(ingredientName, size)}
+    <View>
+
+      <View style={styles.ingredientContainer}>
+        <View style={styles.ingredientIcon}>
+          {getIngredientIcon(englishVersion, size)}
+        </View>
+        <Text style={styles.ingredientName}>{ingredientName}</Text>
+        <Text style={styles.ingredientAmount}>{amount}</Text>
       </View>
-      <Text style={styles.ingredientName}>{ingredientName}</Text>
-      <Text style={styles.ingredientAmount}>{amount}</Text>
+
     </View>
   );
 };
@@ -31,230 +34,206 @@ const spicesAnOthers = [
 ];
 
 const cheeseTypes = [
-  'cheese',
-  'cheddar',
-  'mozzarella',
-  'parmesan',
-  'gouda',
-  'brie',
-  'roquefort',
-  'feta',
-  'camembert',
-  'gorgonzola',
-  'manchego',
-  'ricotta',
-  'provolone',
-  'swiss',
-  'blue cheese',
-  'cream cheese',
-  'havarti',
-  'colby jack',
-  'asiago',
-  'fontina',
-  'pepper jack',
-  'goat cheese',
-  'smoked cheddar',
-  'goat cheese',
-  'sheep cheese',
-  'blue cheese',
-  'fresh cheese',
-  'aged cheese',
-  'semi-cured cheese',
-  'aged cheese'
+  'cheese', 'cheddar', 'mozzarella', 'parmesan', 'gouda','brie','roquefort','feta','camembert',
+  'gorgonzola','manchego','ricotta','provolone','swiss','blue cheese','cream cheese','havarti',
+  'colby jack','asiago','fontina','pepper jack','goat cheese','smoked cheddar','goat cheese',
+  'sheep cheese','blue cheese','fresh cheese','aged cheese','semi-cured cheese','aged cheese'
 ];
 
 
 const getIngredientIcon = (ingredientName: string, size: number) => {
+  const lowerCaseIngredient = ingredientName.toLowerCase();
+  // console.log(lowerCaseIngredient)
 
-  if (spicesAnOthers.includes(ingredientName.toLowerCase())) {
+  if (spicesAnOthers.some(spice => lowerCaseIngredient.includes(spice))) {
     return <Iconify icon="icon-park-outline:hold-seeds" style={styles.icon} size={size} color="black" />;
   }
 
-  if (cheeseTypes.includes(ingredientName.toLowerCase())) {
+  if (cheeseTypes.some(cheese => lowerCaseIngredient.includes(cheese))) {
     return <Iconify icon="noto:cheese-wedge" style={styles.icon} size={size} color="black" />;
   }
+
   // Mapea el nombre del ingrediente a un componente específico
-  switch (ingredientName.toLowerCase()) {
-    case 'milk':
-      return <Iconify icon="lucide:milk" style={styles.icon} size={size} color="white" />;
-    case 'chicken':
-      return <Iconify icon="mdi:chicken-leg-outline" style={styles.icon} size={size} color="black" />;
-    case 'beef': 
-      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
-    case 'pork': //
-      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
-    case 'rice':
-      return <Iconify icon="noto:cooked-rice" style={styles.icon} size={size} color="black" />;
-    case 'pasta': //
-      return <Iconify icon="mdi:pasta" style={styles.icon} size={size} color="#EB781F" />;
-    case 'lettuce':
-      return <Iconify icon="noto:leafy-green" style={styles.icon} size={size} color="black" />;
-    case 'cucumber':
-      return <Iconify icon="noto:cucumber" style={styles.icon} size={size} color="black" />;
-    case 'onion':
-      return <Iconify icon="noto:onion" style={styles.icon} size={size} color="black" />;
-    case 'garlic':
-      return <Iconify icon="noto:garlic" style={styles.icon} size={size} color="black" />;
-    case 'potato':
-      return <Iconify icon="noto:potato" style={styles.icon} size={size} color="black" />;
-    case 'sweetpotato':
-      return <Iconify icon="noto:roasted-sweet-potato" style={styles.icon} size={size} color="black" />;
-    case 'spinach': //
-      return <Iconify icon="twemoji:leafy-green" style={styles.icon} size={size} color="black" />;
-    case 'cauliflower': // NA
-      return <Iconify icon="mdi:flower-poppy" style={styles.icon} size={size} color="white" />;
-    case 'asparagus':
-      return <Iconify icon="game-icons:asparagus" style={styles.icon} size={size} color="green" />;
-    case 'peas':
-      return <Iconify icon="game-icons:peas" style={styles.icon} size={size} color="green" />;
-    case 'corn':
-      return <Iconify icon="noto:ear-of-corn" style={styles.icon} size={size} color="black" />;
-    case 'strawberry':
-      return <Iconify icon="noto:strawberry" style={styles.icon} size={size} color="black" />;
-    case 'orange':
-      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="orange" />;
-    case 'lemon':
-      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="yellow" />;
-    case 'lime':
-      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="green" />;
-    case 'blueberry':
-      return <Iconify icon="noto:blueberries" style={styles.icon} size={size} color="black" />;
-    case 'raspberry':
-      return <Iconify icon="logos:raspberry-pi" style={styles.icon} size={size} color="black" />;
-    case 'cherry':
-      return <Iconify icon="lucide:cherry" style={styles.icon} size={size} color="red" />;
-    case 'watermelon':
-      return <Iconify icon="noto:watermelon" style={styles.icon} size={size} color="black" />;
-    case 'melon':
-      return <Iconify icon="streamline-emojis:melon-1" style={styles.icon} size={size} color="black" />;
-    case 'kiwi':
-      return <Iconify icon="noto:kiwi-fruit" style={styles.icon} size={size} color="black" />;
-    case 'pineapple':
-      return <Iconify icon="emojione:pineapple" style={styles.icon} size={size} color="black" />;
-    case 'mango':
-      return <Iconify icon="noto:mango" style={styles.icon} size={size} color="black" />;
-    case 'avocado':
-      return <Iconify icon="noto:avocado" style={styles.icon} size={size} color="black" />;
-    case 'olive':
-      return <Iconify icon="fluent-emoji:olive" style={styles.icon} size={size} color="black" />;
-    case 'almond':
-      return <Iconify icon="game-icons:almond" style={styles.icon} size={size} color="brown" />;
-    case 'peanut':
-      return <Iconify icon="noto:peanuts" style={styles.icon} size={size} color="black" />;
-    // case 'walnut': // NA
-    //   return <Iconify icon="mdi:walnut" style={styles.icon} size={size} color="black" />;
-    // case 'cashew': // NA
-    //   return <Iconify icon="mdi:cashew" style={styles.icon} size={size} color="black" />;
-    // case 'pistachio': // NA
-    //   return <Iconify icon="mdi:pistachio" style={styles.icon} size={size} color="black" />;
-    case 'salmon':
-      return <Iconify icon="game-icons:salmon" style={styles.icon} size={size} color="#f24e1e" />;
-    case 'tuna': // 
-      return <Iconify icon="ion:fish" style={styles.icon} size={size} color="#7C3E50" />;
-    case 'shrimp':
-      return <Iconify icon="noto-v1:shrimp" style={styles.icon} size={size} color="black" />;
-    case 'crab':
-      return <Iconify icon="noto:crab" style={styles.icon} size={size} color="black" />;
-    case 'lobster':
-      return <Iconify icon="noto:lobster" style={styles.icon} size={size} color="black" />;
-    case 'oyster':
-      return <Iconify icon="twemoji:oyster" style={styles.icon} size={size} color="black" />;
-    case 'clam':
-      return <Iconify icon="cryptocurrency:clam" style={styles.icon} size={size} color="white" />;
-    case 'scallops':
-      return <Iconify icon="game-icons:scallop" style={styles.icon} size={size} color="black" />;
-    case 'octopus':
-      return <Iconify icon="noto:octopus" style={styles.icon} size={size} color="black" />;
-    case 'squid':
-      return <Iconify icon="noto:squid" style={styles.icon} size={size} color="black" />;
-    case 'turkey':
-      return <Iconify icon="noto:turkey" style={styles.icon} size={size} color="black" />;
-    case 'duck':
-      return <Iconify icon="noto:duck" style={styles.icon} size={size} color="black" />;
-    case 'lamb':
-      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
-    case 'rabbit':
-      return <Iconify icon="fluent:animal-rabbit-24-regular" style={styles.icon} size={size} color="white" />;
-    case 'snail':
-      return <Iconify icon="noto:snail" style={styles.icon} size={size} color="black" />;
-    case 'tofu':
-      return <Iconify icon="ion:cube-sharp" style={styles.icon} size={size} color="#E9E3CF" />;
-    case 'soymilk':
-      return <Iconify icon="lucide:milk" style={styles.icon} size={size} color="white" />;
-    case 'salt':
-      return <Iconify icon="noto:salt" style={styles.icon} size={size} color="black" />;
-    case 'sugar':
-      return <Iconify icon="mdi:spoon-sugar" style={styles.icon} size={size} color="black" />;
-    case 'pepper':
-      return <Iconify icon="noto:bell-pepper" style={styles.icon} size={size} color="black" />;
-    case 'oil':
-      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
-    case 'wine':
-      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
-    case 'vinegar':
-      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;   
-    case 'tomato':
+  switch (true) {
+    case lowerCaseIngredient.includes('tomato'):
       return <Iconify icon="noto:tomato" style={styles.icon} size={size} color="black" />;
-    case 'egg':
+    case lowerCaseIngredient.includes('oil'):
+      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('milk'):
+      return <Iconify icon="lucide:milk" style={styles.icon} size={size} color="white" />;
+    case lowerCaseIngredient.includes('chicken'):
+      return <Iconify icon="mdi:chicken-leg-outline" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('beef'):
+      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('pork'):
+      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('rice'):
+      return <Iconify icon="noto:cooked-rice" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('pastas'):
+      return <Iconify icon="mdi:pasta" style={styles.icon} size={size} color="#EB781F" />;
+    case lowerCaseIngredient.includes('lettuce'):
+      return <Iconify icon="noto:leafy-green" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('cucumber'):
+      return <Iconify icon="noto:cucumber" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('onion'):
+      return <Iconify icon="noto:onion" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('garlic'):
+      return <Iconify icon="noto:garlic" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('potato'):
+      return <Iconify icon="noto:potato" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('sweetpotato'):
+      return <Iconify icon="noto:roasted-sweet-potato" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('spinach'):
+      return <Iconify icon="twemoji:leafy-green" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('cauliflower'):
+      return <Iconify icon="mdi:flower-poppy" style={styles.icon} size={size} color="white" />;
+    case lowerCaseIngredient.includes('asparagus'):
+      return <Iconify icon="game-icons:asparagus" style={styles.icon} size={size} color="green" />;
+    case lowerCaseIngredient.includes('peas'):
+      return <Iconify icon="game-icons:peas" style={styles.icon} size={size} color="green" />;
+    case lowerCaseIngredient.includes('corn'):
+      return <Iconify icon="noto:ear-of-corn" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('strawberry'):
+      return <Iconify icon="noto:strawberry" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('oranges'):
+      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="orange" />;
+    case lowerCaseIngredient.includes('lemon'):
+      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="yellow" />;
+    case lowerCaseIngredient.includes('limes'):
+      return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="green" />;
+    case lowerCaseIngredient.includes('blueberry'):
+      return <Iconify icon="noto:blueberries" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('raspberry'):
+      return <Iconify icon="logos:raspberry-pi" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('cherry'):
+      return <Iconify icon="lucide:cherry" style={styles.icon} size={size} color="red" />;
+    case lowerCaseIngredient.includes('watermelon'):
+      return <Iconify icon="noto:watermelon" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('melon'):
+      return <Iconify icon="streamline-emojis:melon-1" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('kiwi'):
+      return <Iconify icon="noto:kiwi-fruit" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('pineapple'):
+      return <Iconify icon="emojione:pineapple" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('mango'):
+      return <Iconify icon="noto:mango" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('avocado'):
+      return <Iconify icon="noto:avocado" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('olive'):
+      return <Iconify icon="fluent-emoji:olive" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('almond'):
+      return <Iconify icon="game-icons:almond" style={styles.icon} size={size} color="brown" />;
+    case lowerCaseIngredient.includes('peanut'):
+      return <Iconify icon="noto:peanuts" style={styles.icon} size={size} color="black" />;
+    // case lowerCaseIngredient.includes('walnut'):
+    //   return <Iconify icon="mdi:walnut" style={styles.icon} size={size} color="black" />;
+    // case lowerCaseIngredient.includes('cashew'):
+    //   return <Iconify icon="mdi:cashew" style={styles.icon} size={size} color="black" />;
+    // case lowerCaseIngredient.includes('pistachio'):
+    //   return <Iconify icon="mdi:pistachio" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('salmon'):
+      return <Iconify icon="game-icons:salmon" style={styles.icon} size={size} color="#f24e1e" />;
+    case lowerCaseIngredient.includes('tuna'):
+      return <Iconify icon="ion:fish" style={styles.icon} size={size} color="#7C3E50" />;
+    case lowerCaseIngredient.includes('shrimp'):
+      return <Iconify icon="noto-v1:shrimp" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('crab'):
+      return <Iconify icon="noto:crab" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('lobster'):
+      return <Iconify icon="noto:lobster" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('oyster'):
+      return <Iconify icon="twemoji:oyster" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('clam'):
+      return <Iconify icon="cryptocurrency:clam" style={styles.icon} size={size} color="white" />;
+    case lowerCaseIngredient.includes('scallops'):
+      return <Iconify icon="game-icons:scallop" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('octopus'):
+      return <Iconify icon="noto:octopus" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('squid'):
+      return <Iconify icon="noto:squid" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('turkey'):
+      return <Iconify icon="noto:turkey" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('duck'):
+      return <Iconify icon="noto:duck" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('lamb'):
+      return <Iconify icon="fluent-emoji-flat:cut-of-meat" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('rabbit'):
+      return <Iconify icon="fluent:animal-rabbit-24-regular" style={styles.icon} size={size} color="white" />;
+    case lowerCaseIngredient.includes('snail'):
+      return <Iconify icon="noto:snail" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('tofu'):
+      return <Iconify icon="ion:cube-sharp" style={styles.icon} size={size} color="#E9E3CF" />;
+    case lowerCaseIngredient.includes('soymilk'):
+      return <Iconify icon="lucide:milk" style={styles.icon} size={size} color="white" />;
+    case lowerCaseIngredient.includes('salt'):
+      return <Iconify icon="noto:salt" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('sugar'):
+      return <Iconify icon="mdi:spoon-sugar" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('pepper'):
+      return <Iconify icon="noto:bell-pepper" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('wine'):
+      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('vinegar'):
+      return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
+    case lowerCaseIngredient.includes('egg'):
       return <Iconify icon="noto:egg" style={styles.icon} size={size} color="black" />;
-    case 'flour':
+    case lowerCaseIngredient.includes('flour'):
       return <Iconify icon="game-icons:flour" style={styles.icon} size={size} color="white" />;
-    case 'yogurt':
+    case lowerCaseIngredient.includes('yogurt'):
       return <Iconify icon="uil:glass" style={styles.icon} size={size} color="black" />;
-    case 'coffee':
+    case lowerCaseIngredient.includes('coffee'):
       return <Iconify icon="game-icons:coffee-beans" style={styles.icon} size={size} color="brown" />;
-    case 'water':
+    case lowerCaseIngredient.includes('water'):
       return <Iconify icon="lets-icons:water" style={styles.icon} size={size} color="blue" />;
-    case 'beans':
+    case lowerCaseIngredient.includes('beans'):
       return <Iconify icon="noto:beans" style={styles.icon} size={size} color="black" />;
-      //////////////////////
-    case 'carrot':
+    case lowerCaseIngredient.includes('carrot'):
       return <Iconify icon="noto:carrot" style={styles.icon} size={size} color="orange" />;
-    case 'broccoli':
+    case lowerCaseIngredient.includes('broccoli'):
       return <Iconify icon="noto:broccoli" style={styles.icon} size={size} color="green" />;
-    case 'greenbean':
+    case lowerCaseIngredient.includes('greenbean'):
       return <Iconify icon="game-icons:jelly-beans" style={styles.icon} size={size} color="green" />;
-    case 'eggplant':
+    case lowerCaseIngredient.includes('eggplant'):
       return <Iconify icon="noto:eggplant" style={styles.icon} size={size} color="purple" />;
-    case 'mushroom':
+    case lowerCaseIngredient.includes('mushroom'):
       return <Iconify icon="noto:brown-mushroom" style={styles.icon} size={size} color="brown" />;
-    case 'pepperoni':
+    case lowerCaseIngredient.includes('pepperoni'):
       return <Iconify icon="mdi:sausage" style={styles.icon} size={size} color="red" />;
-    case 'sausage':
+    case lowerCaseIngredient.includes('sausage'):
       return <Iconify icon="mdi:sausage" style={styles.icon} size={size} color="#9F564A" />;
-    case 'bacon':
+    case lowerCaseIngredient.includes('bacon'):
       return <Iconify icon="noto:bacon" style={styles.icon} size={size} color="brown" />;
-    // case 'ham':
+    // case lowerCaseIngredient.includes('ham'):
     //   return <Iconify icon="noto:meat-on-bone" style={styles.icon} size={size} color="pink" />;
-    case 'mayo':
+    case lowerCaseIngredient.includes('mayo'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="white" />;
-    case 'mustard':
+    case lowerCaseIngredient.includes('mustard'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="yellow" />;
-    case 'ketchup':
+    case lowerCaseIngredient.includes('ketchup'):
       return <Iconify icon="game-icons:ketchup" style={styles.icon} size={size} color="red" />;
-    case 'pickles':
+    case lowerCaseIngredient.includes('pickles'):
       return <Iconify icon="file-icons:pickle" style={styles.icon} size={size} color="green" />;
-    case 'soysauce':
+    case lowerCaseIngredient.includes('soysauce'):
       return <Iconify icon="mdi:soy-sauce" style={styles.icon} size={size} color="black" />;
-    case 'honey':
+    case lowerCaseIngredient.includes('honey'):
       return <Iconify icon="noto:honey-pot" style={styles.icon} size={size} color="black" />;
-    case 'jalapeno':
+    case lowerCaseIngredient.includes('jalapeno'):
       return <Iconify icon="emojione-v1:hot-pepper" style={styles.icon} size={size} color="green" />;
-    case 'salsa':
+    case lowerCaseIngredient.includes('salsa'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="red" />;
-    case 'guacamole':
+    case lowerCaseIngredient.includes('guacamole'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="green" />;
-    case 'sourcream':
+    case lowerCaseIngredient.includes('sourcream'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="white" />;
-    case 'banana':
+    case lowerCaseIngredient.includes('banana'):
       return <Iconify icon="noto:banana" style={styles.icon} size={size} color="white" />;
     // case 'tortilla':
     //   return <Iconify icon="noto:burrito" style={styles.icon} size={size} color="white" />;
-    case 'bread': 
+    case lowerCaseIngredient.includes('bread'): 
       return <Iconify icon="emojione:bread" style={styles.icon} size={size} color="white" />;
-    case 'black olives':
+    case lowerCaseIngredient.includes('black olives'):
       return <Iconify icon="fluent-emoji-high-contrast:olive" style={styles.icon} size={size} color="black" />;
-    case 'tomato soup':
+    case lowerCaseIngredient.includes('tomato soup'):
       return <Iconify icon="openmoji:jar" style={styles.icon} size={size} color="red" />;
     default:
       // En caso de que el nombre del ingrediente no coincida con ninguno conocido
@@ -293,7 +272,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 15,
     position: 'absolute',
-    right: 25,
+    right: 15,
     top: '20%'
   },
 

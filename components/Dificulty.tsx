@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Iconify } from "react-native-iconify";
+import { Strings } from "../constants/Strings";
 
 const Dificulty = (props: {dificulty: number, size: number}) => {
   const dificulty = props.dificulty;
@@ -9,20 +10,20 @@ const Dificulty = (props: {dificulty: number, size: number}) => {
 
     <View style={styles.dificulty}>
       {dificulty == 1 && <>
-        <Text style={styles.dificultyText}>Fácil</Text>
+        <Text style={styles.dificultyText}>{Strings.t('easy')}</Text>
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
         </>
       }
 
       {dificulty == 2 && <>
-        <Text style={styles.dificultyText}>Normal</Text>
+        <Text style={styles.dificultyText}>{Strings.t('normal')}</Text>
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
         </>
       }
 
       {dificulty == 3 && <>
-        <Text style={styles.dificultyText}>Difícil</Text>
+        <Text style={styles.dificultyText}>{Strings.t('difficult')}</Text>
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
         <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
