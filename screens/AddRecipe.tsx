@@ -1,92 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator, TextInput } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
-import Recipe from '../model/Recipe';
-import Dificulty from '../components/Dificulty';
-import IngredientItem from '../components/IngredientItem';
-import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
-import { Strings } from '../constants/Strings';
+import * as ImagePicker from 'expo-image-picker';
+import DificultySelector from '../components/DifficultySelector';
+import Servings from '../components/Servings';
+import IngredientPicker from '../components/IngredientPicker';
 
 //@ts-ignore
-const RecipeScreen = ({ navigation, route }) => {
-  const recipe: Recipe = route.params;
+const AddRecipe = ({ navigation }) => {
 
-  const [renderRecipe, setRenderRecipe] = useState(recipe);
-  const [loading, setLoading] = useState(false);
-  const [translatedIngredientsToEnglish, setTranslatedIngredientsToEnglish] = useState(recipe.ingredients);
-  const [steps, setSteps] = useState('');
-  useEffect(() => {
-    const fetchData = async () => {  
-      if (recipe.lang != Strings.locale) {
-        setLoading(true);
-        try {
-          const translatedRecipe = await translateRecipe(recipe.lang, recipe);
-          setRenderRecipe(translatedRecipe);
-          const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
-          setTranslatedIngredientsToEnglish(translatedIngredients);
-          // console.log('trad: ', translation); 
-          // const recipe1 = translation;
-        } catch (error) {
-          console.error('Error al traducir:', error);
-        }
-        setLoading(false);
-      }
-    
-      else if (recipe.lang != 'en-US') {
-        const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
-        setTranslatedIngredientsToEnglish(translatedIngredients);
-      }
+  const [imagesList, setImagesList] = useState(['']);
 
-    };
+  const addImage = (uri: string) => {
+    setImagesList([...imagesList, uri]);
+  };
 
-  
-    fetchData(); 
-  }, []); 
-
-
-  // let ingredients = [
-  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber',
-  //   'onion', 'garlic', 'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus',
-  //   'peas', 'corn', 'strawberry', 'orange', 'lemon', 'lime', 'blueberry', 'raspberry',
-  //   'cherry', 'watermelon', 'melon', 'kiwi', 'pineapple', 'mango', 'avocado', 'olive',
-  //   'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab', 'lobster', 'oyster',
-  //   'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit', 'snail',
-  //   'tofu', 'soymilk', 'quinoa', 'water'
-  // ];
-
-  // const ingredients = [
-  //   'banana', 'cumin', 'coriander', 'turmeric', 'paprika', 'cinnamon', 'ginger',
-  //   'garlicpowder', 'onionpowder', 'blackpepper', 'oregano', 'thyme',
-  //   'rosemary', 'basil', 'parsley', 'cilantro', 'dill', 'cayenne',
-  //   'mustard', 'nutmeg', 'pumpkinspice', 'vanilla', 'saffron',
-  //   'cloves', 'cardamom', 'fennel', 'caraway', 'allspice', 'bayleaf',
-  //   'chilipowder', 'currypowder', 'whitepepper', 'turmeric', 'smokedpaprika',
-  //   'sumac', 'tarragon', 'sage', 'juniper', 'anise', 'marjoram',
-  //   'fenugreek', 'poppyseed', 'sesameseed', 'lavender', 'wasabi', 'sichuanpepper',
-  //   'chervil', 'lovage', 'savory', 'thaispice', 'garammasala', 'celeryseed', 'quinoa', 'yeast',
-  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber', 'onion', 'garlic',
-  //   'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus', 'peas', 'corn', 'strawberry',
-  //   'orange', 'lemon', 'lime', 'blueberry', 'raspberry', 'cherry', 'watermelon', 'melon', 'kiwi',
-  //   'pineapple', 'mango', 'avocado', 'olive', 'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab',
-  //   'lobster', 'oyster', 'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit',
-  //   'snail', 'tofu', 'soymilk', 'salt', 'sugar', 'pepper', 'oil', 'wine', 'vinegar', 'cheese', 'tomato',
-  //   'egg', 'flour', 'yogurt', 'coffee', 'water', 'beans', 'carrot', 'broccoli', 'greenbean', 'eggplant',
-  //   'mushroom', 'pepperoni', 'sausage', 'bacon', 'mayo', 'mustard', 'ketchup', 'pickles', 'soysauce',
-  //   'honey', 'jalapeno', 'salsa', 'guacamole', 'sourcream'
-  // ];
-
-
-
-  if (loading) {
+  const addImageItem = () => {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-        <Text style={styles.loadingText}>{Strings.t('translating')}</Text>
+      <View style={styles.images}>
+        <TouchableOpacity onPress={pickImage}>
+          <Iconify style={{alignSelf: 'center'}} icon="gala:add" size={45} color="black" />
+        </TouchableOpacity>
       </View>
     );
   }
 
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [9, 16],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const uri: string = result.assets[0].uri;
+      addImage(uri);
+      
+    }
+  };
+ 
   return (
     <ScrollView style={styles.container}>
 
@@ -95,24 +51,36 @@ const RecipeScreen = ({ navigation, route }) => {
           <Iconify icon="lets-icons:back" size={33} color="black" />
         </TouchableOpacity>
 
-        <Text style={styles.title}>{renderRecipe.title}</Text>
+        {/* <Text style={styles.title}>{renderRecipe.title}</Text> */}
 
         <TouchableOpacity>
-          <Iconify icon="mdi:favourite-border" size={33} color="red" />
+          <Iconify icon="mdi:tick-circle-outline" size={33} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
+      <View style={styles.titleContainer}>
+        <TextInput placeholder='TITULO RECETA' style={styles.title}></TextInput>
+        <Iconify icon="iconamoon:edit" size={15} color="black" />
+      </View>
 
-      <View style={styles.scrollViewContent}>
-        <FlatList
-          horizontal
-          style={styles.imagesList}
-          data={renderRecipe.images}
-          renderItem={({ item }) => <Image source={{ uri: item }} style={styles.images} />}
-          keyExtractor={(item) => item}
-        />
+      <FlatList
+        horizontal
+        style={styles.imagesList}
+        data={imagesList} // Utiliza el estado como fuente de datos
+        renderItem={({ item }) =>  item == '' ? addImageItem() : <Image source={{ uri: item }} style={styles.images}/>}
+        keyExtractor={(item) => item.toString()}
+      />
 
+      <DificultySelector size={20}></DificultySelector>
 
+      <Servings/>
+      
+      <IngredientPicker/>
+      
+      {/* <CategoryList></CategoryList> */}
+      {/* <View style={styles.scrollViewContent}>
+
+      <
         <View style={styles.preparation}>
           <View style={styles.preparationGeneralInfo}>
             <Text>{Strings.t('preparation')}</Text>
@@ -175,12 +143,13 @@ const RecipeScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -199,15 +168,22 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
 
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+
 
   title: {
     textAlign: 'center',
     fontSize: 20,
+    
   },
 
   imagesList: {
     paddingTop: 10,
-    margin: 20
+    margin: 20,
+    alignSelf: 'center'
   },
   
 
@@ -215,13 +191,24 @@ const styles = StyleSheet.create({
     // width: '40%',
     width: 150,
     height: 220,
-    // margin: 5, // Espaciado entre imágenes
+    margin: 10, // Espaciado entre imágenes
     borderColor: Colors.primary,
     borderRadius: 20,
-    borderWidth: 1,
-    marginLeft: 15,
-    marginRight: 15
+    borderWidth: 2,
+    flex: 1,
+    justifyContent: 'center'
   },
+
+
+
+
+
+
+
+
+
+
+
 
   preparation: {
     margin: 20,
@@ -246,7 +233,7 @@ const styles = StyleSheet.create({
   preparationItem: {
     width: '98%',
     height: 36,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: '#FBF8F8',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
@@ -280,7 +267,7 @@ const styles = StyleSheet.create({
   stepsSection: {
     width: '98%',
     minHeight: 40,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: '#FBF8F8',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
@@ -309,4 +296,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default RecipeScreen;
+export default AddRecipe;

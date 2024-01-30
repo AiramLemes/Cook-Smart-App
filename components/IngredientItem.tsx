@@ -8,7 +8,6 @@ const IngredientItem = (props: { name: string, size: number, englishVersion: str
 
   return (
     <View>
-
       <View style={styles.ingredientContainer}>
         <View style={styles.ingredientIcon}>
           {getIngredientIcon(englishVersion, size)}
