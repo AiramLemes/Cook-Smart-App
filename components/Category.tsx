@@ -2,22 +2,23 @@ import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react
 import React, { useState } from "react";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
+import { err } from "react-native-svg/lib/typescript/xml";
 
-
-const CategoryList = () => {
+const CategoryList = (props: { onChange: string; error: boolean}) => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  console.log(props.error)
   const data = ['Salads', 'Pasta', 'Meat', 'Fish', 'Vegetarian', 'Desserts', 'Soups', 'Drinks', 'Breakfast'];
 
-  const Category = (props: {category: string}) => {
-    
+  const Category = (props: { category: string, onChange: string; }) => {
     const categoryName = props.category;
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const handleCategoryPress = (categoryName: string) => {
-      setSelectedCategory(categoryName === selectedCategory ? null : categoryName);
+    const handleCategoryPress = () => {
+      const newSelectedCategory = categoryName === selectedCategory ? null : categoryName;
+      setSelectedCategory(newSelectedCategory);
+      props.onChange(newSelectedCategory)
     };
 
     const getImageSource = (categoryName: string) => {
-      
       const categoryImageMapping = {
         'Salads': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fsalad.png?alt=media&token=ad67635f-c83b-4c7e-901a-db6b42876e55',
         'Pasta': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fpasta.png?alt=media&token=eddacece-d52a-4b4a-91bb-a87bd2ce0139',
@@ -26,7 +27,7 @@ const CategoryList = () => {
         'Vegetarian': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fvegetarian.png?alt=media&token=645b02a6-bf2c-4251-b74f-7e37fe4c0e40',
         'Desserts': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fdesserts.png?alt=media&token=062a6537-702b-4e89-9671-8d9bb23c5f66',
         'Soups': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fsoup.png?alt=media&token=37b5b55c-5453-4718-9131-9b632fe6ded9',
-        'Drinks': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fdrinks.png?alt=media&token=adfdd5bf-f19a-455e-a3fc-089ca390d3df', 
+        'Drinks': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fdrinks.png?alt=media&token=adfdd5bf-f19a-455e-a3fc-089ca390d3df',
         'Breakfast': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fbreakfast.png?alt=media&token=41df66ee-3fa3-4a0f-b471-3c349a38eb86'
       };
       //@ts-ignore
@@ -34,7 +35,6 @@ const CategoryList = () => {
     };
 
     const getBackgroundColor = (categoryName: string) => {
-    
       const categoryBackGroundColor = {
         'Salads': '#DEFFC0',
         'Pasta': '#FFE4AE',
@@ -43,9 +43,8 @@ const CategoryList = () => {
         'Vegetarian': '#FFE5D8',
         'Desserts': '#FFD0EC',
         'Soups': '#FFE19B',
-        'Drinks': '#E5FDF1', 
+        'Drinks': '#E5FDF1',
         'Breakfast': '#FFEBE0',
-        // Add more mappings as needed
       };
 
       //@ts-ignore
@@ -60,9 +59,9 @@ const CategoryList = () => {
           borderColor: selectedCategory === categoryName ? Colors.primary : Colors.black,
           borderWidth: selectedCategory === categoryName ? 2 : 1,
         }}
-        onPress={() => handleCategoryPress(categoryName)} 
+        onPress={handleCategoryPress}
       >
-        { selectedCategory === categoryName && (
+        {selectedCategory === categoryName && (
           <View style={styles.selectedIcon}>
             <Iconify icon="charm:tick" size={20} color="black" />
           </View>
@@ -75,11 +74,16 @@ const CategoryList = () => {
 
   return (
     <View>
+      <View style={styles.titleSection}>
+        <Text>Categoría</Text>
+        { props.error &&
+        <Text style={{color: 'red'}}>Seleccione una categoría</Text> }
+      </View>
       <FlatList
         horizontal
         data={data}
         style={styles.flatList}
-        renderItem={({ item }) => <Category category={item} />}
+        renderItem={({ item }) => <Category category={item} onChange={props.onChange}/>}
         keyExtractor={(item) => item}
       />
     </View>
@@ -89,7 +93,6 @@ const CategoryList = () => {
 export default CategoryList;
 
 const styles = StyleSheet.create({
-
   categoryContainer: {
     width: 120,
     height: 140,
@@ -99,6 +102,11 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 5,
     position: 'relative',
+  },
+
+  titleSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   image: {
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
   },
 
   flatList: {
-    width: '95%',
+    marginTop: 20,
     alignSelf: 'center'
   }
 });

@@ -207,7 +207,8 @@ const styles = StyleSheet.create({
 
   imagesList: {
     paddingTop: 10,
-    margin: 20
+    margin: 20,
+    alignSelf: 'center'
   },
   
 

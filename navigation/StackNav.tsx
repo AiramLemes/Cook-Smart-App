@@ -5,7 +5,8 @@ import BottomTab from "./BottomTab";
 import UserProfileScreen from "../screens/Header/UserProfileScreen";
 import ProductScreen from "../screens/ProductScreen";
 import RecipeScreen from "../screens/RecipeScreen";
-import AddRecipe from "../screens/AddRecipe";
+import AddRecipeForm1 from "../screens/AddRecipeForm1";
+import AddRecipeForm2 from "../screens/AddRecipeForm2";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,8 +45,14 @@ const StackNav = ({navigation}) => (
     />
 
     <Stack.Screen
-      name="AddRecipe"
-      component={AddRecipe}
+      name="AddRecipeForm1"
+      component={AddRecipeForm1}
+      options={{ headerShown: false}}
+    />
+
+    <Stack.Screen
+      name="AddRecipeForm2"
+      component={AddRecipeForm2}
       options={{ headerShown: false}}
     />
 

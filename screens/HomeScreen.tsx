@@ -13,7 +13,7 @@ const HomeScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
   const handleGoButtonPress = () => {
-    navigation.navigate('AddRecipe');
+    navigation.navigate('AddRecipeForm1');
   };
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
