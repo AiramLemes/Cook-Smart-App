@@ -83,9 +83,6 @@ const AddRecipeForm2 = ({ navigation, route }) => {
     
     const result =  pattern.test(preparation) && pattern.test(cooking) && pattern.test(resting);
     setPreparationsError(!result);
-    console.log('prep: ', pattern.test(preparation))
-    console.log('cooking: ', pattern.test(cooking))
-    console.log('rest: ', pattern.test(resting))
     return result;
 
   }

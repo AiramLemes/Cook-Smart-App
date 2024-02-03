@@ -5,6 +5,7 @@ import { Iconify } from 'react-native-iconify';
 
 const Servings = (props: any) => {
   const [servingsCount, setServinsCount] = useState(1);
+  props.onChange(1);
 
   const handleServingsCount = (operation: string) => {
     

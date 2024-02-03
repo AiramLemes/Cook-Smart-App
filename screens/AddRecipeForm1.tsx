@@ -9,6 +9,7 @@ import IngredientPicker from '../components/IngredientPicker';
 import Recipe from '../model/Recipe';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
+import { Strings } from '../constants/Strings';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation }) => {
@@ -124,6 +125,7 @@ const AddRecipeForm1 = ({ navigation }) => {
     const titleResult = isTitleValid();
     const ingredientsResult = isIngredientsValid();
     const difficultyResult = isDifficultyValid();
+  
 
     const areFormsValid = imagesResult && titleResult && ingredientsResult && difficultyResult;
     
@@ -141,7 +143,7 @@ const AddRecipeForm1 = ({ navigation }) => {
         images: images,
         ingredients: ingredients,
         steps: [],
-        lang: '',
+        lang: Strings.locale,
         preparation: '',
         cooking: '',
         rest: '',

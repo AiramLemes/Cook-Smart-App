@@ -6,7 +6,7 @@ import { err } from "react-native-svg/lib/typescript/xml";
 
 const CategoryList = (props: { onChange: string; error: boolean}) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  console.log(props.error)
+
   const data = ['Salads', 'Pasta', 'Meat', 'Fish', 'Vegetarian', 'Desserts', 'Soups', 'Drinks', 'Breakfast'];
 
   const Category = (props: { category: string, onChange: string; }) => {
