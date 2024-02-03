@@ -114,7 +114,8 @@ const translateRecipe = async (textLang: string, recipe: Recipe) => {
       cooking: recipe.cooking,
       rest: recipe.rest,
       serving: recipe.serving,
-      difficulty: recipe.difficulty
+      difficulty: recipe.difficulty,
+      category: recipe.category
     };
 
     // console.log('Translated Recipe:', translatedRecipe);

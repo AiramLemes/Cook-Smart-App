@@ -207,7 +207,8 @@ const styles = StyleSheet.create({
 
   imagesList: {
     paddingTop: 10,
-    margin: 20
+    margin: 20,
+    alignSelf: 'center'
   },
   
 
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
   preparationItem: {
     width: '98%',
     height: 36,
-    backgroundColor: '#FBF8F8',
+    backgroundColor: Colors.lightGray,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
   stepsSection: {
     width: '98%',
     minHeight: 40,
-    backgroundColor: '#FBF8F8',
+    backgroundColor: Colors.lightGray,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,

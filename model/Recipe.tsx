@@ -11,7 +11,8 @@ interface Recipe {
   cooking: string,
   rest: string,
   serving: number,
-  difficulty: number
+  difficulty: number,
+  category: string
 }
   
 export default Recipe;

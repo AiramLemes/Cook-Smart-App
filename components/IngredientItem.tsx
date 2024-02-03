@@ -8,7 +8,6 @@ const IngredientItem = (props: { name: string, size: number, englishVersion: str
 
   return (
     <View>
-
       <View style={styles.ingredientContainer}>
         <View style={styles.ingredientIcon}>
           {getIngredientIcon(englishVersion, size)}
@@ -245,7 +244,7 @@ const styles = StyleSheet.create({
   ingredientContainer: {
     width: '98%',
     height: 36,
-    backgroundColor: '#FBF8F8',
+    backgroundColor: Colors.lightGray,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,

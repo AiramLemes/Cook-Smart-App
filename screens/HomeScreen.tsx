@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import BackgroundSVG from "../assets/landing/BackgroundSVG";
 import React from "react";
 import Colors from "../constants/Colors";
@@ -7,29 +7,22 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
-import traducirTexto from "../services/TransaltionService";
 
 // @ts-ignore
 const HomeScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
-
-  function logOut() {
-    signOut(auth).then( result => {
-      ToastUtil.showToast(result!!, Toast.durations.SHORT)
-      console.log("Sesión cerrada")
-    })
-    
-  }
-
-  traducirTexto()
-
+  const handleGoButtonPress = () => {
+    navigation.navigate('AddRecipeForm1');
+  };
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.right,}}>
-        <Text style={{color: Colors.textPrimary}}>HOME</Text>
+        {/* <Text style={{color: Colors.textPrimary}}>HOME</Text> */}
+
+        <TouchableOpacity onPress={handleGoButtonPress}><Text>ADD RECIPE</Text></TouchableOpacity>
       </SafeAreaView>
   );
 }
