@@ -5,14 +5,27 @@ import { Shadow } from 'react-native-shadow-2';
 import Stars from "./Stars";
 import Recipe from "../model/Recipe";
 import { useNavigation } from "@react-navigation/native";
+import { Iconify } from "react-native-iconify";
+import { deleteRecipe } from "../repository/FirebaseRecipes";
 
-const RecipeItem = (props: {recipe: Recipe}) => {
+const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: boolean) => void;}) => {
   
-  const recipe = props.recipe;
-  const navigation = useNavigation()
+  const { recipe, userId } = props;
+  const navigation = useNavigation();
+
+  const handleDelete = () => {
+    deleteRecipe(recipe.id);
+    props.onDelete?.(true);
+  };
+
   return (
     <View style={styles.container}>
-      <View>
+      {userId && userId === recipe.userId && (
+      <TouchableOpacity style={styles.edit} onPress={handleDelete}>
+        <Iconify icon="mdi:delete-outline" size={25} color={Colors.black} />
+      </TouchableOpacity>
+      )}
+      
         <TouchableOpacity onPress={() => {navigation.navigate('Recipe', recipe)}} style={styles.recipe}>
           <Shadow distance={4} offset={[0, 2]}>
             <Image
@@ -27,7 +40,7 @@ const RecipeItem = (props: {recipe: Recipe}) => {
 
           <Stars assessment={recipe.assessment} size={20}/>
         </TouchableOpacity>
-      </View>
+      
     </View>
   );
 }
@@ -40,7 +53,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginBottom: 25
+    marginBottom: 25,
   },
 
   shadow: {
@@ -49,6 +62,7 @@ const styles = StyleSheet.create({
   recipe: {
     flex: 1,
     alignItems: 'center',
+    zIndex: 1
   },
 
   recipeImage: {
@@ -65,5 +79,12 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.25)',
     textShadowOffset: {width: -2, height: 2},
     textShadowRadius: 10
+  },
+  
+  edit: {
+    position: 'absolute',
+    top: 0,
+    right: 20,
+    zIndex: 2
   }
 });

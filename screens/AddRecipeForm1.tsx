@@ -10,6 +10,7 @@ import Recipe from '../model/Recipe';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import { Strings } from '../constants/Strings';
+import { Timestamp } from 'firebase/firestore';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation }) => {
@@ -17,7 +18,7 @@ const AddRecipeForm1 = ({ navigation }) => {
   const [imagesList, setImagesList] = useState(['']);
   const [title, setTitle] = useState<string>('');
   const [difficulty, setDifficulty] = useState<number>();
-  const [servings, setServings] = useState<number>();
+  const [servings, setServings] = useState<number>(1);
   const [ingredients, setIngredients] = useState<[string]>([]);
 
   const [titleError, setTitleError] = useState<boolean>(false);
@@ -147,9 +148,11 @@ const AddRecipeForm1 = ({ navigation }) => {
         preparation: '',
         cooking: '',
         rest: '',
-        serving: servings!!,
+        serving: servings,
         difficulty: difficulty!!,
-        category: ''
+        category: '',
+        userId: '',
+        timestamp: new Timestamp(0, 0)
       }
   
       navigation.navigate('AddRecipeForm2', recipe);
