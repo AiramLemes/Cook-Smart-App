@@ -1,26 +1,50 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text } from "react-native";
 import Colors from "../constants/Colors";
 import { Searchbar } from 'react-native-paper';
-import { getAllRecipes } from "../repository/FirebaseRecipes";
+import { getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
 import RecipeItem from "../components/Recipe";
 import Recipe from "../model/Recipe";
 import { Strings } from "../constants/Strings";
+import { Iconify } from "react-native-iconify";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
-const SearchScreen = () => {
+const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [lastVisible, setLastVisible] = useState<Recipe | null>(null);
   const [searchTimeout, setSearchTimeout] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [previousSearch, setPreviousSearch] = useState<string>('');
+  const [isRecipesIdsNotEmpty, setIsRecipesIdsNotEmpty] = useState<boolean>(false);
+  const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false);
+
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  const userId = props.userId;
+
+  useEffect(() => {
+    if (userId) {
+      isUserRecipesIdsNotEmpty(userId).then((result) => {
+        setIsRecipesIdsNotEmpty(result);
+      });
+    }
+
+    if (isFocused) {
+      fetchRecipes(20, null, ''); 
+      setRecipes([]);
+    }
+    
+    setIsItemDeleted(false);
+  }, [userId, isFocused, isItemDeleted]);
 
   const fetchRecipes = useCallback(async (pageSize: number, lastVisibleRef: Recipe | null, query: string) => {
     try {
       setLoading(true);
-
-      const recipesData = await getAllRecipes(pageSize, lastVisibleRef, query);
-
+      
+      const recipesData = props.userId ? await getRecipesByUserWithSearch(props.userId, pageSize, lastVisibleRef, query) : await getAllRecipes(pageSize, lastVisibleRef, query);
+      
       if (query !== previousSearch) {
         // Si la búsqueda cambió, resetea lastVisible y recetas
         setLastVisible(null);
@@ -71,24 +95,69 @@ const SearchScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.searchBarContainer}>
+      {userId && isRecipesIdsNotEmpty && (
         <Searchbar
+          inputStyle={{alignSelf: 'center'}}
           style={styles.searchbar}
           placeholder={Strings.t('search') + '...'}
           onChangeText={handleSearch}
           value={search}
         />
+        )}
+
+      {!userId && (
+        <Searchbar
+        inputStyle={{alignSelf: 'center'}}
+        style={styles.searchbar}
+        placeholder={Strings.t('search') + '...'}
+        onChangeText={handleSearch}
+        value={search}
+      />
+
+      )}
       </View>
 
-      <FlatList
+
+      {userId && isRecipesIdsNotEmpty && (
+        <FlatList
         style={styles.recipesContainer}
         data={recipes}
-        renderItem={({ item }) => <RecipeItem recipe={item} />}
+        renderItem={({ item }) => <RecipeItem recipe={item} userId={userId} onDelete={(value: boolean) => setIsItemDeleted(value)} />}
         keyExtractor={(item) => item.id}
         numColumns={2}
         contentContainerStyle={styles.recipesContainer}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
-      />
+        />
+      )}
+
+      {!userId && (
+        <FlatList
+        style={styles.recipesContainer}
+        data={recipes}
+        renderItem={({ item }) => <RecipeItem recipe={item} userId={''} />}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        contentContainerStyle={styles.recipesContainer}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.1}
+        />
+      )}
+
+      {userId && !isRecipesIdsNotEmpty && (
+        <View style={styles.noRecipesTextContainer}>
+          <Text style={styles.noRecipesText}>No hay recetas disponibles</Text>
+        </View>
+      )}
+
+      {userId && (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {navigation.navigate('AddRecipeForm1' as never)}}
+        >
+          <Iconify icon="gala:add" size={33} color={Colors.primary} />
+        </TouchableOpacity>
+      )}
 
       {loading && (
         <View style={styles.loadingContainer}>
@@ -98,6 +167,7 @@ const SearchScreen = () => {
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -137,6 +207,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
+
+  noRecipesTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  noRecipesText: {
+    fontSize: 20,
+    color: Colors.black, // Puedes ajustar el color según tus preferencias
+  },
+
+  addButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
+  }
 });
 
 export default SearchScreen;

@@ -8,6 +8,7 @@ import Recipe from '../model/Recipe';
 import { addRecipe } from '../repository/FirebaseRecipes';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
+import { assignRecipeToUser } from '../repository/FirebaseUser';
 
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {
@@ -38,13 +39,18 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       
       console.log(recipe)
       
-  
-      if (!await addRecipe(recipe)) {
+      const recipeId = await addRecipe(recipe);
+      if (!recipeId) {
         ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
       }
       else {
-        navigation.navigate('Home');
-        ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
+        if (await assignRecipeToUser(recipeId)) {
+          navigation.navigate('Home');
+          ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
+        }
+        else {
+          ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
+        }
       }
     }
 

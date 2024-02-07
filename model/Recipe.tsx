@@ -1,4 +1,7 @@
+import { Timestamp } from "firebase/firestore";
+
 interface Recipe {
+  userId: string;
   title: string,
   mainImage: string,
   assessment: number,
@@ -12,7 +15,8 @@ interface Recipe {
   rest: string,
   serving: number,
   difficulty: number,
-  category: string
+  category: string,
+  timestamp: any
 }
   
 export default Recipe;

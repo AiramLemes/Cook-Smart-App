@@ -192,5 +192,57 @@ async function updateUserName(userName: string) {
 }
 
 
+async function assignRecipeToUser(recipeId: string) {
+  try {
+    const uid = auth.currentUser?.uid;
 
-export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, updateUserName };
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      const currentRecipesIds = userDocSnapshot.data()?.recipesIds || [];
+
+      if (!currentRecipesIds.includes(recipeId)) {
+        const updatedRecipesIds = [...currentRecipesIds, recipeId];
+
+        await updateDoc(userDocRef, { recipesIds: updatedRecipesIds });
+
+        return true;
+      }
+      return true;
+    }
+   
+  } catch (error) {
+    console.error('Error assigning the recipe to the user:', error);
+    return false;
+  }
+}
+
+async function deleteUserRecipe(recipeId: string) {
+  try {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      const currentRecipesIds = userDocSnapshot.data()?.recipesIds || [];
+
+      if (currentRecipesIds.includes(recipeId)) {
+        const updatedRecipesIds = currentRecipesIds.filter((id: string) => id !== recipeId);
+        await updateDoc(userDocRef, { recipesIds: updatedRecipesIds });
+
+        return true;
+      }
+      return false;
+    }
+   
+  } catch (error) {
+    console.error('Error deleting the recipe to the user:', error);
+    return false;
+  }
+}
+
+
+
+export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, updateUserName, assignRecipeToUser, deleteUserRecipe };

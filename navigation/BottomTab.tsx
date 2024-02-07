@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/Home/HomeScreen";
 import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -10,6 +10,7 @@ import { Iconify } from "react-native-iconify";
 import ScanScreen from "../screens/ScanScreen";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { Strings } from "../constants/Strings";
+import HomeTopTab from "./HomeTopTab";
 
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +32,7 @@ const BottomTab = () => {
     >
       <Tab.Screen
         name={Strings.t('home')}
-        component={HomeScreen}
+        component={HomeTopTab}
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (

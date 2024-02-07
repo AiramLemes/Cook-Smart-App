@@ -40,7 +40,8 @@
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos."
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-secure-store"
     ]
   }
 }
