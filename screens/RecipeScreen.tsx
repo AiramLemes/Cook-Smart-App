@@ -7,15 +7,19 @@ import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
 import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
 import { Strings } from '../constants/Strings';
+import { auth } from '../firebaseConfig';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
   const recipe: Recipe = route.params;
+  const editable = recipe.userId === auth.currentUser?.uid;
 
   const [renderRecipe, setRenderRecipe] = useState(recipe);
   const [loading, setLoading] = useState(false);
   const [translatedIngredientsToEnglish, setTranslatedIngredientsToEnglish] = useState(recipe.ingredients);
   const [steps, setSteps] = useState('');
+
+
   useEffect(() => {
     const fetchData = async () => {  
       if (recipe.lang != Strings.locale) {
@@ -97,11 +101,19 @@ const RecipeScreen = ({ navigation, route }) => {
 
         <Text style={styles.title}>{renderRecipe.title}</Text>
 
-        <TouchableOpacity>
-          <Iconify icon="mdi:favourite-border" size={33} color="red" />
-        </TouchableOpacity>
-      </View>
+        {!editable && (
+          <TouchableOpacity>
+            <Iconify icon="mdi:favourite-border" size={33} color="red" />
+          </TouchableOpacity>
+        )} 
 
+        {editable && (
+          <TouchableOpacity onPress={() => {navigation.navigate('AddRecipeForm1', recipe)}}>
+            <Iconify icon="iconamoon:edit" size={33} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+      
 
       <View style={styles.scrollViewContent}>
         <FlatList

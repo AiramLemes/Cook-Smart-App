@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
 import CategoryList from '../components/Category';
 import { Strings } from '../constants/Strings';
 import Recipe from '../model/Recipe';
-import { addRecipe } from '../repository/FirebaseRecipes';
+import { addRecipe, updateRecipe } from '../repository/FirebaseRecipes';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import { assignRecipeToUser } from '../repository/FirebaseUser';
@@ -13,7 +13,8 @@ import { assignRecipeToUser } from '../repository/FirebaseUser';
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {
 
-  const recipe: Recipe = route.params;
+  const recipe: Recipe = route.params.recipe;
+  const editable: boolean = route.params.editable;
 
   const [preparation, setPreparation] = useState('');
   const [cooking, setCooking] = useState('');
@@ -21,6 +22,16 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const [steps, setSteps] = useState('');
   const [category, setCategory] = useState('');
 
+  console.log('Servings: ', recipe.servings);
+
+  useEffect(() => {
+    if (editable) {
+      setPreparation(recipe.preparation);
+      setCooking(recipe.cooking);
+      setResting(recipe.rest);
+      setSteps(recipe.steps.join('/n'));
+    }
+  }, []); 
 
   const [categoryError, setCategoryError] = useState(false);
   const [preparationsError, setPreparationsError] = useState(false);
@@ -39,17 +50,26 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       
       console.log(recipe)
       
-      const recipeId = await addRecipe(recipe);
-      if (!recipeId) {
-        ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
-      }
-      else {
-        if (await assignRecipeToUser(recipeId)) {
-          navigation.navigate('Home');
-          ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
+      if (!editable) {
+        const recipeId = await addRecipe(recipe);
+        if (!recipeId) {
+          ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
         }
         else {
-          ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
+          if (await assignRecipeToUser(recipeId)) {
+            navigation.navigate('Home');
+            ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
+          }
+          else {
+            ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
+          }
+        }
+      }
+
+      else {
+        if (await updateRecipe(recipe)) {
+          navigation.navigate('Home');
+          ToastUtil.showToast('Receta actualizada correctamente', Toast.durations.SHORT);
         }
       }
     }
@@ -144,14 +164,19 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         {/* <Text style={styles.title}>{renderRecipe.title}</Text> */}
 
         <TouchableOpacity style={{flexDirection: 'row'}} onPress={createRecipe}>
-          <Text style={styles.text}>Create</Text>
+          <Text style={styles.text}>{editable? 'Update': 'Create'}</Text>
           <Iconify icon="carbon:next-outline" size={33} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
       <View style={{marginTop: 30}}>
       
-        <CategoryList onChange={setCategory} error={categoryError} />
+        {!editable && (
+          <CategoryList onChange={setCategory} error={categoryError} />
+        )}
+        {editable && (
+          <CategoryList initialValue={recipe.category} onChange={setCategory} error={categoryError} />
+        )}
       </View>
 
 

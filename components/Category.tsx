@@ -1,10 +1,21 @@
 import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
-import { err } from "react-native-svg/lib/typescript/xml";
 
-const CategoryList = (props: { onChange: string; error: boolean}) => {
+const CategoryList = (props: { onChange: string; error: boolean, initialValue?: string}) => {
+  
+  const initialValue = props.initialValue;
+  
+  useEffect(() => {
+    if (initialValue) {
+      setSelectedCategory(initialValue);
+      props.onChange(initialValue);
+    } 
+
+  }, []);
+
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const data = ['Salads', 'Pasta', 'Meat', 'Fish', 'Vegetarian', 'Desserts', 'Soups', 'Drinks', 'Breakfast'];

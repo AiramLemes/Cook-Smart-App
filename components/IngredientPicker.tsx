@@ -1,15 +1,24 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
-const IngredientPicker = (props) => {
+const IngredientPicker = (props: {onChange: any; initialValue?: string[]}) => {
 
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState<string>('');
   const [ingredientAmount, setIngredientAmount] = useState<string>('');
+  const initialValue = props.initialValue;
 
+  useEffect(() => {
+
+    if (initialValue) {
+      setIngredients(initialValue);
+      props.onChange(initialValue);
+    }
+
+  }, []);
 
   const addIngredient = () => {
 

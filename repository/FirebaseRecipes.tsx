@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, serverTimestamp, startAfter, updateDoc, where } from "firebase/firestore";
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
 import { deleteObject, getDownloadURL, getMetadata, getStorage, list, ref, uploadBytes } from "firebase/storage";
@@ -136,8 +136,11 @@ async function addRecipe(recipe: Recipe) {
 
     const recipeDocRef = doc(recipesCollection, recipeId);
     const images = await uploadRecipeImages(recipeId, recipe.images);
+
     recipe.images = images;
     recipe.mainImage = recipe.images[0];
+    recipe.timestamp = serverTimestamp();
+
     await updateDoc(recipeDocRef, recipe);
     
     return recipeId;
@@ -147,6 +150,71 @@ async function addRecipe(recipe: Recipe) {
     return false;
   }
 }
+
+
+async function updateRecipe(recipe: Recipe) {
+
+  try {
+    const recipesCollection = collection(firestore, 'recipes');
+    
+    const recipeDocRef = doc(recipesCollection, recipe.id);
+    
+    const existingRecipe = (await getDoc(recipeDocRef)).data() as Recipe;
+
+    const deletedImages = existingRecipe.images.filter(existingImage => !recipe.images.includes(existingImage));
+
+    await deleteRecipeImages(deletedImages);
+
+    let remainingImages = existingRecipe.images.filter(existingImage => !deletedImages.includes(existingImage));
+    // console.log('imagenes restantes -->', remainingImages);
+    const newImages = recipe.images.filter(newImage => !existingRecipe.images.includes(newImage));
+    // console.log('nuevas imagenes -->', newImages);
+    const images = await uploadRecipeImages(recipe.id, newImages);
+    // console.log('imagenes subidas -->', images);
+    remainingImages = [...remainingImages, ...images];
+    // console.log('imagenes subidas concatenadas a las que ya estaban -->', images);
+
+    recipe.images = remainingImages;
+    recipe.mainImage = remainingImages[0];
+
+    await updateDoc(recipeDocRef, recipe);
+    return true;
+
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+  
+}
+
+async function deleteRecipeImages(images: string[]) {
+  try {
+
+    for (const imageURL of images) {
+      const path = getPathStorageFromUrl(imageURL);
+      const imageRef = ref(getStorage(), path);
+
+      // Delete the image in Firebase Storage
+      await deleteObject(imageRef);
+
+      console.log(`Deleted image at path: ${path}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting images:', error);
+    return false;
+  }
+}
+
+// Function to extract path from the image URL
+function getPathStorageFromUrl(imageURL: string) {
+  const regexResult = imageURL.match(/\/o\/(.+)\?alt=media&token=/);
+  return regexResult ? decodeURIComponent(regexResult[1]) : undefined;
+}
+
+
+
 
 async function uploadRecipeImages(recipeId: string, images: string[]) {
   const imagesDownloadURLs = [];
@@ -237,4 +305,4 @@ async function getBestRecipes(maxRecipes: number): Promise<Recipe[]> {
 }
 
 
-export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes };
+export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes, updateRecipe };

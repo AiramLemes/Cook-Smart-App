@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
 
-const Servings = (props: any) => {
+const Servings = (props: {initialValue?: number; onChange: any}) => {
   const [servingsCount, setServinsCount] = useState(1);
-  props.onChange(1);
+  // props.onChange(1);
+
+  const initialValue = props.initialValue;
+
+  useEffect(() => {
+    if (initialValue) {
+      setServinsCount(initialValue);
+      props.onChange(initialValue);
+    }
+  });
 
   const handleServingsCount = (operation: string) => {
     

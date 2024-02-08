@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
@@ -13,23 +13,34 @@ import { Strings } from '../constants/Strings';
 import { Timestamp } from 'firebase/firestore';
 
 //@ts-ignore
-const AddRecipeForm1 = ({ navigation }) => {
+const AddRecipeForm1 = ({ navigation, route }) => {
 
+  const editableRecipe: Recipe = route.params;
+
+  useEffect(() => {
+    if (editableRecipe) {
+      setImagesList(imagesList.concat(editableRecipe.images));
+      setTitle(editableRecipe.title)
+    }
+  }, []);
+
+  
   const [imagesList, setImagesList] = useState(['']);
   const [title, setTitle] = useState<string>('');
   const [difficulty, setDifficulty] = useState<number>();
   const [servings, setServings] = useState<number>(1);
   const [ingredients, setIngredients] = useState<[string]>([]);
-
+  
   const [titleError, setTitleError] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
   const [difficultyError, setDifficultyError] = useState<boolean>(false);
   
-
-
+  
   const addImage = (uri: string) => {
     setImagesList([...imagesList, uri]);
   };
+  
+  
 
   const addImagePicker = () => {
     return (
@@ -139,23 +150,23 @@ const AddRecipeForm1 = ({ navigation }) => {
       const recipe: Recipe = {
         title: title,
         mainImage: '', //images[0],
-        assessment: 0,
-        id: '',
+        assessment: editableRecipe? editableRecipe.assessment: 0,
+        id: editableRecipe? editableRecipe.id: '',
         images: images,
         ingredients: ingredients,
-        steps: [],
+        steps: editableRecipe? editableRecipe.steps: [],
         lang: Strings.locale,
-        preparation: '',
-        cooking: '',
-        rest: '',
-        serving: servings,
+        preparation: editableRecipe? editableRecipe.preparation: '',
+        cooking: editableRecipe? editableRecipe.cooking: '',
+        rest: editableRecipe? editableRecipe.rest: '',
+        servings: servings,
         difficulty: difficulty!!,
-        category: '',
-        userId: '',
-        timestamp: new Timestamp(0, 0)
+        category: editableRecipe? editableRecipe.category: '',
+        userId: editableRecipe? editableRecipe.userId: '',
+        timestamp: editableRecipe? editableRecipe.timestamp: new Timestamp(0, 0)
       }
-  
-      navigation.navigate('AddRecipeForm2', recipe);
+      
+      navigation.navigate('AddRecipeForm2', {recipe: recipe, editable: editableRecipe? true: false});
     }
   }
  
@@ -194,15 +205,35 @@ const AddRecipeForm1 = ({ navigation }) => {
       />
       
       <View style={{marginBottom: 20}}>
-        <DificultySelector size={20} onChange={setDifficulty} error={difficultyError}/>
+
+        {!editableRecipe && (
+          <DificultySelector size={20} onChange={setDifficulty} error={difficultyError}/>
+        )}
+
+        {editableRecipe && (
+          <DificultySelector size={20} initialValue={editableRecipe.difficulty} onChange={setDifficulty} error={difficultyError}/>
+        )}
       </View>
 
       <View style={{marginBottom: 20}}>
-        <Servings onChange={setServings}/>
+
+        {!editableRecipe && (
+          <Servings onChange={setServings}/>
+        )}
+
+        {editableRecipe && (
+          <Servings initialValue={editableRecipe.serving} onChange={setServings}/>
+        )}
       </View>
 
       <View>
-        <IngredientPicker onChange={setIngredients}/>
+        {!editableRecipe && (
+          <IngredientPicker onChange={setIngredients}/>
+        )}
+
+        {editableRecipe && (
+          <IngredientPicker initialValue={editableRecipe.ingredients} onChange={setIngredients}/>
+        )}
       </View>
 
     </ScrollView>

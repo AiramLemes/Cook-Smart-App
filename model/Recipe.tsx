@@ -13,7 +13,7 @@ interface Recipe {
   preparation: string,
   cooking: string,
   rest: string,
-  serving: number,
+  servings: number,
   difficulty: number,
   category: string,
   timestamp: any
