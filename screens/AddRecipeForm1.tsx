@@ -29,7 +29,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
   const [title, setTitle] = useState<string>('');
   const [difficulty, setDifficulty] = useState<number>();
   const [servings, setServings] = useState<number>(1);
-  const [ingredients, setIngredients] = useState<[string]>([]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
   
   const [titleError, setTitleError] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
@@ -150,20 +150,24 @@ const AddRecipeForm1 = ({ navigation, route }) => {
       const recipe: Recipe = {
         title: title,
         mainImage: '', //images[0],
-        assessment: editableRecipe? editableRecipe.assessment: 0,
-        id: editableRecipe? editableRecipe.id: '',
+        assessment: editableRecipe ? editableRecipe.assessment : 0,
+        id: editableRecipe ? editableRecipe.id : '',
         images: images,
         ingredients: ingredients,
-        steps: editableRecipe? editableRecipe.steps: [],
+        steps: editableRecipe ? editableRecipe.steps : [],
         lang: Strings.locale,
-        preparation: editableRecipe? editableRecipe.preparation: '',
-        cooking: editableRecipe? editableRecipe.cooking: '',
-        rest: editableRecipe? editableRecipe.rest: '',
+        preparation: editableRecipe ? editableRecipe.preparation : '',
+        cooking: editableRecipe ? editableRecipe.cooking : '',
+        rest: editableRecipe ? editableRecipe.rest : '',
         servings: servings,
         difficulty: difficulty!!,
-        category: editableRecipe? editableRecipe.category: '',
-        userId: editableRecipe? editableRecipe.userId: '',
-        timestamp: editableRecipe? editableRecipe.timestamp: new Timestamp(0, 0)
+        category: editableRecipe ? editableRecipe.category : '',
+        userId: editableRecipe ? editableRecipe.userId : '',
+        timestamp: editableRecipe ? editableRecipe.timestamp : new Timestamp(0, 0),
+        likes: 0,
+        likedUsersId: [],
+        numberOfRatings: 0,
+        totalRating: 0,
       }
       
       navigation.navigate('AddRecipeForm2', {recipe: recipe, editable: editableRecipe? true: false});
@@ -222,7 +226,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         )}
 
         {editableRecipe && (
-          <Servings initialValue={editableRecipe.serving} onChange={setServings}/>
+          <Servings initialValue={editableRecipe.servings} onChange={setServings}/>
         )}
       </View>
 

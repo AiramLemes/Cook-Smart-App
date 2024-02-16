@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { Iconify } from "react-native-iconify";
-import User from "../../model/User";
-import { checkEmail, checkEmailPattern, checkUserName, getUserData, loadUserData, updateUserName, uploadImageAsync } from "../../repository/FirebaseUser";
+import { User } from "../../model/User";
+import { checkEmail, checkEmailPattern, checkUserName, getUserData, loadUserData, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
 import * as ImagePicker from 'expo-image-picker';
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
@@ -88,7 +88,9 @@ const UserProfileScreen = ({ navigation }) => {
     if (userName) {
       if (await checkUserName(userName)) {
         let message;
-        const result = await updateUserName(userName)
+
+        const updatedUserName = {userName: userName};
+        const result = await updateUser(updatedUserName);
         result ? message = Strings.t('changeUserNameMsg') : message = Strings.t('errorChangingUserName');
           ToastUtil.showToast(message, Toast.durations.SHORT);
         
@@ -96,7 +98,9 @@ const UserProfileScreen = ({ navigation }) => {
           const user: User = {
             userName: userName,
             email: userData!!.email,
-            image: userData!!.image
+            image: userData!!.image,
+            recipesIds: [],
+            assessments: []
           };
           setUserData(user);
           setUserName("");
