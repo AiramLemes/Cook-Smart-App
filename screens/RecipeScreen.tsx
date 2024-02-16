@@ -8,20 +8,28 @@ import IngredientItem from '../components/IngredientItem';
 import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
 import { Strings } from '../constants/Strings';
 import { auth } from '../firebaseConfig';
+import { handleRecipeLike } from '../repository/FirebaseRecipes';
+import { getUserNameById } from '../repository/FirebaseUser';
+import StarsPicker from '../components/StarsPicker';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
   const recipe: Recipe = route.params;
-  const editable = recipe.userId === auth.currentUser?.uid;
+  const userId = auth.currentUser!!.uid;
+  const editable = recipe.userId === userId;
 
   const [renderRecipe, setRenderRecipe] = useState(recipe);
   const [loading, setLoading] = useState(false);
   const [translatedIngredientsToEnglish, setTranslatedIngredientsToEnglish] = useState(recipe.ingredients);
   const [steps, setSteps] = useState('');
 
+  const [liked, setLiked] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string | undefined>();
+
 
   useEffect(() => {
     const fetchData = async () => {  
+      setUserName(await getUserNameById(userId)); 
       if (recipe.lang != Strings.locale) {
         setLoading(true);
         try {
@@ -37,7 +45,7 @@ const RecipeScreen = ({ navigation, route }) => {
         setLoading(false);
       }
     
-      else if (recipe.lang != 'en-US') {
+      else if (recipe.lang != 'en-US') { // ensure ingredients being translated to english
         const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
         setTranslatedIngredientsToEnglish(translatedIngredients);
       }
@@ -46,7 +54,9 @@ const RecipeScreen = ({ navigation, route }) => {
 
   
     fetchData(); 
+    setLiked(recipe.likedUsersId.includes(userId));
   }, []); 
+
 
 
   // let ingredients = [
@@ -91,6 +101,13 @@ const RecipeScreen = ({ navigation, route }) => {
     );
   }
 
+  const handleLike = async () => {
+
+    const likedUsersId = await handleRecipeLike(userId, recipe.id);
+    if (likedUsersId) setLiked(likedUsersId.includes(userId));
+
+  }
+
   return (
     <ScrollView style={styles.container}>
 
@@ -102,8 +119,13 @@ const RecipeScreen = ({ navigation, route }) => {
         <Text style={styles.title}>{renderRecipe.title}</Text>
 
         {!editable && (
-          <TouchableOpacity>
-            <Iconify icon="mdi:favourite-border" size={33} color="red" />
+          <TouchableOpacity onPress={() => handleLike()}>
+            {liked && (
+              <Iconify icon="mdi:favourite" size={33} color="red" />
+            )}
+            {!liked && (
+              <Iconify icon="mdi:favourite-border" size={33} color="red" />
+            )}
           </TouchableOpacity>
         )} 
 
@@ -113,6 +135,8 @@ const RecipeScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         )}
       </View>
+
+      <Text style={styles.userName}>@{userName}</Text>
       
 
       <View style={styles.scrollViewContent}>
@@ -123,6 +147,8 @@ const RecipeScreen = ({ navigation, route }) => {
           renderItem={({ item }) => <Image source={{ uri: item }} style={styles.images} />}
           keyExtractor={(item) => item}
         />
+
+        <StarsPicker recipe={recipe}></StarsPicker>
 
 
         <View style={styles.preparation}>
@@ -163,7 +189,7 @@ const RecipeScreen = ({ navigation, route }) => {
           <View style={styles.preparationGeneralInfo}>
             <Text>{Strings.t('ingredients')}</Text>
             <View style={styles.preparationPeopleInfo}>
-              <Text style={styles.personText}>{ recipe.serving + ' ' + (recipe.serving > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
+              <Text style={styles.personText}>{ recipe.servings + ' ' + (recipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
               <Iconify icon="pepicons-pencil:people" size={30} color="black" />
             </View>
           </View>
@@ -220,6 +246,7 @@ const styles = StyleSheet.create({
   imagesList: {
     paddingTop: 10,
     margin: 20,
+    marginTop: 10,
     alignSelf: 'center'
   },
   
@@ -318,6 +345,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.primary,
   },
+
+  userName: {
+    textAlign: 'center',
+    textDecorationLine: 'underline'
+  }
 
 
 });

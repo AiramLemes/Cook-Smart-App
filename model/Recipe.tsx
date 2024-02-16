@@ -4,7 +4,6 @@ interface Recipe {
   userId: string;
   title: string,
   mainImage: string,
-  assessment: number,
   id: string,
   images: string[],
   ingredients: string[],
@@ -16,7 +15,12 @@ interface Recipe {
   servings: number,
   difficulty: number,
   category: string,
-  timestamp: any
+  timestamp: any,
+  likes: number,
+  likedUsersId: string[],
+  numberOfRatings: number;
+  totalRating: number;
+  assessment: number,
 }
   
 export default Recipe;

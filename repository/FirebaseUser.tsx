@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { auth, firestore } from "../firebaseConfig";
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"; 
 import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres únicos
@@ -57,7 +57,7 @@ async function getUserImage(callback: (imageURL: string) => void) {
 
 let userData: User | null = null;
 
-async function fetchUserData() {
+async function fetchUserData(): Promise<User | null> {
   try {
     const uid = auth.currentUser?.uid;
 
@@ -67,10 +67,16 @@ async function fetchUserData() {
 
       if (userDocSnapshot.exists()) {
         userData = userDocSnapshot.data() as User;
+        return userData;
+      }
+      else {
+        return null;
       }
     } 
+    return null;
   } catch (error) {
     console.error('Error al obtener datos del usuario:', error);
+    return null;
   }
 }
 
@@ -82,6 +88,28 @@ async function loadUserData() {
 // Accedes directamente a los datos del usuario
 function getUserData(): User | null {
   return userData;
+}
+
+async function getCurrentUserData(): Promise<User | null> {
+  try {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data() as User;
+        return userData;
+      } else {
+        return null;
+      }
+    } 
+    return null;
+  } catch (error) {
+    console.error('Error al obtener datos del usuario:', error);
+    return null; // Asegúrate de manejar los errores y devolver null si algo sale mal.
+  }
 }
 
 
@@ -176,14 +204,14 @@ function checkPassword(password: string): boolean {
   return isValid;
 }
 
-async function updateUserName(userName: string) {
+async function updateUser(data: any) {
   try {
     const uid = auth.currentUser?.uid;
 
     if (uid) {
       const userDocRef = doc(firestore, 'users', uid);
-        updateDoc(userDocRef, {userName: userName});
-        return true;
+      updateDoc(userDocRef, data);
+      return true;
     } 
   } catch (error) {
     console.error('Error al obtener datos del usuario:', error);
@@ -243,6 +271,25 @@ async function deleteUserRecipe(recipeId: string) {
   }
 }
 
+async function getUserNameById(userId:string) {
+  
+  try {
+    const usersCollection = collection(firestore, 'users');
+      
+    const userDocRef = doc(usersCollection, userId);
+    
+    const user = (await getDoc(userDocRef)).data() as User;
+  
+    return user.userName;
+
+  } catch (error) {
+    return undefined;
+  }
+
+  
+}
 
 
-export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, updateUserName, assignRecipeToUser, deleteUserRecipe };
+
+export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, 
+  updateUser, assignRecipeToUser, deleteUserRecipe, getUserNameById, getCurrentUserData };

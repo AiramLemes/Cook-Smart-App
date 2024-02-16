@@ -1,8 +1,8 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, serverTimestamp, startAfter, updateDoc, where } from "firebase/firestore";
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
-import { deleteObject, getDownloadURL, getMetadata, getStorage, list, ref, uploadBytes } from "firebase/storage";
-import User from "../model/User";
+import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
+import { User } from "../model/User";
 import { deleteUserRecipe } from "./FirebaseUser";
 
 async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, queryText: string): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
@@ -305,4 +305,61 @@ async function getBestRecipes(maxRecipes: number): Promise<Recipe[]> {
 }
 
 
-export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes, updateRecipe };
+async function handleRecipeLike(userId: string, recipeId: string) {
+
+  try {
+    const recipesCollection = collection(firestore, 'recipes');
+    
+    const recipeDocRef = doc(recipesCollection, recipeId);
+    
+    const recipe = (await getDoc(recipeDocRef)).data() as Recipe;
+
+    let updatedLikedUsersId: string[]
+
+    if (recipe.likedUsersId.includes(userId)) {
+      updatedLikedUsersId = recipe.likedUsersId.filter((id) => id !== userId);
+    }
+    else {
+      updatedLikedUsersId = recipe.likedUsersId.concat(userId);
+    }
+
+
+    const likes = updatedLikedUsersId.length;
+
+    await updateDoc(recipeDocRef, {likedUsersId: updatedLikedUsersId, likes: likes});
+
+    return updatedLikedUsersId;
+    
+  } catch (storageError) {
+    console.error("AAAA: ", storageError);
+  }
+}
+
+
+async function updateRecipeAssessment(recipeId: string, numberOfRatings: number, newTotalRating: number, normalizedAssessment: number) {
+  try {
+    const recipesCollection = collection(firestore, 'recipes');
+    
+    const recipeDocRef = doc(recipesCollection, recipeId);
+        
+    const updatedFields = {
+      numberOfRatings: numberOfRatings,
+      totalRating: newTotalRating,
+      assessment: normalizedAssessment
+    };
+
+    await updateDoc(recipeDocRef, updatedFields);
+
+    return true;    
+  } catch (storageError) {
+    return false;
+  }
+}
+
+
+
+
+
+
+
+export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes, updateRecipe, handleRecipeLike, updateRecipeAssessment };
