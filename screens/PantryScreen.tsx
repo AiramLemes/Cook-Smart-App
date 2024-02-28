@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Text, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { Iconify } from "react-native-iconify";
 import { useIsFocused } from "@react-navigation/native";
@@ -96,18 +96,19 @@ const PantryScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.searchBarContainer}>
-        <Searchbar
-          inputStyle={{ alignSelf: "center" }}
-          style={styles.searchbar}
-          placeholder={Strings.t("search") + "..."}
-          onChangeText={handleSearch}
-          value={search}
-        />
-      </View>
-
+    <View style={styles.container}>
       {pantry != null && pantry.products.length > 0 && (
+        <>
+        <View style={styles.searchBarContainer}>
+          <Searchbar
+            inputStyle={{ alignSelf: "center" }}
+            style={styles.searchbar}
+            placeholder={Strings.t("search") + "..."}
+            onChangeText={handleSearch}
+            value={search}
+          />
+        </View>
+
         <FlatList
         style={styles.pantryContainer}
         data={currentPantry!.products}
@@ -127,7 +128,8 @@ const PantryScreen = () => {
         numColumns={1}
         contentContainerStyle={styles.recipesContainer}
         />
-      )}
+      </>
+    )}
 
      
       <TouchableOpacity style={styles.addButton} onPress={() => {setDialogVisibility(true)}}>
@@ -142,7 +144,13 @@ const PantryScreen = () => {
       <ConfirmationDialog text={"Estás seguro de que quieres eliminar este objeto de la lista ?"} 
         isVisible={confirmDialogVisible} onClose={handleConfirmDialog}/>
 
-    </SafeAreaView>
+    {pantry === null || pantry.products.length <= 0 && (
+      <View style={{width: '100%', height: '100%'}}>
+        <Image style={styles.image} src="https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/pantry%2Fpantry.png?alt=media&token=0ed13f05-5963-4964-8319-c00334038dcd"/>
+        <Text style={styles.text}>La despensa está vacía :(</Text>
+      </View>
+    )}
+      </View>
   );
 };
 
@@ -150,12 +158,12 @@ export default PantryScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.background,
     width: "100%",
+    height: '100%'
   },
 
   searchBarContainer: {
@@ -189,4 +197,16 @@ const styles = StyleSheet.create({
     right: 20,
     elevation: 3,
   },
+
+  image: {
+    width: '100%',
+    height: '70%',
+    zIndex: -1
+  },
+
+  text: {
+    textAlign: 'center',
+    margin: -50,
+    zIndex: -1
+  }
 });
