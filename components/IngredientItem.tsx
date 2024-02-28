@@ -66,7 +66,7 @@ const IngredientItem = (props: {
 
         <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient!!.unit}</Text>
 
-        <TouchableOpacity onPress={() => { removeIngredient(index!); props.onRemove()}}>
+        <TouchableOpacity onPress={() => {props.onRemove()}}>
           <Iconify icon="mdi:delete-outline" style={styles.icon} size={30} color="black" />
         </TouchableOpacity>
       </View>

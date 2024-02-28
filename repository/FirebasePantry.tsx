@@ -49,7 +49,7 @@ async function updatePantryIngredient(amount: number, index: number) {
   
 }
 
-async function removeIngredient(index: number) {
+async function removeIngredientFromPantry(index: number) {
   try {
     const userId = auth.currentUser!!.uid;
     const pantryDocRef = doc(firestore, 'pantries', userId);
@@ -103,6 +103,22 @@ async function addIngredientToPantry(ingredient: Ingredient) {
   
 }
 
+
+
+async function createPantry(userId: string): Promise<boolean> {
+  try {
+    const pantryDoc = doc(collection(firestore, 'pantries'), userId);
+    await setDoc(pantryDoc, {products: []});
+    return true;
+
+  } catch (e) {
+    return false
+  } 
+  
+}
+
+
+
 // async function getBetterProducts(name: string, rate: number): Promise<Array<Product>> {
 //   try {
 //     const productsQuery = query(
@@ -129,4 +145,4 @@ async function addIngredientToPantry(ingredient: Ingredient) {
 //   }
 // }
 
-export { getPantry, updatePantryIngredient, removeIngredient, addIngredientToPantry};
+export { getPantry, updatePantryIngredient, removeIngredientFromPantry, addIngredientToPantry, createPantry};

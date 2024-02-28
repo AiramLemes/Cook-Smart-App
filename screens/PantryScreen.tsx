@@ -8,9 +8,10 @@ import Colors from "../constants/Colors";
 import { Strings } from "../constants/Strings";
 import IngredientItem from "../components/IngredientItem";
 import Pantry from "../model/Pantry";
-import { getPantry } from "../repository/FirebasePantry";
+import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
 import IngredientDialog from "../components/IngredientDialog";
 import Ingredient from "../model/Ingredient";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 const PantryScreen = () => {
   const [search, setSearch] = useState("");
@@ -21,6 +22,8 @@ const PantryScreen = () => {
   const [pantry, setPantry] = useState<Pantry>({ products: [] });
   const [currentPantry, setCurrentPantry] = useState<Pantry>({ products: [] });
   const [diaologVisibility, setDialogVisibility] = useState<boolean>(false);
+  const [confirmDialogVisible, setconfirmDialogVisible] = useState<boolean>(false);
+  const [removeIngredientIndex, setRemoveIngredientIndex] = useState<number | undefined>();
 
   useEffect(() => {
 
@@ -37,10 +40,23 @@ const PantryScreen = () => {
   }, [isFocused]);
 
   const removeIngredient = (index: number) => {
-    let updatedPantry = { ...pantry! };
-    updatedPantry.products.splice(index, 1);
-    setPantry(updatedPantry);
-    setCurrentPantry(updatedPantry); 
+    setconfirmDialogVisible(true);
+    // Set the index to be removed in the state
+    setRemoveIngredientIndex(index);
+  };
+
+  const handleConfirmDialog = (accepted: boolean) => {
+    setconfirmDialogVisible(false);
+    if (accepted && removeIngredientIndex) {
+      removeIngredientFromPantry(removeIngredientIndex);
+      let updatedPantry = { ...pantry! };
+      updatedPantry.products.splice(removeIngredientIndex, 1);
+      setPantry(updatedPantry);
+      setCurrentPantry(updatedPantry);
+      setRemoveIngredientIndex(undefined);
+    } else {
+      setRemoveIngredientIndex(undefined);
+    }
   };
 
   const handleSearch = (text: string) => {
@@ -102,6 +118,7 @@ const PantryScreen = () => {
             pantryIngredient={true}
             index={index}
             onRemove={() => {
+              setconfirmDialogVisible(true);
               removeIngredient(index);
             }}
           />
@@ -121,6 +138,9 @@ const PantryScreen = () => {
 
       <IngredientDialog onClose={() => {setDialogVisibility(false)}} isVisible={diaologVisibility}
         onAddProduct={(ingredient: Ingredient) => {addIngredient(ingredient)}}/>
+
+      <ConfirmationDialog text={"Estás seguro de que quieres eliminar este objeto de la lista ?"} 
+        isVisible={confirmDialogVisible} onClose={handleConfirmDialog}/>
 
     </SafeAreaView>
   );
