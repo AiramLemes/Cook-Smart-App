@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { Iconify } from "react-native-iconify";
 import { Dialog, TextInput } from "react-native-paper";
 import Colors from "../constants/Colors";
+import Ingredient from "../model/Ingredient";
+import { translateIngredientToEnglish, translateText } from "../services/TransaltionService";
+import { Strings } from "../constants/Strings";
+import { addIngredientToPantry } from "../repository/FirebasePantry";
+import { useIsFocused } from "@react-navigation/native";
+import ToastUtil from "../utils/ToastUtil";
+import Toast from "react-native-root-toast";
 
-const IngredientDialog = (props: {onClose: any; isVisible: boolean}) => {
+const IngredientDialog = (props: {
+  [x: string]: any;onClose: any; isVisible: boolean
+}) => {
 
   const [name, setName] = useState<string>('');  
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number>(0);
   const [unit, setUnit] = useState<string>('');
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setName('');
+    setAmount(0);
+    setUnit('');
+  }, [isFocused]);
 
   const [nameError, setNameError] = useState<boolean>(false);  
   const [amountError, setAmountError] = useState<boolean>(false);
@@ -19,36 +36,66 @@ const IngredientDialog = (props: {onClose: any; isVisible: boolean}) => {
   }
 
   const checkAllFields = () => {
-    let result = false;
+    let result = true;
+
+    console.log('name: ', isEmpty(name))
+    console.log('unit: ', isEmpty(unit))
 
     if (isEmpty(name)) {
-      result = result && true; 
+      result = result && false; 
       setNameError(true);
     }
     else {
+      result = result && true;
       setNameError(false);
     }
 
 
     if (amount === undefined || amount <= 0 ) {
-      result = result && true;
+      result = result && false;
       setAmountError(true);
     }
     else {
+      result = result && true;
       setAmountError(false);
     }
 
 
     if (isEmpty(unit)) {
-      result = result && true; 
+      result = result && false; 
       setUnitError(true);
     }
     else {
+      result = result && true;
       setUnitError(false);
     }
 
 
     return result;
+  };
+
+
+  const addIngredient = async () => {
+    
+    if (checkAllFields()) {
+      
+      const ingredientEnglishVersion = await translateIngredientToEnglish(Strings.locale, name);
+      
+      const newIngredient: Ingredient = {
+        name: name,
+        unit: unit,
+        amount: amount!,
+        englishVersion: ingredientEnglishVersion
+      }
+      if (await addIngredientToPantry(newIngredient)) {
+        props.onAddProduct(newIngredient);
+        props.onClose();
+      }
+      else {
+        ToastUtil.showToast('El producto ya se encuentra en la despensa', Toast.durations.SHORT);
+      }
+    }
+
   };
 
 
@@ -58,7 +105,7 @@ const IngredientDialog = (props: {onClose: any; isVisible: boolean}) => {
         <Text>Nombre del ingrediente:</Text>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.input }
+            style={styles.input}
             onChangeText={setName}
             placeholder="Ingresa el nombre"
             placeholderTextColor={nameError? Colors.error : Colors.black}
@@ -103,7 +150,7 @@ const IngredientDialog = (props: {onClose: any; isVisible: boolean}) => {
         <View>
           <Button
             title="Aceptar"
-            onPress={() => {checkAllFields()}}
+            onPress={() => {addIngredient()}}
             color={Colors.primary}
           />
         </View>
@@ -153,3 +200,4 @@ const styles = StyleSheet.create({
 });
 
 export default IngredientDialog;
+
