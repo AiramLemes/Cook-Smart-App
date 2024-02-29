@@ -46,8 +46,7 @@ const PantryScreen = () => {
   };
 
   const handleConfirmDialog = (accepted: boolean) => {
-    setconfirmDialogVisible(false);
-    if (accepted && removeIngredientIndex) {
+    if (accepted && removeIngredientIndex !== undefined) {
       removeIngredientFromPantry(removeIngredientIndex);
       let updatedPantry = { ...pantry! };
       updatedPantry.products.splice(removeIngredientIndex, 1);
@@ -57,6 +56,8 @@ const PantryScreen = () => {
     } else {
       setRemoveIngredientIndex(undefined);
     }
+
+    setconfirmDialogVisible(false);
   };
 
   const handleSearch = (text: string) => {

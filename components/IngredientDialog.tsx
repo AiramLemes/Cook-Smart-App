@@ -11,21 +11,11 @@ import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 
-const IngredientDialog = (props: {
-  [x: string]: any;onClose: any; isVisible: boolean
-}) => {
+const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boolean }) => {
 
   const [name, setName] = useState<string>('');  
   const [amount, setAmount] = useState<number>(0);
   const [unit, setUnit] = useState<string>('');
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    setName('');
-    setAmount(0);
-    setUnit('');
-  }, [isFocused]);
 
   const [nameError, setNameError] = useState<boolean>(false);  
   const [amountError, setAmountError] = useState<boolean>(false);
@@ -74,6 +64,12 @@ const IngredientDialog = (props: {
     return result;
   };
 
+  const clearForm = () => {
+    setName('');
+    setAmount(0);
+    setUnit('');
+  };
+
 
   const addIngredient = async () => {
     
@@ -90,12 +86,19 @@ const IngredientDialog = (props: {
       if (await addIngredientToPantry(newIngredient)) {
         props.onAddProduct(newIngredient);
         props.onClose();
+        clearForm();
       }
       else {
+        clearForm();
         ToastUtil.showToast('El producto ya se encuentra en la despensa', Toast.durations.SHORT);
       }
     }
 
+  };
+
+  const handleClose = () => {
+    clearForm();
+    props.onClose();
   };
 
 
@@ -158,7 +161,7 @@ const IngredientDialog = (props: {
         <View>
           <Button
             title="Cancelar"
-            onPress={() => {props.onClose()}}
+            onPress={handleClose}
             color={Colors.primary}
           />
         </View>
