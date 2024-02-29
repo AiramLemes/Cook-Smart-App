@@ -28,9 +28,6 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   const checkAllFields = () => {
     let result = true;
 
-    console.log('name: ', isEmpty(name))
-    console.log('unit: ', isEmpty(unit))
-
     if (isEmpty(name)) {
       result = result && false; 
       setNameError(true);
