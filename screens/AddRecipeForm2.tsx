@@ -22,7 +22,6 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const [steps, setSteps] = useState('');
   const [category, setCategory] = useState('');
 
-  console.log('Servings: ', recipe.servings);
 
   useEffect(() => {
     if (editable) {
@@ -31,7 +30,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       setResting(recipe.rest);
       setSteps(recipe.steps.join('/n'));
     }
-  }, []); 
+  }, []);
 
   const [categoryError, setCategoryError] = useState(false);
   const [preparationsError, setPreparationsError] = useState(false);
@@ -46,10 +45,10 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       recipe.rest = resting;
       recipe.preparation = preparation;
       recipe.category = category;
-      
-      
+
+
       console.log(recipe)
-      
+
       if (!editable) {
         const recipeId = await addRecipe(recipe);
         if (!recipeId) {
@@ -57,7 +56,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         }
         else {
           if (await assignRecipeToUser(recipeId)) {
-            navigation.navigate('Home');
+            navigation.navigate('OwnRecipes');
             ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
           }
           else {
@@ -98,15 +97,15 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       setStepsError(true);
       return false;
     }
-      
+
     setStepsError(false);
     return true;
   }
 
   const arePreparationItemsValid = () => {
 
-    const pattern = /^\d*\s?[mhs]$/;  
-    
+    const pattern = /^\d*\s?[mhs]$/;
+
     const result =  pattern.test(preparation) && pattern.test(cooking) && pattern.test(resting);
     setPreparationsError(!result);
     return result;
@@ -126,33 +125,33 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const formatSteps = (text: string) => {
     const lines = text.split('\n');
     console.log(lines);
-  
+
     // const formattedLines = lines.map((line, index) => {
     //   const expectedPrefix = `${index + 1}.-`;
-  
+
     //   console.log(`empieza con ${expectedPrefix} ?`, line.startsWith(expectedPrefix));
-  
+
     //   // Verificar si la línea ya tiene el formato esperado
     //   if (line.startsWith(expectedPrefix)) {
     //     return line;
     //   }
-  
+
     //   // Verificar si se eliminaron caracteres y la línea ahora tiene el formato esperado
     //   const trimmedLine = line.trim();
     //   if (trimmedLine.startsWith(expectedPrefix)) {
     //     return trimmedLine;
     //   }
-  
+
     //   // Agregar el formato si no cumple con ninguna de las condiciones anteriores
     //   return `${expectedPrefix} ${line}`;
     // });
-  
+
     // console.log('modificado: ', formattedLines.join('\n'));
-  
+
     // setSteps(formattedLines.join('\n'));
     return lines;
-  }; 
-  
+  };
+
   return (
     <ScrollView style={styles.container}>
 
@@ -170,7 +169,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       </View>
 
       <View style={{marginTop: 30}}>
-      
+
         {!editable && (
           <CategoryList onChange={setCategory} error={categoryError} />
         )}
@@ -181,15 +180,15 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 
 
       <View style={styles.section}>
-          
+
         <Text style={styles.sectionText}>{Strings.t('preparation')}</Text>
-      
+
         <View style={styles.preparationItem}>
           <View style={styles.preparationItemIcon}>
             <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && preparation === '' ? 'red': 'black'} 
+          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && preparation === '' ? 'red': 'black'}
             value={preparation} onChangeText={setPreparation}  style={styles.preparationItemDuration}/>
         </View>
 
@@ -198,7 +197,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
             <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && cooking === '' ? 'red': 'black'} 
+          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && cooking === '' ? 'red': 'black'}
             value={cooking} onChangeText={setCooking}  style={styles.preparationItemDuration}/>
         </View>
 
@@ -207,12 +206,12 @@ const AddRecipeForm2 = ({ navigation, route }) => {
             <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && resting === '' ? 'red': 'black'} 
+          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && resting === '' ? 'red': 'black'}
             value={resting} onChangeText={setResting}  style={styles.preparationItemDuration}/>
         </View>
 
       </View>
-  {/* 
+  {/*
       <View style={styles.section}>
         <Text style={styles.sectionText}>{Strings.t('')}</Text>
         <TextInput style={styles.stepsSection}/>
@@ -220,7 +219,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 
     <View style={styles.section}>
       <Text style={styles.sectionText}>{Strings.t('steps')}</Text>
-            
+
       <TextInput
         multiline={true}
         style={styles.stepsSection}
@@ -237,7 +236,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  
+
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -264,14 +263,14 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 20,
-    
+
   },
 
   imagesList: {
     paddingTop: 10,
     alignSelf: 'center'
   },
-  
+
 
   images: {
     // width: '40%',

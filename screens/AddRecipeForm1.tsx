@@ -11,6 +11,8 @@ import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import { Strings } from '../constants/Strings';
 import { Timestamp } from 'firebase/firestore';
+import Ingredient from '../model/Ingredient';
+import { translateIngredientToEnglish, translateIngredientsToEnglish, translateText } from '../services/TransaltionService';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation, route }) => {
@@ -146,6 +148,22 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 
       const images = [...imagesList];
       images.splice(0, 1)
+      
+      const ingredientsList: Ingredient[] = [];
+
+      ingredients.forEach(async item => {
+        const name = item.split(',')[0];
+        const amount = item.split(',')[1];
+        const translatedName = await translateText(Strings.locale, name);
+        
+        ingredientsList.push({
+          name: name,
+          unit: '',
+          amount: amount,
+          englishVersion: translatedName
+        });
+
+      });
 
       const recipe: Recipe = {
         title: title,
@@ -153,7 +171,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         assessment: editableRecipe ? editableRecipe.assessment : 0,
         id: editableRecipe ? editableRecipe.id : '',
         images: images,
-        ingredients: ingredients,
+        ingredients: ingredientsList,
         steps: editableRecipe ? editableRecipe.steps : [],
         lang: Strings.locale,
         preparation: editableRecipe ? editableRecipe.preparation : '',
@@ -169,7 +187,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         numberOfRatings: 0,
         totalRating: 0,
       }
-      
+      // console.log('Ingredientes: ', ingredientsList)
       navigation.navigate('AddRecipeForm2', {recipe: recipe, editable: editableRecipe? true: false});
     }
   }

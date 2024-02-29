@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import Ingredient from "./Ingredient";
 
 interface Recipe {
   userId: string;
@@ -6,7 +7,7 @@ interface Recipe {
   mainImage: string,
   id: string,
   images: string[],
-  ingredients: string[],
+  ingredients: Ingredient[],
   steps: string[],
   lang: string,
   preparation: string,

@@ -2,9 +2,10 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from "r
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import { useEffect, useState } from "react";
+import Ingredient from "../model/Ingredient";
 
 
-const IngredientPicker = (props: {onChange: any; initialValue?: string[]}) => {
+const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) => {
 
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState<string>('');
@@ -14,7 +15,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: string[]}) => {
   useEffect(() => {
 
     if (initialValue) {
-      setIngredients(initialValue);
+      setIngredients(initialValue as never);
       props.onChange(initialValue);
     }
 
@@ -24,7 +25,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: string[]}) => {
 
     if (ingredientName && ingredientAmount) {
       const updatedIngredients = [...ingredients, ingredientName + ',' + ingredientAmount];
-      setIngredients(updatedIngredients);
+      setIngredients(updatedIngredients as never);
       setIngredientName('');
       setIngredientAmount('');
       // console.log('picker: ', updatedIngredients)
@@ -79,7 +80,6 @@ const IngredientPicker = (props: {onChange: any; initialValue?: string[]}) => {
           <TextInput inputMode="email" placeholder="Ingredient"  value={ingredientName} style={styles.ingredientName} onChangeText={setIngredientName}/>
           <TextInput placeholder="Amount" value={ingredientAmount} style={styles.ingredientAmount} onChangeText={setIngredientAmount}/>
         </View>
-  
       </View>
 
 

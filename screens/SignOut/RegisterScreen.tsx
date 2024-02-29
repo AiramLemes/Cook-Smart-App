@@ -11,9 +11,10 @@ import { collection, doc, getDocs, query, setDoc, where } from "firebase/firesto
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { User } from "../../model/User";
+import User from "../../model/User";
 import { checkEmailPattern, checkPassword, checkUserName } from "../../repository/FirebaseUser";
 import { Strings } from "../../constants/Strings";
+import { createPantry } from "../../repository/FirebasePantry";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
@@ -50,13 +51,15 @@ const RegisterScreen = ({navigation}) => {
             email: email,
             image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
             recipesIds: [],
-            assessments: []
+            assessments: [],
           };
 
           const usersDoc = doc(collection(firestore, 'users'), userId);
           await setDoc(usersDoc, newUser).then(() => {
             ToastUtil.showToast(Strings.t('createUser'), Toast.durations.SHORT);
           })
+
+          createPantry(userId);
         } catch(e) {
           ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT)
         }

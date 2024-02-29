@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Strings } from "../constants/Strings";
 import Recipe from "../model/Recipe";
+import Ingredient from "../model/Ingredient";
+import { auth } from "../firebaseConfig";
 
 const deepLAuthKey = '4baaa94c-9ff2-876b-19d2-25aaee96c25f:fx';
 
@@ -87,35 +89,28 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
 
 // Ejemplo de uso
 const translateRecipe = async (textLang: string, recipe: Recipe) => {
-
-  // const textToTranslate = 'Hi!';
-  // const targetLanguage = 'IT';
-  
-  // try {
-  //   translateText(textToTranslate, targetLanguage);
-  // } catch (error) {
-  //   console.error('Translation error:', error);
-  // }
-  // // console.log('Is already in the current language?', textLang === currentLanguage);
-
-  // await translateText( 'Hola', 'EN-BR');
-
   try {
+    const translatedIngredients: Ingredient[] = await Promise.all(
+      recipe.ingredients.map(async (item) => {
+        const translatedName = await translateText(textLang, item.name);
+        const translatedAmount =
+          typeof item.amount === 'string'
+            ? await translateText(textLang, item.amount)
+            : item.amount;
+
+        return {
+          ...item,
+          name: translatedName,
+          amount: translatedAmount,
+        };
+      })
+    );
+
     const translatedRecipe: Recipe = {
-      title: await translateText(textLang, recipe.title) as string,
-      images: recipe.images,
-      ingredients: await Promise.all(recipe.ingredients.map(item => translateText(textLang, item))) as string[],
-      steps: await Promise.all(recipe.steps.map(item => translateText(textLang, item))) as string[],
-      mainImage: recipe.mainImage,
-      assessment: recipe.assessment,
-      id: recipe.id,
-      lang: recipe.lang,
-      preparation: recipe.preparation,
-      cooking: recipe.cooking,
-      rest: recipe.rest,
-      serving: recipe.serving,
-      difficulty: recipe.difficulty,
-      category: recipe.category
+      ...recipe,
+      title: (await translateText(textLang, recipe.title)) as string,
+      ingredients: translatedIngredients,
+      steps: await Promise.all(recipe.steps.map((item) => translateText(textLang, item))) as string[],
     };
 
     // console.log('Translated Recipe:', translatedRecipe);
@@ -126,10 +121,15 @@ const translateRecipe = async (textLang: string, recipe: Recipe) => {
   }
 };
 
+
 const translateIngredientsToEnglish = async (textLang: string, ingredients: string[]) => {
   return await Promise.all(ingredients.map(item => translateText(textLang, item, true))) as string[]
 }
 
+const translateIngredientToEnglish = async (textLang: string, ingredient: string) => {
+  return translateText(textLang, ingredient, true);
+}
 
 
-export { translateText, translateRecipe, translateIngredientsToEnglish };
+
+export { translateText, translateRecipe, translateIngredientsToEnglish, translateIngredientToEnglish };

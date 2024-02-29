@@ -20,7 +20,6 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const [renderRecipe, setRenderRecipe] = useState(recipe);
   const [loading, setLoading] = useState(false);
-  const [translatedIngredientsToEnglish, setTranslatedIngredientsToEnglish] = useState(recipe.ingredients);
   const [steps, setSteps] = useState('');
 
   const [liked, setLiked] = useState<boolean>(false);
@@ -35,20 +34,14 @@ const RecipeScreen = ({ navigation, route }) => {
         try {
           const translatedRecipe = await translateRecipe(recipe.lang, recipe);
           setRenderRecipe(translatedRecipe);
-          const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
-          setTranslatedIngredientsToEnglish(translatedIngredients);
-          // console.log('trad: ', translation); 
-          // const recipe1 = translation;
+        
         } catch (error) {
           console.error('Error al traducir:', error);
         }
         setLoading(false);
       }
     
-      else if (recipe.lang != 'en-US') { // ensure ingredients being translated to english
-        const translatedIngredients = await translateIngredientsToEnglish(recipe.lang, recipe.ingredients);
-        setTranslatedIngredientsToEnglish(translatedIngredients);
-      }
+    
 
     };
 
@@ -197,9 +190,9 @@ const RecipeScreen = ({ navigation, route }) => {
           <FlatList
             data={renderRecipe.ingredients}
             renderItem={({ item, index }) => (
-              <IngredientItem name={item} size={30} englishVersion={translatedIngredientsToEnglish[index]}/>
+              <IngredientItem ingredient={item} size={30}/>
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item, index) => item.name}
           />
         </View>
 

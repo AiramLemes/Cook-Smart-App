@@ -1,5 +1,4 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import HomeScreen from "../screens/Home/HomeScreen";
 import React from "react";
 import { StyleSheet } from "react-native";
 import SearchScreen from '../screens/SearchScreen';
