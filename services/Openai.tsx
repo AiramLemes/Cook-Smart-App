@@ -56,9 +56,9 @@ async function generateRecipe(ingredients: string[]) {
     console.log(recipeResponse)
 
     if (recipeResponse) {
-        const recipe: Recipe = JSON.parse(recipeResponse);
-        recipe.userId = 'chat-gpt'
-        const requiredFields = ['userId', 'title', 'mainImage', 'id', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
+      const recipe: Recipe = JSON.parse(recipeResponse);
+      recipe.userId = 'chat-gpt'
+      const requiredFields = ['userId', 'title', 'mainImage', 'id', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
       const isValidRecipe = requiredFields.every(field => field in recipe);
 
       if (isValidRecipe) {

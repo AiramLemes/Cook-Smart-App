@@ -56,7 +56,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         }
         else {
           if (await assignRecipeToUser(recipeId)) {
-            navigation.navigate('OwnRecipes');
+            navigation.navigate('Home');
             ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
           }
           else {
