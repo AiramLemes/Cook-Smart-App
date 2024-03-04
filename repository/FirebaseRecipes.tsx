@@ -239,7 +239,7 @@ function generateImageFileName() {
 }
 
 
-async function deleteRecipe(recipeId: string) {
+async function deleteRecipe(recipeId: string): Promise<boolean> {
   try {
     const recipeQuery = query(collection(firestore, "recipes"), where("id", "==", recipeId));
     const recipeSnapshot = await getDocs(recipeQuery);
@@ -259,20 +259,25 @@ async function deleteRecipe(recipeId: string) {
           if (await deleteUserRecipe(recipeId)) {
 
             console.log("Receta y objetos de Storage eliminados correctamente");
-          };
+            return true;
+          }
         }
        
 
       } catch (storageError) {
         console.error("Error al eliminar el objeto de Storage:", storageError);
+        return false;
       }
 
-
+    return false;
   } 
   
   } catch (error) {
     console.error("Error al eliminar la receta:", error);
+    return false;
   }
+
+  return false;
 }
 
 

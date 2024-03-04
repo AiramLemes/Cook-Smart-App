@@ -8,14 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Iconify } from "react-native-iconify";
 import { deleteRecipe } from "../repository/FirebaseRecipes";
 
-const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: boolean) => void;}) => {
+const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: string) => void;}) => {
   
   const { recipe, userId } = props;
   const navigation = useNavigation();
 
   const handleDelete = () => {
-    deleteRecipe(recipe.id);
-    props.onDelete?.(true);
+    props.onDelete?.(recipe.id);
   };
 
   return (
