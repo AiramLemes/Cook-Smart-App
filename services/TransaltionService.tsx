@@ -97,10 +97,13 @@ const translateRecipe = async (textLang: string, recipe: Recipe) => {
           typeof item.amount === 'string'
             ? await translateText(textLang, item.amount)
             : item.amount;
-
-        return {
+        
+          const tanslatedUnit = item.amount.toString().includes(item.unit)? '' : await translateText(textLang, item.unit); // Omit duplicated data
+        
+          return {
           ...item,
           name: translatedName,
+          unit: tanslatedUnit,
           amount: translatedAmount,
         };
       })
