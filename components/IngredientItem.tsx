@@ -44,8 +44,9 @@ const IngredientItem = (props: {
         <View style={styles.ingredientIcon}>
           {getIngredientIcon(ingredient!!.englishVersion, size)}
         </View>
-
+        
         <Text style={styles.ingredientName}>{capitalizeFirstLetter(ingredient!!.name)}</Text>
+
         <Text style={styles.ingredientAmount}>{ingredient!!.amount + ' ' + ingredient.unit}</Text>
       </View>
     </View>
@@ -163,9 +164,11 @@ const getIngredientIcon = (ingredientName: string, size: number) => {
         return <Iconify icon="noto:strawberry" style={styles.icon} size={size} color="black" />;
       case lowerCaseIngredient.includes('oranges'):
         return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="orange" />;
+      case lowerCaseIngredient.includes('baking powder'):
+        return <Iconify icon="game-icons:powder" style={styles.icon} size={size} color="white" />;
       case lowerCaseIngredient.includes('lemon'):
         return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="yellow" />;
-      case lowerCaseIngredient.includes('limes'):
+      case lowerCaseIngredient.includes('lime'):
         return <Iconify icon="lucide:citrus" style={styles.icon} size={size} color="green" />;
       case lowerCaseIngredient.includes('blueberry'):
         return <Iconify icon="noto:blueberries" style={styles.icon} size={size} color="black" />;
@@ -253,6 +256,8 @@ const getIngredientIcon = (ingredientName: string, size: number) => {
         return <Iconify icon="lets-icons:water" style={styles.icon} size={size} color="blue" />;
       case lowerCaseIngredient.includes('beans'):
         return <Iconify icon="noto:beans" style={styles.icon} size={size} color="black" />;
+      case lowerCaseIngredient.includes('butter'):
+        return <Iconify icon="fluent-emoji-flat:butter" style={styles.icon} size={size} color="black" />;
       case lowerCaseIngredient.includes('carrot'):
         return <Iconify icon="noto:carrot" style={styles.icon} size={size} color="orange" />;
       case lowerCaseIngredient.includes('broccoli'):

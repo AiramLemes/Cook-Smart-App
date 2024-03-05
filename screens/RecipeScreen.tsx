@@ -20,15 +20,15 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const [renderRecipe, setRenderRecipe] = useState(recipe);
   const [loading, setLoading] = useState(false);
-  const [steps, setSteps] = useState('');
 
   const [liked, setLiked] = useState<boolean>(false);
   const [userName, setUserName] = useState<string | undefined>();
 
+  const [isAiRecipe, setIsAiRecipe] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {  
-      setUserName(await getUserNameById(userId)); 
+      setUserName(await getUserNameById(recipe.userId)); 
       if (recipe.lang != Strings.locale) {
         setLoading(true);
         try {
@@ -40,14 +40,15 @@ const RecipeScreen = ({ navigation, route }) => {
         }
         setLoading(false);
       }
-    
-    
-
+  
     };
 
   
     fetchData(); 
     setLiked(recipe.likedUsersId.includes(userId));
+
+    setIsAiRecipe(recipe.userId === 'chat-gpt');
+
   }, []); 
 
 
@@ -133,6 +134,8 @@ const RecipeScreen = ({ navigation, route }) => {
       
 
       <View style={styles.scrollViewContent}>
+
+      {!isAiRecipe && (   
         <FlatList
           horizontal
           style={styles.imagesList}
@@ -140,8 +143,15 @@ const RecipeScreen = ({ navigation, route }) => {
           renderItem={({ item }) => <Image source={{ uri: item }} style={styles.images} />}
           keyExtractor={(item) => item}
         />
+      )}
 
+      {isAiRecipe && (   
+       <Image src={recipe.mainImage} style={styles.aiImage}/>
+      )}
+
+      {!isAiRecipe && (
         <StarsPicker recipe={recipe}></StarsPicker>
+      )}
 
 
         <View style={styles.preparation}>
@@ -258,6 +268,7 @@ const styles = StyleSheet.create({
 
   preparation: {
     margin: 20,
+    flexGrow: 1,
   },
 
   preparationGeneralInfo: {
@@ -311,15 +322,14 @@ const styles = StyleSheet.create({
   },
 
   stepsSection: {
-    width: '98%',
-    minHeight: 40,
+    flexGrow: 1,
     backgroundColor: Colors.lightGray,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
     alignSelf: 'center',
     flexDirection: 'row',
-    marginBottom: 25
+    paddingBottom: 50
   },
 
   stepsText: {
@@ -342,6 +352,17 @@ const styles = StyleSheet.create({
   userName: {
     textAlign: 'center',
     textDecorationLine: 'underline'
+  },
+
+  aiImage: {
+    width: '80%',
+    height: '10%',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 10,
+    alignSelf: 'center',
+    objectFit: 'contain',
+    margin: 20,
   }
 
 

@@ -43,6 +43,7 @@ async function generateRecipe(ingredients: string[]) {
 
     const modelMessage = `ingredients have this interface: ${ingredientInterface} GIVE ALL -THE RESPONSE IN THIS ENGLISH, send it to use Json.parse() and send only the information required without additional comments`;
 
+
     const chatCompletion = await openai.chat.completions.create({
       messages: [
         { role: 'user', content: userMessage },
