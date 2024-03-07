@@ -31,7 +31,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
   const [title, setTitle] = useState<string>('');
   const [difficulty, setDifficulty] = useState<number>();
   const [servings, setServings] = useState<number>(1);
-  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   
   const [titleError, setTitleError] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
@@ -149,20 +149,9 @@ const AddRecipeForm1 = ({ navigation, route }) => {
       const images = [...imagesList];
       images.splice(0, 1)
       
-      const ingredientsList: Ingredient[] = [];
 
-      ingredients.forEach(async item => {
-        const name = item.split(',')[0];
-        const amount = item.split(',')[1];
-        const translatedName = await translateText(Strings.locale, name);
-        
-        ingredientsList.push({
-          name: name,
-          unit: '',
-          amount: amount,
-          englishVersion: translatedName
-        });
-
+      ingredients.forEach(async ingredient => {
+        ingredient.englishVersion = await translateText(Strings.locale, ingredient.name, true);
       });
 
       const recipe: Recipe = {
@@ -171,7 +160,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         assessment: editableRecipe ? editableRecipe.assessment : 0,
         id: editableRecipe ? editableRecipe.id : '',
         images: images,
-        ingredients: ingredientsList,
+        ingredients: ingredients,
         steps: editableRecipe ? editableRecipe.steps : [],
         lang: Strings.locale,
         preparation: editableRecipe ? editableRecipe.preparation : '',

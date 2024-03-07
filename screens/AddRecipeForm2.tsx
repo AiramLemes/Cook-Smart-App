@@ -47,8 +47,6 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       recipe.category = category;
 
 
-      console.log(recipe)
-
       if (!editable) {
         const recipeId = await addRecipe(recipe);
         if (!recipeId) {
@@ -123,33 +121,15 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   }
 
   const formatSteps = (text: string) => {
-    const lines = text.split('\n');
-    console.log(lines);
 
-    // const formattedLines = lines.map((line, index) => {
-    //   const expectedPrefix = `${index + 1}.-`;
+    const steps: string[] = [];
 
-    //   console.log(`empieza con ${expectedPrefix} ?`, line.startsWith(expectedPrefix));
-
-    //   // Verificar si la línea ya tiene el formato esperado
-    //   if (line.startsWith(expectedPrefix)) {
-    //     return line;
-    //   }
-
-    //   // Verificar si se eliminaron caracteres y la línea ahora tiene el formato esperado
-    //   const trimmedLine = line.trim();
-    //   if (trimmedLine.startsWith(expectedPrefix)) {
-    //     return trimmedLine;
-    //   }
-
-    //   // Agregar el formato si no cumple con ninguna de las condiciones anteriores
-    //   return `${expectedPrefix} ${line}`;
-    // });
-
-    // console.log('modificado: ', formattedLines.join('\n'));
-
-    // setSteps(formattedLines.join('\n'));
-    return lines;
+    text.split('\n').forEach(line => {
+      if (line !== "") {
+        steps.push(line);
+      }
+    });
+    return steps;
   };
 
   return (

@@ -6,7 +6,7 @@ import Ingredient from '../model/Ingredient';
 import { useState } from 'react';
 
 const IngredientItem = (props: {
-  onRemove: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 
+  onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 
 }) => {
   const {size, index} = props;
   const pantryIngredient: boolean =  props.pantryIngredient === undefined ? false : true;

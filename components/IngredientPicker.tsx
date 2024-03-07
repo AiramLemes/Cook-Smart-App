@@ -10,6 +10,8 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState<string>('');
   const [ingredientAmount, setIngredientAmount] = useState<string>('');
+  const [ingredientUnit, setIngredientUnit] = useState<string>('');
+
   const initialValue = props.initialValue;
 
   useEffect(() => {
@@ -23,11 +25,22 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
 
   const addIngredient = () => {
 
-    if (ingredientName && ingredientAmount) {
-      const updatedIngredients = [...ingredients, ingredientName + ',' + ingredientAmount];
+    if (ingredientName && ingredientAmount && ingredientUnit) {
+
+      const newIngredient: Ingredient = {
+        name: ingredientName,
+        amount: ingredientAmount,
+        unit: ingredientUnit,
+        englishVersion: ""
+      }
+
+      
+      const updatedIngredients = [...ingredients, newIngredient];
+      console.log('Ingredient: ', updatedIngredients)
       setIngredients(updatedIngredients as never);
       setIngredientName('');
       setIngredientAmount('');
+      setIngredientUnit('')
       // console.log('picker: ', updatedIngredients)
       props.onChange(updatedIngredients);
     }
@@ -41,12 +54,9 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   }
   
 
-  const IngredientItem = (props: {ingredient: string, index: number}) => {
-    
-    const name = props.ingredient.split(',')[0];
-    const amount = props.ingredient.split(',')[1];
+  const IngredientItem = (props: {ingredient: Ingredient, index: number}) => {
+    const ingredient = props.ingredient;
     const index = props.index;
-
 
     return (
       <View>
@@ -54,10 +64,12 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
           <TouchableOpacity style={styles.ingredientIcon} onPress={() => removeIngredient(index)}>
             <Iconify icon="mdi:delete-outline" style={styles.icon} size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.ingredientName}>{name}</Text>
-          <Text style={styles.ingredientAmount}>{amount}</Text>
+          <View style={styles.inputsContainer}>
+            <Text style={styles.ingredientText}>{ingredient.name}</Text>
+            <Text style={styles.ingredientText}>{ingredient.amount.toString()}</Text>
+            <Text style={styles.ingredientText}>{ingredient.unit}</Text>
+          </View>
         </View>
-  
       </View>
     );
   }
@@ -77,8 +89,11 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
           <View style={styles.ingredientIcon}>
             <Iconify icon="fluent:food-16-regular" style={styles.icon} size={30} color="black" />
           </View>
-          <TextInput inputMode="email" placeholder="Ingredient"  value={ingredientName} style={styles.ingredientName} onChangeText={setIngredientName}/>
-          <TextInput placeholder="Amount" value={ingredientAmount} style={styles.ingredientAmount} onChangeText={setIngredientAmount}/>
+          <View style={styles.inputsContainer}>
+            <TextInput placeholder="Ingredient" value={ingredientName}  onChangeText={setIngredientName}/>
+            <TextInput placeholder="Amount" value={ingredientAmount}  onChangeText={setIngredientAmount}/>
+            <TextInput placeholder="Unit" value={ingredientUnit}  onChangeText={setIngredientUnit}/>
+          </View>
         </View>
       </View>
 
@@ -138,24 +153,21 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 9,
   },
 
-  ingredientName: {
-    textAlignVertical: 'center',
-    fontSize: 15,
-    marginLeft: 10,
-    alignSelf: 'center'
-  },
-
-  ingredientAmount: {
-    textAlignVertical: 'center',
-    fontSize: 15,
-    right: 25,
-    position: 'absolute',
-    alignSelf: 'center'
+  inputsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    width: '80%', 
+    paddingStart: 10
   },
 
   icon:{
     alignSelf: 'center', 
     marginVertical: 2,
+  },
+
+  ingredientText: {
+    textAlignVertical: 'center',
+    fontSize: 17
   }
 
 

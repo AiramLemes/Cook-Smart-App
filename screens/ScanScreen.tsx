@@ -17,11 +17,12 @@ const ScanScreen = ({ navigation }) => {
   const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  
   let currentProductId = "";
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = (await Camera.requestCameraPermissionsAsync());
       setHasPermission(status === 'granted');
     };
 
@@ -59,7 +60,7 @@ const ScanScreen = ({ navigation }) => {
           {hasPermission === null ? (
             <Text>Requesting for camera permission</Text>
           ) : hasPermission === false ? (
-            <Text>No access to camera</Text>
+            <Text style={{textAlign: 'center'}}>No access to camera</Text>
           ) : (
             <Camera
               style={StyleSheet.absoluteFill}

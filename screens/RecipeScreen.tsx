@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   },
 
   preparationItemIcon: {
-    width: '13 %',
+    width: '13%',
     height: '100%',
     backgroundColor: Colors.primary,
     borderTopLeftRadius: 9,
@@ -323,6 +323,7 @@ const styles = StyleSheet.create({
 
   stepsSection: {
     flexGrow: 1,
+    width: '98%',
     backgroundColor: Colors.lightGray,
     borderColor: 'black',
     borderWidth: 1,
