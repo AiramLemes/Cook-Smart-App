@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Image, Text, Pressable } from "react-native";
+import { View, StyleSheet, Image, Text, Pressable, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -25,7 +25,7 @@ const Header = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ ...styles.container, paddingTop: insets.top }}>
+    <View style={{ ...styles.container, paddingTop: insets.top}}>
       
       <Pressable onPress={() => navigation.navigate('UserProfile' as never)}>
         <Image
@@ -41,7 +41,7 @@ const Header = () => {
         color={Colors.imageBorder}
         onPress={() => {navigation.navigate('Settings' as never)}}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.secondary,
-    paddingHorizontal: 10,
-    height: 80,
+    paddingHorizontal:  10,
+    paddingBottom: 10
   },
 
   userImage: {

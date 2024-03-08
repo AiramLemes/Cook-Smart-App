@@ -98,7 +98,6 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
     props.onClose();
   };
 
-
   return (
     <Dialog visible={props.isVisible} style={styles.dialogContainer}>
       <View style={styles.dialogContent}>

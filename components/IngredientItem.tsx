@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     marginBottom: 15,
+    alignItems: 'center',
   },
 
   ingredientIcon: {

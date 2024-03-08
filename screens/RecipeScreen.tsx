@@ -296,6 +296,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'center',
     flexDirection: 'row',
+    textAlignVertical: 'center',
+    alignItems: 'center',
     marginBottom: 25
   },
 
@@ -310,7 +312,8 @@ const styles = StyleSheet.create({
   preparationItemText: {
     textAlignVertical: 'center',
     fontSize: 15,
-    marginLeft: 10
+    marginLeft: 10,
+    
   },
 
   preparationItemDuration: {
@@ -318,7 +321,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     position: 'absolute',
     right: 25,
-    top: '20%'
   },
 
   stepsSection: {
