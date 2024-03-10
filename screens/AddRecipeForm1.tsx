@@ -180,10 +180,11 @@ const AddRecipeForm1 = ({ navigation, route }) => {
       navigation.navigate('AddRecipeForm2', {recipe: recipe, editable: editableRecipe? true: false});
     }
   }
- 
-  return (
-    <ScrollView style={styles.container}>
 
+
+  const contentUp = () => {
+    return (
+      <>
       <View style={styles.recipeTitle}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Iconify icon="lets-icons:back" size={33} color="black" />
@@ -201,12 +202,11 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         <TextInput placeholder='TITULO RECETA' value={title} onChangeText={setTitle} style={styles.title}></TextInput>
         <Iconify icon="iconamoon:edit" size={15} color="black" />
       </View>
-        {titleError && (
-          <Text style={styles.errorMessage}>Title can't be empty</Text>
-        )}
-        
-    
       
+      {titleError && (
+        <Text style={styles.errorMessage}>Title can't be empty</Text>
+      )}
+        
       <FlatList
         horizontal
         style={styles.imagesList}
@@ -214,6 +214,14 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         renderItem={({ item, index }) =>  item == '' ? addImagePicker() : addImageItem(item, index)}
         keyExtractor={(item) => item.toString()}
       />
+      </>
+    );
+  };
+
+
+  const contentDown = () => {
+    return (
+      <>
       
       <View style={{marginBottom: 20}}>
 
@@ -246,8 +254,27 @@ const AddRecipeForm1 = ({ navigation, route }) => {
           <IngredientPicker initialValue={editableRecipe.ingredients} onChange={setIngredients}/>
         )}
       </View>
+      
+      </>
+    );
+  };
 
-    </ScrollView>
+
+
+ 
+  return (
+
+    <FlatList
+      data={[{ key: 'up' }, { key: 'down' }]}
+      contentContainerStyle={styles.container}
+      renderItem={({ item }) => (
+        item.key === 'up' ?
+          contentUp()
+        :
+          contentDown()       
+      )}
+      keyExtractor={(item) => item.key}
+    />
   );
 };
 
