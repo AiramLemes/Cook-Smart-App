@@ -52,40 +52,6 @@ const RecipeScreen = ({ navigation, route }) => {
   }, []); 
 
 
-
-  // let ingredients = [
-  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber',
-  //   'onion', 'garlic', 'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus',
-  //   'peas', 'corn', 'strawberry', 'orange', 'lemon', 'lime', 'blueberry', 'raspberry',
-  //   'cherry', 'watermelon', 'melon', 'kiwi', 'pineapple', 'mango', 'avocado', 'olive',
-  //   'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab', 'lobster', 'oyster',
-  //   'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit', 'snail',
-  //   'tofu', 'soymilk', 'quinoa', 'water'
-  // ];
-
-  // const ingredients = [
-  //   'banana', 'cumin', 'coriander', 'turmeric', 'paprika', 'cinnamon', 'ginger',
-  //   'garlicpowder', 'onionpowder', 'blackpepper', 'oregano', 'thyme',
-  //   'rosemary', 'basil', 'parsley', 'cilantro', 'dill', 'cayenne',
-  //   'mustard', 'nutmeg', 'pumpkinspice', 'vanilla', 'saffron',
-  //   'cloves', 'cardamom', 'fennel', 'caraway', 'allspice', 'bayleaf',
-  //   'chilipowder', 'currypowder', 'whitepepper', 'turmeric', 'smokedpaprika',
-  //   'sumac', 'tarragon', 'sage', 'juniper', 'anise', 'marjoram',
-  //   'fenugreek', 'poppyseed', 'sesameseed', 'lavender', 'wasabi', 'sichuanpepper',
-  //   'chervil', 'lovage', 'savory', 'thaispice', 'garammasala', 'celeryseed', 'quinoa', 'yeast',
-  //   'milk', 'chicken', 'beef', 'pork', 'rice', 'pasta', 'lettuce', 'cucumber', 'onion', 'garlic',
-  //   'potato', 'sweetpotato', 'spinach', 'cauliflower', 'asparagus', 'peas', 'corn', 'strawberry',
-  //   'orange', 'lemon', 'lime', 'blueberry', 'raspberry', 'cherry', 'watermelon', 'melon', 'kiwi',
-  //   'pineapple', 'mango', 'avocado', 'olive', 'almond', 'peanut', 'salmon', 'tuna', 'shrimp', 'crab',
-  //   'lobster', 'oyster', 'clam', 'scallops', 'octopus', 'squid', 'turkey', 'duck', 'lamb', 'rabbit',
-  //   'snail', 'tofu', 'soymilk', 'salt', 'sugar', 'pepper', 'oil', 'wine', 'vinegar', 'cheese', 'tomato',
-  //   'egg', 'flour', 'yogurt', 'coffee', 'water', 'beans', 'carrot', 'broccoli', 'greenbean', 'eggplant',
-  //   'mushroom', 'pepperoni', 'sausage', 'bacon', 'mayo', 'mustard', 'ketchup', 'pickles', 'soysauce',
-  //   'honey', 'jalapeno', 'salsa', 'guacamole', 'sourcream'
-  // ];
-
-
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -102,128 +68,148 @@ const RecipeScreen = ({ navigation, route }) => {
 
   }
 
-  return (
-    <ScrollView style={styles.container}>
-
-      <View style={styles.recipeTitle}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Iconify icon="lets-icons:back" size={33} color="black" />
-        </TouchableOpacity>
-
-        <Text style={styles.title}>{renderRecipe.title}</Text>
-
-        {!editable && (
-          <TouchableOpacity onPress={() => handleLike()}>
-            {liked && (
-              <Iconify icon="mdi:favourite" size={33} color="red" />
+  const renderItem = ({ item }) => {
+    switch (item.type) {
+      case 'recipeTitle':
+        return (
+          <View style={styles.recipeTitle}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Iconify icon="lets-icons:back" size={33} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.title}>{renderRecipe.title}</Text>
+            {!editable && (
+              <TouchableOpacity onPress={handleLike}>
+                {liked ? (
+                  <Iconify icon="mdi:favourite" size={33} color="red" />
+                ) : (
+                  <Iconify icon="mdi:favourite-border" size={33} color="red" />
+                )}
+              </TouchableOpacity>
             )}
-            {!liked && (
-              <Iconify icon="mdi:favourite-border" size={33} color="red" />
+            {editable && (
+              <TouchableOpacity onPress={() => navigation.navigate('AddRecipeForm1', recipe)}>
+                <Iconify icon="iconamoon:edit" size={33} color="black" />
+              </TouchableOpacity>
             )}
-          </TouchableOpacity>
-        )} 
-
-        {editable && (
-          <TouchableOpacity onPress={() => {navigation.navigate('AddRecipeForm1', recipe)}}>
-            <Iconify icon="iconamoon:edit" size={33} color="black" />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <Text style={styles.userName}>@{userName}</Text>
-      
-
-      <View style={styles.scrollViewContent}>
-
-      {!isAiRecipe && (   
-        <FlatList
-          horizontal
-          style={styles.imagesList}
-          data={renderRecipe.images}
-          renderItem={({ item }) => <Image source={{ uri: item }} style={styles.images} />}
-          keyExtractor={(item) => item}
-        />
-      )}
-
-      {isAiRecipe && (   
-       <Image src={recipe.mainImage} style={styles.aiImage}/>
-      )}
-
-      {!isAiRecipe && (
-        <StarsPicker recipe={recipe}></StarsPicker>
-      )}
-
-
-        <View style={styles.preparation}>
-          <View style={styles.preparationGeneralInfo}>
-            <Text>{Strings.t('preparation')}</Text>
-            <View style={styles.preparationPeopleInfo}>
-              <Dificulty dificulty={recipe.difficulty} size={25}/>
-            </View>
           </View>
-
-          <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-              <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-            <Text style={styles.preparationItemDuration}>{recipe.preparation}</Text>
-          </View>
-
-          <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-              <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-            <Text style={styles.preparationItemDuration}>{recipe.cooking}</Text>
-          </View>
-
-          <View style={styles.preparationItem}>
-            <View style={styles.preparationItemIcon}>
-              <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
-            </View>
-            <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-            <Text style={styles.preparationItemDuration}>{recipe.rest}</Text>
-          </View>
-
-        </View>
-        
-        <View style={styles.preparation}>
-          <View style={styles.preparationGeneralInfo}>
-            <Text>{Strings.t('ingredients')}</Text>
-            <View style={styles.preparationPeopleInfo}>
-              <Text style={styles.personText}>{ recipe.servings + ' ' + (recipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
-              <Iconify icon="pepicons-pencil:people" size={30} color="black" />
-            </View>
-          </View>
-
+        );
+      case 'userName':
+        return <Text style={styles.userName}>@{userName}</Text>;
+      case 'imagesList':
+        return (
+          <>
           <FlatList
-            data={renderRecipe.ingredients}
-            renderItem={({ item, index }) => (
-              <IngredientItem ingredient={item} size={30}/>
-            )}
-            keyExtractor={(item, index) => item.name}
+            horizontal
+            style={styles.imagesList}
+            data={renderRecipe.images}
+            renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
+            keyExtractor={(image) => image}
           />
-        </View>
 
-        <View style={styles.preparation}>
-          <View style={styles.preparationGeneralInfo}>
-            <Text>{Strings.t('steps')}</Text>
+          {isAiRecipe && (   
+            <Image src={recipe.mainImage} style={styles.aiImage}/>
+           )}
+     
+           {!isAiRecipe && (
+             <StarsPicker recipe={recipe}></StarsPicker>
+           )}
+           </>
+        );
+      case 'preparation':
+        return (
+          <>
+          <View style={styles.preparation}>
+            <View style={styles.preparationGeneralInfo}>
+              <Text>{Strings.t('preparation')}</Text>
+              <View style={styles.preparationPeopleInfo}>
+                <Dificulty dificulty={recipe.difficulty} size={25}/>
+              </View>
+            </View>
+  
+            <View style={styles.preparationItem}>
+              <View style={styles.preparationItemIcon}>
+                <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
+              </View>
+              <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.preparation}</Text>
+            </View>
+  
+            <View style={styles.preparationItem}>
+              <View style={styles.preparationItemIcon}>
+                <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
+              </View>
+              <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.cooking}</Text>
+            </View>
+  
+            <View style={styles.preparationItem}>
+              <View style={styles.preparationItemIcon}>
+                <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
+              </View>
+              <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.rest}</Text>
+            </View>
+  
           </View>
-
-          <View style={styles.stepsSection}>
-            <Text style={styles.stepsText}>{renderRecipe.steps.map((item, index) => `${index + 1}.- ${item}\n\n`).join('')}</Text>
+          
+          <View style={styles.preparation}>
+            <View style={styles.preparationGeneralInfo}>
+              <Text>{Strings.t('ingredients')}</Text>
+              <View style={styles.preparationPeopleInfo}>
+                <Text style={styles.personText}>{ recipe.servings + ' ' + (recipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
+                <Iconify icon="pepicons-pencil:people" size={30} color="black" />
+              </View>
+            </View>
+  
+            <FlatList
+              data={renderRecipe.ingredients}
+              renderItem={({ item, index }) => (
+                <IngredientItem ingredient={item} size={30}/>
+              )}
+              keyExtractor={(item, index) => item.name}
+            />
           </View>
-        </View>
+  
+          <View style={styles.preparation}>
+            <View style={styles.preparationGeneralInfo}>
+              <Text>{Strings.t('steps')}</Text>
+            </View>
+  
+            <View style={styles.stepsSection}>
+              <Text style={styles.stepsText}>{renderRecipe.steps.map((item, index) => `${index + 1}.- ${item}\n\n`).join('')}</Text>
+            </View>
+          </View>
+          </>
 
+        );
+      default:
+        return null;
+    }
+  };
+
+  const sections = [
+    { type: 'recipeTitle', key: 'recipeTitle' },
+    { type: 'userName', key: 'userName' },
+    { type: 'imagesList', key: 'imagesList' },
+    { type: 'preparation', key: 'preparation' },
+  ];
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+        <Text style={styles.loadingText}>{Strings.t('translating')}</Text>
       </View>
-    </ScrollView>
-  );
+    );
+  }
+
+  return <FlatList data={sections} renderItem={renderItem} keyExtractor={(item) => item.key} contentContainerStyle={styles.container} />;
 };
+  
+
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: Colors.background,
   },
 

@@ -336,7 +336,7 @@ async function handleRecipeLike(userId: string, recipeId: string) {
     return updatedLikedUsersId;
     
   } catch (storageError) {
-    console.error("AAAA: ", storageError);
+    console.error('Liked Recipe', storageError);
   }
 }
 
