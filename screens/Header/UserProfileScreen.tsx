@@ -161,7 +161,7 @@ const UserProfileScreen = ({ navigation }) => {
         <View style={styles.sectionUserData}>
           <Text style={styles.userDataTitle}>{Strings.t('changeEmail')}</Text>
           <TextInput style={[styles.userDataInputWithIcon, emailError ? {color: Colors.error} : {color: Colors.black}]} 
-            value={email} onChangeText={setEmail} placeholder="prueba@prueba.com"/>          
+            value={email} keyboardType='email-address' onChangeText={setEmail} placeholder="prueba@prueba.com"/>          
         </View>
 
         <View style={styles.sectionUserData}>

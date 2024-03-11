@@ -5,8 +5,10 @@ import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres
 
 import User from "../model/User";
 import Toast from "react-native-root-toast";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import ToastUtil from "../utils/ToastUtil";
+import { Strings } from "../constants/Strings";
+import { createPantry } from "./FirebasePantry";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
 
@@ -174,7 +176,6 @@ async function checkEmail(email: string): Promise<boolean> {
     const users = collection(firestore, 'users');
     const q = query(users, where('email', '==', email));
     const result = (await getDocs(q)).size > 0;
-    console.log(result)
     return !result;
   } catch (error) {
     return false;
@@ -289,7 +290,33 @@ async function getUserNameById(userId:string) {
   
 }
 
+async function createUser(email: string, password: string, userName: string) {
+  try {
+    const userId = (await createUserWithEmailAndPassword(auth, email, password)).user.uid
+
+    const newUser: User = {
+      userName: userName,
+      email: email,
+      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
+      recipesIds: [],
+      assessments: [],
+    };
+
+    const usersDoc = doc(collection(firestore, 'users'), userId);
+    
+    await setDoc(usersDoc, newUser)
+      
+    createPantry(userId);
+    return true;
+
+  } catch(e) {
+    ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT);
+    return false;
+  }
+
+}
+
 
 
 export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, 
-  updateUser, assignRecipeToUser, deleteUserRecipe, getUserNameById, getCurrentUserData };
+  updateUser, assignRecipeToUser, deleteUserRecipe, getUserNameById, getCurrentUserData, createUser };
