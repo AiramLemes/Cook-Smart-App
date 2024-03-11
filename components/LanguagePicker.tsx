@@ -12,10 +12,10 @@ const LanguagePicker = () => {
   const data = [
     { key: 0, label: "English", code: 'en-US',},
     { key: 1, label: "French", code: 'fr-FR' },
-    { key: 0, label: "German", code: 'de-DE',},
-    { key: 1, label: "Italian", code: 'it-IT' },
-    { key: 0, label: "Portuguese", code: 'pt-PT',},
-    { key: 1, label: "Spanish", code: 'es-ES' },
+    { key: 2, label: "German", code: 'de-DE',},
+    { key: 3, label: "Italian", code: 'it-IT' },
+    { key: 4, label: "Portuguese", code: 'pt-PT',},
+    { key: 5, label: "Spanish", code: 'es-ES' },
   ];
 
   const handlePress = () => {
