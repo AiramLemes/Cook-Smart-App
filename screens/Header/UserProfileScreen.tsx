@@ -20,6 +20,9 @@ const UserProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
+
+  const [userNameError, setUserNameError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<boolean>(false);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -64,14 +67,17 @@ const UserProfileScreen = ({ navigation }) => {
         if (await checkEmail(email)) {
           updateEmail(auth.currentUser!!, email).then(() => {
             ToastUtil.showToast(Strings.t('updateEmailMsg'), Toast.durations.SHORT);
+            setEmailError(false);
           }).catch((e) => {
-            console.log(e)
+            console.log(e);
+            
             ToastUtil.showToast(Strings.t('errorUpdatingEmail'), Toast.durations.SHORT);
           });
         }
     
         else {
-          ToastUtil.showToast(Strings.t('errorCheckinEmail'), Toast.durations.SHORT);
+          setEmailError(true);
+          ToastUtil.showToast(Strings.t('errorCheckingEmail'), Toast.durations.SHORT);
         }
       }
       else {
@@ -104,10 +110,13 @@ const UserProfileScreen = ({ navigation }) => {
           };
           setUserData(user);
           setUserName("");
+          setUserNameError(false);
         }
+
       }
       else {
         ToastUtil.showToast(Strings.t('usedUserName'), Toast.durations.SHORT);
+        setUserNameError(true);
       }
     }
     else {
@@ -151,12 +160,14 @@ const UserProfileScreen = ({ navigation }) => {
 
         <View style={styles.sectionUserData}>
           <Text style={styles.userDataTitle}>{Strings.t('changeEmail')}</Text>
-          <TextInput style={styles.userDataInputWithIcon} value={email} onChangeText={setEmail} placeholder="prueba@prueba.com"/>          
+          <TextInput style={[styles.userDataInputWithIcon, emailError ? {color: Colors.error} : {color: Colors.black}]} 
+            value={email} onChangeText={setEmail} placeholder="prueba@prueba.com"/>          
         </View>
 
         <View style={styles.sectionUserData}>
           <Text style={styles.userDataTitle}>{Strings.t('changeUserName')}</Text>
-          <TextInput style={styles.userDataInputWithIcon} value={userName} onChangeText={setUserName} placeholder="@NuevoNombreUsuario"/>          
+          <TextInput style={[styles.userDataInputWithIcon, userNameError ? {color: Colors.error} : {color: Colors.black}]} 
+          value={userName} onChangeText={setUserName} placeholder="@NuevoNombreUsuario"/>          
         </View>
 
         <View style={styles.sectionUserData}>

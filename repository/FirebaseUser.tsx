@@ -174,7 +174,7 @@ async function checkEmail(email: string): Promise<boolean> {
     const users = collection(firestore, 'users');
     const q = query(users, where('email', '==', email));
     const result = (await getDocs(q)).size > 0;
-
+    console.log(result)
     return !result;
   } catch (error) {
     return false;
