@@ -51,7 +51,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
           <Iconify style={{alignSelf: 'center'}} icon="gala:add" size={45} color="black" />
         </TouchableOpacity>
         {imageError && (
-          <Text style={styles.errorMessage}>You must upload at least 1 image</Text>
+          <Text style={styles.errorMessage}>{Strings.translate('recipeForm1ImageError')}</Text>
         )}
       </View>
     );
@@ -117,7 +117,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 
   const isIngredientsValid = () => {
     if (ingredients.length <= 0) {
-      ToastUtil.showToast('The ingredients list can not be empty!', Toast.durations.SHORT); 
+      ToastUtil.showToast(Strings.translate('recipeForm1EmptyIngredients'), Toast.durations.SHORT); 
       return false;
     }
     return true;
@@ -193,18 +193,18 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         {/* <Text style={styles.title}>{renderRecipe.title}</Text> */}
 
         <TouchableOpacity style={{flexDirection: 'row'}} onPress={validateForms}>
-          <Text style={styles.text}>Next</Text>
+          <Text style={styles.text}>{Strings.translate('next')}</Text>
           <Iconify icon="carbon:next-outline" size={33} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.titleContainer}>
-        <TextInput placeholder='TITULO RECETA' value={title} onChangeText={setTitle} style={styles.title}></TextInput>
+        <TextInput placeholder={Strings.translate('recipeTitle')} value={title} onChangeText={setTitle} style={styles.title}></TextInput>
         <Iconify icon="iconamoon:edit" size={15} color="black" />
       </View>
       
       {titleError && (
-        <Text style={styles.errorMessage}>Title can't be empty</Text>
+        <Text style={styles.errorMessage}>{Strings.translate('recipeForm1EmptyTitle')}}</Text>
       )}
         
       <FlatList

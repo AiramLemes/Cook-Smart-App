@@ -3,6 +3,7 @@ import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import { useEffect, useState } from "react";
 import Ingredient from "../model/Ingredient";
+import { Strings } from "../constants/Strings";
 
 
 const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) => {
@@ -78,9 +79,9 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text>Ingredientes</Text>
+        <Text>{Strings.translate('ingredient')}</Text>
         <TouchableOpacity style={styles.addButton} onPress={addIngredient}>
-          <Text style={{textAlign: 'center'}}>Add Ingredient</Text>
+          <Text style={{textAlign: 'center'}}>{Strings.translate('addIngredient')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -90,9 +91,9 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
             <Iconify icon="fluent:food-16-regular" style={styles.icon} size={30} color="black" />
           </View>
           <View style={styles.inputsContainer}>
-            <TextInput placeholder="Ingredient" value={ingredientName}  onChangeText={setIngredientName}/>
-            <TextInput placeholder="Amount" value={ingredientAmount}  onChangeText={setIngredientAmount}/>
-            <TextInput placeholder="Unit" value={ingredientUnit}  onChangeText={setIngredientUnit}/>
+            <TextInput placeholder={Strings.translate('ingredient')} value={ingredientName}  onChangeText={setIngredientName}/>
+            <TextInput placeholder={Strings.translate('amount')} value={ingredientAmount}  onChangeText={setIngredientAmount}/>
+            <TextInput placeholder={Strings.translate('unit')} value={ingredientUnit}  onChangeText={setIngredientUnit}/>
           </View>
         </View>
       </View>

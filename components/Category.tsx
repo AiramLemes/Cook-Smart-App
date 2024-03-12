@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react
 import React, { useEffect, useState } from "react";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
+import { Strings } from "../constants/Strings";
 
 const CategoryList = (props: { onChange: string; error: boolean, initialValue?: string}) => {
   
@@ -86,9 +87,9 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
   return (
     <View>
       <View style={styles.titleSection}>
-        <Text>Categoría</Text>
+        <Text>{Strings.translate('category')}</Text>
         { props.error &&
-        <Text style={{color: 'red'}}>Seleccione una categoría</Text> }
+        <Text style={{color: 'red'}}>{Strings.translate('selectCategory')}</Text> }
       </View>
       <FlatList
         horizontal

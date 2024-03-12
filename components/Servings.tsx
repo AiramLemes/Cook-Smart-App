@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
+import { Strings } from '../constants/Strings';
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {
   const [servingsCount, setServinsCount] = useState(1);
@@ -32,7 +33,7 @@ const Servings = (props: {initialValue?: number; onChange: any}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.servingsText}>Nº de personas</Text>
+      <Text style={styles.servingsText}>{Strings.translate('numberOfPeople')}</Text>
 
       <View style={styles.servingsCotainer}>
         <TouchableOpacity onPress={() => handleServingsCount('up')}>

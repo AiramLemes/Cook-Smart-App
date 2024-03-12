@@ -42,7 +42,7 @@ const DificultySelector = (props: {initialValue?: number; onChange: any; error: 
 
   return (    
     <View style={styles.container}>
-      <Text style={styles.text}>Dificultad</Text>
+      <Text style={styles.text}>{Strings.translate('difficulty')}</Text>
 
       <View style={styles.difficultyContainer}>
         <TouchableOpacity

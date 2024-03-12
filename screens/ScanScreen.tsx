@@ -8,6 +8,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { getProduct } from '../repository/FirebaseProduct';
 import Product from '../model/Product';
 import FaceColor from '../utils/RatingFaceColor';
+import { Strings } from '../constants/Strings';
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -58,9 +59,9 @@ const ScanScreen = ({ navigation }) => {
       {isFocused && (
         <View style={styles.barcode}>
           {hasPermission === null ? (
-            <Text>Requesting for camera permission</Text>
+            <Text>{Strings.translate('scanPermissionMessage')}</Text>
           ) : hasPermission === false ? (
-            <Text style={{textAlign: 'center'}}>No access to camera</Text>
+            <Text style={{textAlign: 'center'}}>{Strings.translate('scanNoPermission')}</Text>
           ) : (
             <Camera
               style={StyleSheet.absoluteFill}

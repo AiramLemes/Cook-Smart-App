@@ -87,7 +87,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
       }
       else {
         clearForm();
-        ToastUtil.showToast('El producto ya se encuentra en la despensa', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('itemAlreadyInPantryMessage'), Toast.durations.SHORT);
       }
     }
 
@@ -101,12 +101,12 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   return (
     <Dialog visible={props.isVisible} style={styles.dialogContainer}>
       <View style={styles.dialogContent}>
-        <Text>Nombre del ingrediente:</Text>
+        <Text>{Strings.translate('enterIngredientName')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={setName}
-            placeholder="Ingresa el nombre"
+            placeholder={Strings.translate('ingredientNameInput')}
             placeholderTextColor={nameError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -114,14 +114,14 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
           <Iconify icon="material-symbols-light:shelves-outline" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>Cantidad:</Text>
+        <Text>{Strings.translate('amount')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => {setAmount(parseInt(text))}}
             value={amount?.toString()}
             keyboardType="numeric"
-            placeholder="Ingresa la cantidad"
+            placeholder={Strings.translate('ingredientAmountInput')}
             placeholderTextColor={amountError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -129,13 +129,13 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
           <Iconify icon="material-symbols-light:balance" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>Unidad:</Text>
+        <Text>{Strings.translate('unit')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={setUnit}
             value={unit}
-            placeholder="Ingresa la unidad"
+            placeholder={Strings.translate('ingredientUnitInput')}
             placeholderTextColor={unitError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -148,7 +148,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
         
         <View>
           <Button
-            title="Aceptar"
+            title={Strings.translate('accept')}
             onPress={() => {addIngredient()}}
             color={Colors.primary}
           />
@@ -156,7 +156,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
 
         <View>
           <Button
-            title="Cancelar"
+            title={Strings.translate('cancel')}
             onPress={handleClose}
             color={Colors.primary}
           />

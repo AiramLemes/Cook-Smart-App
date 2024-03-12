@@ -36,7 +36,7 @@ const RecipeScreen = ({ navigation, route }) => {
           setRenderRecipe(translatedRecipe);
         
         } catch (error) {
-          console.error('Error al traducir:', error);
+          console.error('Error translating:', error);
         }
         setLoading(false);
       }

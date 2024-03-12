@@ -50,15 +50,15 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       if (!editable) {
         const recipeId = await addRecipe(recipe);
         if (!recipeId) {
-          ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
+          ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
         }
         else {
           if (await assignRecipeToUser(recipeId)) {
             navigation.navigate('Home');
-            ToastUtil.showToast('Receta creada correctamente', Toast.durations.SHORT);
+            ToastUtil.showToast(Strings.translate('createRecipe'), Toast.durations.SHORT);
           }
           else {
-            ToastUtil.showToast('Se ha producido un error al crear la receta', Toast.durations.SHORT);
+            ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
           }
         }
       }
@@ -66,13 +66,13 @@ const AddRecipeForm2 = ({ navigation, route }) => {
       else {
         if (await updateRecipe(recipe)) {
           navigation.navigate('Home');
-          ToastUtil.showToast('Receta actualizada correctamente', Toast.durations.SHORT);
+          ToastUtil.showToast(Strings.translate('updateRecipe'), Toast.durations.SHORT);
         }
       }
     }
 
     else {
-      ToastUtil.showToast('Por favor, revise todos los campos', Toast.durations.SHORT);
+      ToastUtil.showToast(Strings.translate('emptyInputs'), Toast.durations.SHORT);
     }
 
   };
@@ -143,7 +143,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         {/* <Text style={styles.title}>{renderRecipe.title}</Text> */}
 
         <TouchableOpacity style={{flexDirection: 'row'}} onPress={createRecipe}>
-          <Text style={styles.text}>{editable? 'Update': 'Create'}</Text>
+          <Text style={styles.text}>{editable? Strings.translate('update'): Strings.translate('create')}</Text>
           <Iconify icon="carbon:next-outline" size={33} color={Colors.primary} />
         </TouchableOpacity>
       </View>
@@ -206,7 +206,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         value={steps}
         autoCapitalize='sentences'
         onChangeText={setSteps}
-        placeholder="Escribe tus pasos aquí..."
+        placeholder={Strings.translate('stepsForm')}
         placeholderTextColor= {stepsError? 'red': 'black'}
       />
     </View>

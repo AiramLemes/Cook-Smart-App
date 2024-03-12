@@ -95,12 +95,12 @@ const SearchScreen = (props: {userId: string| undefined}) => {
     if (result && deletedItemId !== undefined) {
       
       if (await deleteRecipe(deletedItemId)) {
-        ToastUtil.showToast('Receta eliminada correctamente.', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.translate('deleteRecipe'), Toast.durations.SHORT);
         setUpdatedList(!updatedList);
       }
       
       else {
-        ToastUtil.showToast('Se ha producido un error al eliminar la receta.', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.translate('deleteRecipeError'), Toast.durations.SHORT);
       }
       
     }
@@ -152,7 +152,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
         onEndReachedThreshold={0.1}
         />
 
-        <ConfirmationDialog text={"¿ Está seguro de que quieres eliminar la receta ? Esta acción no se puede deshacer."} 
+        <ConfirmationDialog text={Strings.translate('deleteRecipeConfirmationDialog')} 
         isVisible={deleteRecipeDialog} onClose={handleDeleteRecipe}/>
         </>
       )}
@@ -172,7 +172,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
 
       {userId && !isRecipesIdsNotEmpty && (
         <View style={styles.noRecipesTextContainer}>
-          <Text style={styles.noRecipesText}>No hay recetas disponibles</Text>
+          <Text style={styles.noRecipesText}>{Strings.translate('noRecipes')} </Text>
         </View>
       )}
 

@@ -142,13 +142,13 @@ const PantryScreen = () => {
       <IngredientDialog onClose={() => {setDialogVisibility(false)}} isVisible={diaologVisibility}
         onAddProduct={(ingredient: Ingredient) => {addIngredient(ingredient)}}/>
 
-      <ConfirmationDialog text={"Estás seguro de que quieres eliminar este objeto de la lista ?"} 
+      <ConfirmationDialog text={Strings.translate('pantryConfirmationDialog')} 
         isVisible={confirmDialogVisible} onClose={handleConfirmDialog}/>
 
       {pantry === null || pantry.products.length <= 0 && (
         <View style={{width: '100%', height: '100%', zIndex: -2}}>
           <Image style={styles.image} src="https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/pantry%2Fpantry.png?alt=media&token=0ed13f05-5963-4964-8319-c00334038dcd"/>
-          <Text style={styles.text}>La despensa está vacía :(</Text>
+          <Text style={styles.text}>{Strings.translate('emptyPantry')}</Text>
         </View>
       )}
     </View>

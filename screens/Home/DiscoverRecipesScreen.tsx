@@ -7,6 +7,7 @@ import { getBestRecipes, getNewestRecipes } from "../../repository/FirebaseRecip
 import RecipeItem from "../../components/Recipe";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { Title } from "react-native-paper";
+import { Strings } from "../../constants/Strings";
 
 const DiscoverRecipesScreen = ({ navigation }) => {
 
@@ -54,15 +55,15 @@ const DiscoverRecipesScreen = ({ navigation }) => {
   const entries = [
     {
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fchat-gpt.png?alt=media&token=f4790a12-423a-4a6a-b447-2138f06a8771',
-      title: 'Unlock Culinary Creativity with ChatGPT-Powered Recipe Creation!'
+      title: Strings.translate('carouselImageTitle1')
     },
     {
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fscan.png?alt=media&token=74fba929-33b1-40b3-bfcb-70f259c627c6',
-      title: 'Seamless Supermarket Experience: Explore Product Information Instantly!'
+      title: Strings.translate('carouselImageTitle2')
     },
     {
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fpantry.png?alt=media&token=882a2ac0-5a79-4aac-bde1-de8771b86f40',
-      title: 'Organize Your Virtual Pantry Effortlessly!'
+      title: Strings.translate('carouselImageTitle3')
     },
   ];
 
@@ -108,7 +109,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
 
 
       <View style={styles.listContainer}>
-        <Text style={styles.categoryText}>Best Recipes</Text>
+        <Text style={styles.categoryText}>{Strings.translate('bestRecipes')}</Text>
         <FlatList
           ref={bestRecipesList}
           data={bestRecipes}
@@ -119,7 +120,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
       </View>
       
       <View style={styles.listContainer}>
-          <Text style={styles.categoryText}>Newest Recipes</Text>
+          <Text style={styles.categoryText}>{Strings.translate('newestRecipes')}</Text>
           <FlatList
             ref={newestRecipesList}
             data={newestRecipes}
