@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
@@ -9,10 +9,10 @@ import IngredientPicker from '../components/IngredientPicker';
 import Recipe from '../model/Recipe';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
-import { Strings } from '../constants/Strings';
 import { Timestamp } from 'firebase/firestore';
 import Ingredient from '../model/Ingredient';
 import { translateIngredientToEnglish, translateIngredientsToEnglish, translateText } from '../services/TransaltionService';
+import LanguageContext from '../context/LanguageProvider';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation, route }) => {
@@ -36,6 +36,8 @@ const AddRecipeForm1 = ({ navigation, route }) => {
   const [titleError, setTitleError] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
   const [difficultyError, setDifficultyError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
   
   
   const addImage = (uri: string) => {

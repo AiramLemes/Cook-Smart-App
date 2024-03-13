@@ -1,16 +1,16 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text } from "react-native";
 import Colors from "../constants/Colors";
 import { Searchbar } from 'react-native-paper';
 import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
 import RecipeItem from "../components/Recipe";
 import Recipe from "../model/Recipe";
-import { Strings } from "../constants/Strings";
 import { Iconify } from "react-native-iconify";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
 
 const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
@@ -26,6 +26,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const Strings = useContext(LanguageContext);
 
   const userId = props.userId;
 

@@ -1,22 +1,22 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import HomeScreen from "../screens/Home/HomeScreen";
 import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
 import SearchScreen from "../screens/SearchScreen";
-import React from "react";
+import React, { useContext } from "react";
 import Colors from "../constants/Colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Iconify } from "react-native-iconify";
 import ScanScreen from "../screens/ScanScreen";
 import { KeyboardAvoidingView, Platform } from "react-native";
-import { Strings } from "../constants/Strings";
 import HomeTopTab from "./HomeTopTab";
+import LanguageContext from "../context/LanguageProvider";
 
 
 const Tab = createBottomTabNavigator();
 
 const BottomTab = () => {
-
+  
+  const Strings = useContext(LanguageContext);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

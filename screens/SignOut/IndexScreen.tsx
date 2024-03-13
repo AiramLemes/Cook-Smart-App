@@ -1,16 +1,19 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
-import React from "react";
+import React, { useContext } from "react";
 import Colors from "../../constants/Colors";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Strings } from "../../constants/Strings";
+import LanguageContext from "../../context/LanguageProvider";
+
 // @ts-ignore
 const IndexScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
+  const Strings = useContext(LanguageContext);
+
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
       paddingBottom: insets.bottom,

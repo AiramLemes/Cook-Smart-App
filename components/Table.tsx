@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import Product from '../model/Product';
-import { Strings } from '../constants/Strings';
+import LanguageContext from '../context/LanguageProvider';
+
 
 const Table = (props: { product: Product }) => {
 
   const nutritionalInfo = props.product?.nutritionalInformation || {};
+  const Strings = useContext(LanguageContext);
   
   return (
     <View style={styles.table}>

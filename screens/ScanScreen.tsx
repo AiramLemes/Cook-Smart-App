@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native';
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
@@ -8,7 +8,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { getProduct } from '../repository/FirebaseProduct';
 import Product from '../model/Product';
 import FaceColor from '../utils/RatingFaceColor';
-import { Strings } from '../constants/Strings';
+import LanguageContext from '../context/LanguageProvider';
+
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -18,6 +19,8 @@ const ScanScreen = ({ navigation }) => {
   const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+
+  const Strings = useContext(LanguageContext);
   
   let currentProductId = "";
 

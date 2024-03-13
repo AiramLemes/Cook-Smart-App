@@ -1,7 +1,7 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Colors from "../../constants/Colors";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../../assets/landing/PoweredSVG";
@@ -10,7 +10,7 @@ import Toast from "react-native-root-toast";
 import ToastUtil from "../../utils/ToastUtil";
 import { checkEmailPattern } from "../../repository/FirebaseUser";
 import { logIn, checkPassword } from "../../repository/FirebaseUser";
-import { Strings } from "../../constants/Strings";
+import LanguageContext from "../../context/LanguageProvider";
 
 
 
@@ -22,6 +22,8 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState<string>();
   const [emailError, setEmailError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
 
   async function handleLogIn() {
 

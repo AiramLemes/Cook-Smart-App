@@ -1,16 +1,16 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View, TextInput, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { Iconify } from "react-native-iconify";
-import { User } from "../../model/User";
+import User from "../../model/User";
 import { checkEmail, checkEmailPattern, checkUserName, getUserData, loadUserData, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
 import * as ImagePicker from 'expo-image-picker';
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { auth } from "../../firebaseConfig";
 import { sendPasswordResetEmail, updateCurrentUser, updateEmail, verifyPasswordResetCode } from "firebase/auth";
-import { Strings } from "../../constants/Strings";
+import LanguageContext from "../../context/LanguageProvider";
 
 
 //@ts-ignore
@@ -23,6 +23,8 @@ const UserProfileScreen = ({ navigation }) => {
 
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
   
   useEffect(() => {
     const fetchData = async () => {

@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Iconify } from "react-native-iconify";
-import { Strings } from "../constants/Strings";
 import Colors from "../constants/Colors";
+import LanguageContext from "../context/LanguageProvider";
 
 const DificultySelector = (props: {initialValue?: number; onChange: any; error: boolean; size: number }) => {
 
   const {initialValue, size} = props;
-
+  const Strings = useContext(LanguageContext);
   
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
 

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
 import CategoryList from '../components/Category';
-import { Strings } from '../constants/Strings';
 import Recipe from '../model/Recipe';
 import { addRecipe, updateRecipe } from '../repository/FirebaseRecipes';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import { assignRecipeToUser } from '../repository/FirebaseUser';
+import LanguageContext from '../context/LanguageProvider';
 
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {
@@ -21,6 +21,8 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const [resting , setResting] = useState('');
   const [steps, setSteps] = useState('');
   const [category, setCategory] = useState('');
+
+  const Strings = useContext(LanguageContext);
 
 
   useEffect(() => {

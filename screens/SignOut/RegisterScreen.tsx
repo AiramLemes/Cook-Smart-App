@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import LogoSVG from "../../assets/landing/LogoSVG";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Colors from "../../constants/Colors";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
 import PoweredSVG from "../../assets/landing/PoweredSVG";
@@ -10,6 +10,7 @@ import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { checkEmailPattern, checkPassword, checkUserName, createUser } from "../../repository/FirebaseUser";
 import { Strings } from "../../constants/Strings";
+import LanguageContext from "../../context/LanguageProvider";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {
@@ -23,7 +24,7 @@ const RegisterScreen = ({navigation}) => {
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [usedEmail, setUsedEmail] = useState<boolean>(false);
 
-  
+  const Strings = useContext(LanguageContext);
 
 
   async function register() {

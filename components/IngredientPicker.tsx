@@ -1,9 +1,9 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Ingredient from "../model/Ingredient";
-import { Strings } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 
 const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) => {
@@ -12,6 +12,8 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   const [ingredientName, setIngredientName] = useState<string>('');
   const [ingredientAmount, setIngredientAmount] = useState<string>('');
   const [ingredientUnit, setIngredientUnit] = useState<string>('');
+
+  const Strings = useContext(LanguageContext);
 
   const initialValue = props.initialValue;
 
@@ -79,7 +81,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text>{Strings.translate('ingredient')}</Text>
+        <Text>{Strings.translate('ingredients')}</Text>
         <TouchableOpacity style={styles.addButton} onPress={addIngredient}>
           <Text style={{textAlign: 'center'}}>{Strings.translate('addIngredient')}</Text>
         </TouchableOpacity>
@@ -91,7 +93,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
             <Iconify icon="fluent:food-16-regular" style={styles.icon} size={30} color="black" />
           </View>
           <View style={styles.inputsContainer}>
-            <TextInput placeholder={Strings.translate('ingredient')} value={ingredientName}  onChangeText={setIngredientName}/>
+            <TextInput placeholder={Strings.translate('enterIngredientName')} value={ingredientName}  onChangeText={setIngredientName}/>
             <TextInput placeholder={Strings.translate('amount')} value={ingredientAmount}  onChangeText={setIngredientAmount}/>
             <TextInput placeholder={Strings.translate('unit')} value={ingredientUnit}  onChangeText={setIngredientUnit}/>
           </View>

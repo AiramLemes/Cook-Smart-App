@@ -1,16 +1,19 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import SearchScreen from '../screens/SearchScreen';
 import Colors from '../constants/Colors';
 import OwnRecipesScreen from '../screens/Home/OwnRecipesScreen';
 import DiscoverRecipesScreen from '../screens/Home/DiscoverRecipesScreen';
+import LanguageContext from '../context/LanguageProvider';
 
 
 const Tab = createMaterialTopTabNavigator();
 
 const HomeTopTab = () => {
 
+  const Strings = useContext(LanguageContext);
+  
   return (
     <Tab.Navigator
     initialRouteName="OwnRecipes"
@@ -25,8 +28,8 @@ const HomeTopTab = () => {
         
       }}
     >
-      <Tab.Screen name="Inspiración" component={DiscoverRecipesScreen} />
-      <Tab.Screen name="Tus recetas" component={OwnRecipesScreen} />
+      <Tab.Screen name={Strings.translate('homeInspiration')} component={DiscoverRecipesScreen} />
+      <Tab.Screen name={Strings.translate('homeUserRecipes')} component={OwnRecipesScreen} />
     </Tab.Navigator>
   );
 

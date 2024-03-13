@@ -10,20 +10,33 @@ import RegisterScreen from './screens/SignOut/RegisterScreen';
 import Header from './navigation/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import StackNav from './navigation/StackNav';
-import { useState } from 'react';
+import { useState, useEffect, createContext } from 'react';
+import { I18n } from 'i18n-js';
+import { loadLanguagePreference, loadTranslations } from './constants/Strings';
+import LanguageContext from './context/LanguageProvider';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
-  
-  React.useEffect(() => {
+  const [Strings, setStrings] = useState(new I18n);
+
+  useEffect(() => {
+
+    const translations = async () => {
+      await loadLanguagePreference(Strings);
+      await loadTranslations(Strings, Strings.locale);
+      setStrings(Strings);
+    }
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
     });
 
+    translations();
+
     return () => unsubscribe();
-  }, []);
+  }, [Strings.onChange]);
 
   function isSignedIn(): boolean {
     return user !== null;
@@ -31,36 +44,38 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <RootSiblingParent>
-        <NavigationContainer>
-          {isSignedIn() ? (
-            <>
-            <Header/>
-              <StackNav navigation={undefined}/>
-            </>
-          ) : (
-            <>
-              <Stack.Navigator>
-                <Stack.Screen
-                  name='Index'
-                  component={IndexScreen}
-                  options={{ headerShown: false }}
+      <LanguageContext.Provider value={Strings}>
+        <RootSiblingParent>
+          <NavigationContainer>
+            {isSignedIn() ? (
+              <>
+                <Header/>
+                <StackNav navigation={undefined}/>
+              </>
+            ) : (
+              <>
+                <Stack.Navigator>
+                  <Stack.Screen
+                    name='Index'
+                    component={IndexScreen}
+                    options={{ headerShown: false }}
                   />
-                <Stack.Screen
-                  name='Login'
-                  component={LoginScreen}
-                  options={{ headerShown: false }}
+                  <Stack.Screen
+                    name='Login'
+                    component={LoginScreen}
+                    options={{ headerShown: false }}
                   />
-                <Stack.Screen
-                  name='Register'
-                  component={RegisterScreen}
-                  options={{ headerShown: false }}
+                  <Stack.Screen
+                    name='Register'
+                    component={RegisterScreen}
+                    options={{ headerShown: false }}
                   />
-              </Stack.Navigator>
-            </>
-          )}
-        </NavigationContainer>
-      </RootSiblingParent>
+                </Stack.Navigator>
+              </>
+            )}
+          </NavigationContainer>
+        </RootSiblingParent>
+      </LanguageContext.Provider>
     </SafeAreaProvider>
   );
 }

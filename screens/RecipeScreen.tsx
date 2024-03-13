@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
@@ -6,11 +6,11 @@ import Recipe from '../model/Recipe';
 import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
 import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
-import { Strings } from '../constants/Strings';
 import { auth } from '../firebaseConfig';
 import { handleRecipeLike } from '../repository/FirebaseRecipes';
 import { getUserNameById } from '../repository/FirebaseUser';
 import StarsPicker from '../components/StarsPicker';
+import LanguageContext from '../context/LanguageProvider';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
@@ -25,6 +25,8 @@ const RecipeScreen = ({ navigation, route }) => {
   const [userName, setUserName] = useState<string | undefined>();
 
   const [isAiRecipe, setIsAiRecipe] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
 
   useEffect(() => {
     const fetchData = async () => {  

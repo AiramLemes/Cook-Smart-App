@@ -1,5 +1,5 @@
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Colors from "../constants/Colors";
 import { Iconify } from "react-native-iconify";
 import { generateRecipe } from "../services/Openai";
@@ -7,7 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import CookingAnimation from "../utils/CookingAnimation";
-import { Strings } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {
@@ -18,6 +18,7 @@ const IAScreen = ({navigation}) => {
   const [search, setSearch] = useState<string>("");
 
   const textInputRef = useRef(null);
+  const Strings = useContext(LanguageContext);
 
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [creatingRecipe, setCreatingRecipe] = useState<boolean>(false);

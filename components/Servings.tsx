@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
-import { Strings } from '../constants/Strings';
+import LanguageContext from '../context/LanguageProvider';
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {
   const [servingsCount, setServinsCount] = useState(1);
   // props.onChange(1);
-
+  const Strings = useContext(LanguageContext);
   const initialValue = props.initialValue;
 
   useEffect(() => {

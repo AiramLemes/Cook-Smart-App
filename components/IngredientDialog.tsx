@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { Iconify } from "react-native-iconify";
 import { Dialog, TextInput } from "react-native-paper";
 import Colors from "../constants/Colors";
 import Ingredient from "../model/Ingredient";
 import { translateIngredientToEnglish, translateText } from "../services/TransaltionService";
-import { Strings } from "../constants/Strings";
 import { addIngredientToPantry } from "../repository/FirebasePantry";
-import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
 
 const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boolean }) => {
 
@@ -20,6 +19,8 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   const [nameError, setNameError] = useState<boolean>(false);  
   const [amountError, setAmountError] = useState<boolean>(false);
   const [unitError, setUnitError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
   
   function isEmpty(text: string) {
     return text.trim().length === 0;

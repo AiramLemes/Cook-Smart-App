@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, FlatList, Dimensions, ActivityIndicator, Platform } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Colors from "../../constants/Colors";
 import { useIsFocused } from "@react-navigation/native";
 import Recipe from "../../model/Recipe";
@@ -7,7 +7,7 @@ import { getBestRecipes, getNewestRecipes } from "../../repository/FirebaseRecip
 import RecipeItem from "../../components/Recipe";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { Title } from "react-native-paper";
-import { Strings } from "../../constants/Strings";
+import LanguageContext from "../../context/LanguageProvider";
 
 const DiscoverRecipesScreen = ({ navigation }) => {
 
@@ -16,6 +16,8 @@ const DiscoverRecipesScreen = ({ navigation }) => {
   const onFocus = useIsFocused();
   const numberOfRecipes = 7;
   const initialIndex = 3;
+  
+  const Strings = useContext(LanguageContext);
 
   const [bestRecipes, setBestRecipes] = useState<Recipe[]>([]);
   const [newestRecipes, setNewestRecipes] = useState<Recipe[]>([]);
@@ -32,7 +34,6 @@ const DiscoverRecipesScreen = ({ navigation }) => {
       setLoading(false);
     };
 
-  
     fetchData();
   }, []);
 

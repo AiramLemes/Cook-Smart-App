@@ -1,12 +1,13 @@
 import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
-import { Strings } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 const CategoryList = (props: { onChange: string; error: boolean, initialValue?: string}) => {
   
   const initialValue = props.initialValue;
+  const Strings = useContext(LanguageContext);
   
   useEffect(() => {
     if (initialValue) {

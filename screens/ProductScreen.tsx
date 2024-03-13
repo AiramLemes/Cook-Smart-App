@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Colors from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Iconify } from "react-native-iconify";
@@ -8,7 +8,7 @@ import Table from "../components/Table";
 import { getBetterProducts } from "../repository/FirebaseProduct";
 import Product from "../model/Product";
 import FaceColor from "../utils/RatingFaceColor";
-import { Strings } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 // @ts-ignore
 const ProductScreen = ({ navigation, route }) => {
@@ -19,6 +19,8 @@ const ProductScreen = ({ navigation, route }) => {
   const [isNutritionalValuesCollapsed, setIsNutritionalValuesCollapsed] = React.useState(true);
 
   const [betterProducts, setBetterProducts] = React.useState([]);
+
+  const Strings = useContext(LanguageContext);
 
   useEffect(() => {
     const fetchBetterProducts = async () => {
