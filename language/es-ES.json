@@ -121,6 +121,7 @@
   "emptyPantry": "La despensa está vacía :(",
   "homeInspiration": "INSPIRACIÓN",
   "homeUserRecipes": "TUS RECETAS",
-  "giveCameraPermissions": "Dar permisos a la cámara"
+  "giveCameraPermissions": "Dar permisos a la cámara",
+  "aiErrorGeneratingRecipe": "Se ha producido un error generando la receta, por favor, inténtelo de nuevo."
 }
   

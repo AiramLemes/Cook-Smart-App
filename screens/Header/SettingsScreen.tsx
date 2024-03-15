@@ -39,7 +39,7 @@ const SettingsScreen = ({navigation}) => {
           <Iconify icon="lets-icons:back" size={33} color="black"/>
         </TouchableOpacity>
   
-        <View>
+        <View style={{alignContent: 'center'}}>
           <Image
             source={{ uri: userData?.image }}
             style={styles.userImage}
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.imageBorder,
     marginBottom: 20,
+    alignSelf: 'center'
   },
 
   picker: {

@@ -73,6 +73,7 @@ const IAScreen = ({navigation}) => {
     }
 
     else {
+      setCreatingRecipe(false);
       ToastUtil.showToast(Strings.translate('iaRecipeError'), Toast.durations.SHORT);
     }
 

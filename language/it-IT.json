@@ -121,6 +121,7 @@
   "emptyPantry": "La dispensa è vuota :(",
   "homeInspiration": "ISPIRAZIONE",
   "homeUserRecipes": "LE VOSTRE RICETTE",
-  "giveCameraPermissions": "Autorizzazioni per la telecamera"
+  "giveCameraPermissions": "Autorizzazioni per la telecamera",
+  "aiErrorGeneratingRecipe": "Si è verificato un errore nella generazione della ricetta, riprovare."
 }
   

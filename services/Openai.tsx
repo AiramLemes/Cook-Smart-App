@@ -1,6 +1,5 @@
 import OpenAI from 'openai';
 import Recipe from '../model/Recipe';
-import { Strings } from '../constants/Strings';
 
 const openai = new OpenAI({
   apiKey: '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', // Esto es opcional si ya tienes configurada la clave en tu entorno
@@ -9,7 +8,6 @@ const openai = new OpenAI({
 async function generateRecipe(ingredients: string[]) {
   try {
     console.log('Generating the recipe..., wait a minute');
-    const lang = Strings.locale;
     const userMessage = `generate a recipe with these ingredients: ${ingredients.join(', ')}
       interface Recipe {
         userId: 'chat-gpt';
@@ -67,13 +65,16 @@ async function generateRecipe(ingredients: string[]) {
         console.log(recipe);
         return recipe;
       } else {
-        console.log('La respuesta del modelo no contiene todos los campos necesarios.');
+        console.log('The model response does not contain all the required fields.');
+        return null;
       }
     } else {
-      console.log('No se obtuvo una respuesta de receta del modelo.');
+      console.log('No model prescription response was obtained.');
+      return null;
     }
   } catch (error) {
     console.error('Error al obtener la respuesta del modelo:', error.message);
+    return null
   }
 }
 

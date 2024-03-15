@@ -121,6 +121,7 @@
   "emptyPantry": "The pantry is empty :(",
   "homeInspiration": "INSPIRATION",
   "homeUserRecipes": "YOUR RECIPES",
-  "giveCameraPermissions": "Giving permissions to the camera"
+  "giveCameraPermissions": "Giving permissions to the camera",
+  "aiErrorGeneratingRecipe": "There was an error generating the recipe, please try again."
     
 }

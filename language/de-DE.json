@@ -122,7 +122,8 @@
   "emptyPantry": "Die Speisekammer ist leer :(",
   "homeInspiration": "INSPIRATION",
   "homeUserRecipes": "IHRE REZEPTE",
-  "giveCameraPermissions": "Erteilen von Berechtigungen für die Kamera"
+  "giveCameraPermissions": "Erteilen von Berechtigungen für die Kamera",
+  "aiErrorGeneratingRecipe": "Bei der Erstellung des Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
     
 }
   
