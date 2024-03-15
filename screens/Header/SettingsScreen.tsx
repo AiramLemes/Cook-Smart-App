@@ -8,6 +8,7 @@ import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
 import LanguagePicker from "../../components/LanguagePicker";
 import LanguageContext from "../../context/LanguageProvider";
+import * as Linking from 'expo-linking';
 
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {
@@ -50,8 +51,7 @@ const SettingsScreen = ({navigation}) => {
         <View>
 
           <LanguagePicker/>
-
-          <TouchableOpacity style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {Linking.openURL('mailto:support@cooksmartapp.com')}}>
             <Text style={styles.buttonText}>{Strings.t('contactUs')}</Text>
             <Iconify icon="game-icons:talk" size={24} color="black"/>
           </TouchableOpacity>
@@ -61,7 +61,7 @@ const SettingsScreen = ({navigation}) => {
             <Iconify icon="fluent:dark-theme-24-regular" size={24} color="black"/>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonWithIcon}>
+          <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {Linking.openURL('https://airam28074.wixsite.com/cooksmart-app')}}>
             <Text style={styles.buttonText}>{Strings.t('aboutApp')}</Text>
             <Iconify icon="material-symbols:info-outline" size={24} color="black"/>
           </TouchableOpacity>
