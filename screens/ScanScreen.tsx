@@ -9,6 +9,7 @@ import { getProduct } from '../repository/FirebaseProduct';
 import Product from '../model/Product';
 import FaceColor from '../utils/RatingFaceColor';
 import LanguageContext from '../context/LanguageProvider';
+import * as Linking from 'expo-linking';
 
 
 // @ts-ignore
@@ -31,7 +32,7 @@ const ScanScreen = ({ navigation }) => {
     };
 
     getBarCodeScannerPermissions();
-  }, []);
+  }, [isFocused]);
 
   // @ts-ignore
   const handleBarCodeScanned = async ({ data }) => {
@@ -45,10 +46,7 @@ const ScanScreen = ({ navigation }) => {
       }
     }
   };
-  // navigation.navigate('Product', scannedProduct)
-  const handleGoButtonPress = () => {
-    navigation.navigate('Product', scannedProduct);
-  };
+
 
   return (
     <SafeAreaView
@@ -62,9 +60,18 @@ const ScanScreen = ({ navigation }) => {
       {isFocused && (
         <View style={styles.barcode}>
           {hasPermission === null ? (
-            <Text>{Strings.translate('scanPermissionMessage')}</Text>
+            <View style={styles.centeredMessageContainer}>
+              <Text>{Strings.translate('scanPermissionMessage')}</Text>
+            </View>
           ) : hasPermission === false ? (
-            <Text style={{textAlign: 'center'}}>{Strings.translate('scanNoPermission')}</Text>
+            <View style={styles.centeredMessageContainer}>
+              <Text style={{ textAlign: 'center' }}>{Strings.translate('scanNoPermission')}</Text>
+              <TouchableOpacity  onPress={() => {Linking.openSettings()}}>
+                <Text style={styles.permissionText}>{Strings.translate('giveCameraPermissions')}</Text>
+              </TouchableOpacity>
+              
+            </View>
+            
           ) : (
             <Camera
               style={StyleSheet.absoluteFill}
@@ -72,54 +79,46 @@ const ScanScreen = ({ navigation }) => {
               onBarCodeScanned={handleBarCodeScanned}
             />
           )}
-
         </View>
       )}
-{/* productExists */}
-    { productExists && !isHidden && (
-      <View style={styles.productCard}>
-        <View style={styles.column}>
-          <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
+  
+      {/* productExists */}
+      {productExists && !isHidden && (
+        <View style={styles.productCard}>
+          {/* Resto del código */}
         </View>
-        <View style={{ ...styles.column, flex: 3, left: 10}}>
-          <Text style={{fontSize: 17}} >{scannedProduct!!.name}</Text>
-          <Text>{scannedProduct!!.brand}</Text>
-          <View style={styles.rating}>
-            <FaceColor rate={scannedProduct!!.rate} size={20}/>
-            <Text>  {scannedProduct!!.rate}/100</Text>
-          </View>
-        </View>
-        <View style={styles.column}>
-          <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
-            <Iconify icon="material-symbols:close" size={24} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
-            <Iconify icon="carbon:next-filled" size={33} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-  )}
-
+      )}
     </SafeAreaView>
-  )
-};
-
+  );
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignContent: 'center',
+    backgroundColor: Colors.background,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 20,
   },
   barcode: {
     width: '100%',
     height: '100%',
   },
+  centeredMessageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  title: {
+    fontSize: 20,
+  },
+
+  permissionText: {
+    textAlign: 'center',
+    marginTop: 20,
+    textDecorationLine: 'underline',
+    color: Colors.blue
+  },
+
   productCardContainer: {
     position: 'absolute',
     bottom: 0,
