@@ -8,14 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Iconify } from "react-native-iconify";
 import { deleteRecipe } from "../repository/FirebaseRecipes";
 
-const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: boolean) => void;}) => {
+const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: string) => void;}) => {
   
   const { recipe, userId } = props;
   const navigation = useNavigation();
 
   const handleDelete = () => {
-    deleteRecipe(recipe.id);
-    props.onDelete?.(true);
+    props.onDelete?.(recipe.id);
   };
 
   return (
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   recipe: {
     flex: 1,
     alignItems: 'center',
-    zIndex: 1
+    zIndex: 1,
   },
 
   recipeImage: {
@@ -78,7 +77,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textShadowColor: 'rgba(0, 0, 0, 0.25)',
     textShadowOffset: {width: -2, height: 2},
-    textShadowRadius: 10
+    textShadowRadius: 10,
+    justifyContent: 'center',
+    textAlign: 'center'
   },
   
   edit: {

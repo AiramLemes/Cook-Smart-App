@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import Colors from "../constants/Colors";
 import { Dialog } from "react-native-paper";
+import LanguageContext from "../context/LanguageProvider";
+import { useContext } from "react";
 
 const ConfirmationDialog = (props: {text: string, isVisible: boolean, onClose: any}) => {
 
+  const Strings = useContext(LanguageContext);
 
   return (
     <Dialog visible={props.isVisible} style={styles.dialogContainer}>
@@ -16,7 +19,7 @@ const ConfirmationDialog = (props: {text: string, isVisible: boolean, onClose: a
         
         <View>
           <Button
-            title="Aceptar"
+            title={Strings.t('accept')}
             onPress={() => {props.onClose(true)}}
             color={Colors.primary}
           />
@@ -24,7 +27,7 @@ const ConfirmationDialog = (props: {text: string, isVisible: boolean, onClose: a
 
         <View>
           <Button
-            title="Cancelar"
+            title={Strings.t('cancel')}
             onPress={() => {props.onClose(false)}}
             color={Colors.primary}
           />

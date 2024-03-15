@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import { Iconify } from 'react-native-iconify';
@@ -9,10 +9,10 @@ import IngredientPicker from '../components/IngredientPicker';
 import Recipe from '../model/Recipe';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
-import { Strings } from '../constants/Strings';
 import { Timestamp } from 'firebase/firestore';
 import Ingredient from '../model/Ingredient';
 import { translateIngredientToEnglish, translateIngredientsToEnglish, translateText } from '../services/TransaltionService';
+import LanguageContext from '../context/LanguageProvider';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation, route }) => {
@@ -31,11 +31,13 @@ const AddRecipeForm1 = ({ navigation, route }) => {
   const [title, setTitle] = useState<string>('');
   const [difficulty, setDifficulty] = useState<number>();
   const [servings, setServings] = useState<number>(1);
-  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   
   const [titleError, setTitleError] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
   const [difficultyError, setDifficultyError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
   
   
   const addImage = (uri: string) => {
@@ -51,7 +53,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
           <Iconify style={{alignSelf: 'center'}} icon="gala:add" size={45} color="black" />
         </TouchableOpacity>
         {imageError && (
-          <Text style={styles.errorMessage}>You must upload at least 1 image</Text>
+          <Text style={styles.errorMessage}>{Strings.translate('recipeForm1ImageError')}</Text>
         )}
       </View>
     );
@@ -117,7 +119,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 
   const isIngredientsValid = () => {
     if (ingredients.length <= 0) {
-      ToastUtil.showToast('The ingredients list can not be empty!', Toast.durations.SHORT); 
+      ToastUtil.showToast(Strings.translate('recipeForm1EmptyIngredients'), Toast.durations.SHORT); 
       return false;
     }
     return true;
@@ -149,20 +151,9 @@ const AddRecipeForm1 = ({ navigation, route }) => {
       const images = [...imagesList];
       images.splice(0, 1)
       
-      const ingredientsList: Ingredient[] = [];
 
-      ingredients.forEach(async item => {
-        const name = item.split(',')[0];
-        const amount = item.split(',')[1];
-        const translatedName = await translateText(Strings.locale, name);
-        
-        ingredientsList.push({
-          name: name,
-          unit: '',
-          amount: amount,
-          englishVersion: translatedName
-        });
-
+      ingredients.forEach(async ingredient => {
+        ingredient.englishVersion = await translateText(Strings.locale, ingredient.name, true);
       });
 
       const recipe: Recipe = {
@@ -171,7 +162,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         assessment: editableRecipe ? editableRecipe.assessment : 0,
         id: editableRecipe ? editableRecipe.id : '',
         images: images,
-        ingredients: ingredientsList,
+        ingredients: ingredients,
         steps: editableRecipe ? editableRecipe.steps : [],
         lang: Strings.locale,
         preparation: editableRecipe ? editableRecipe.preparation : '',
@@ -191,10 +182,11 @@ const AddRecipeForm1 = ({ navigation, route }) => {
       navigation.navigate('AddRecipeForm2', {recipe: recipe, editable: editableRecipe? true: false});
     }
   }
- 
-  return (
-    <ScrollView style={styles.container}>
 
+
+  const contentUp = () => {
+    return (
+      <>
       <View style={styles.recipeTitle}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Iconify icon="lets-icons:back" size={33} color="black" />
@@ -203,21 +195,20 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         {/* <Text style={styles.title}>{renderRecipe.title}</Text> */}
 
         <TouchableOpacity style={{flexDirection: 'row'}} onPress={validateForms}>
-          <Text style={styles.text}>Next</Text>
+          <Text style={styles.text}>{Strings.translate('next')}</Text>
           <Iconify icon="carbon:next-outline" size={33} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.titleContainer}>
-        <TextInput placeholder='TITULO RECETA' value={title} onChangeText={setTitle} style={styles.title}></TextInput>
+        <TextInput placeholder={Strings.translate('recipeTitle')} value={title} onChangeText={setTitle} style={styles.title}></TextInput>
         <Iconify icon="iconamoon:edit" size={15} color="black" />
       </View>
-        {titleError && (
-          <Text style={styles.errorMessage}>Title can't be empty</Text>
-        )}
-        
-    
       
+      {titleError && (
+        <Text style={styles.errorMessage}>{Strings.translate('recipeForm1EmptyTitle')}}</Text>
+      )}
+        
       <FlatList
         horizontal
         style={styles.imagesList}
@@ -225,6 +216,14 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         renderItem={({ item, index }) =>  item == '' ? addImagePicker() : addImageItem(item, index)}
         keyExtractor={(item) => item.toString()}
       />
+      </>
+    );
+  };
+
+
+  const contentDown = () => {
+    return (
+      <>
       
       <View style={{marginBottom: 20}}>
 
@@ -257,8 +256,27 @@ const AddRecipeForm1 = ({ navigation, route }) => {
           <IngredientPicker initialValue={editableRecipe.ingredients} onChange={setIngredients}/>
         )}
       </View>
+      
+      </>
+    );
+  };
 
-    </ScrollView>
+
+
+ 
+  return (
+
+    <FlatList
+      data={[{ key: 'up' }, { key: 'down' }]}
+      contentContainerStyle={styles.container}
+      renderItem={({ item }) => (
+        item.key === 'up' ?
+          contentUp()
+        :
+          contentDown()       
+      )}
+      keyExtractor={(item) => item.key}
+    />
   );
 };
 

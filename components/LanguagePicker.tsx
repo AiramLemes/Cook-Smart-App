@@ -1,21 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Iconify } from "react-native-iconify";
 import ModalSelector from "react-native-modal-selector";
-import { Strings, changeLanguage } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
+import { changeLanguage } from "../constants/Strings";
 
 const LanguagePicker = () => {
   
+  const Strings = useContext(LanguageContext);
   const [language, setLanguage] = useState(Strings.locale);
   const modalRef = useRef(null);
 
   const data = [
     { key: 0, label: "English", code: 'en-US',},
     { key: 1, label: "French", code: 'fr-FR' },
-    { key: 0, label: "German", code: 'de-DE',},
-    { key: 1, label: "Italian", code: 'it-IT' },
-    { key: 0, label: "Portuguese", code: 'pt-PT',},
-    { key: 1, label: "Spanish", code: 'es-ES' },
+    { key: 2, label: "German", code: 'de-DE',},
+    { key: 3, label: "Italian", code: 'it-IT' },
+    { key: 4, label: "Portuguese", code: 'pt-PT',},
+    { key: 5, label: "Spanish", code: 'es-ES' },
   ];
 
   const handlePress = () => {
@@ -31,9 +33,9 @@ const LanguagePicker = () => {
         ref={modalRef}
         style={styles.buttonWithIcon}
         data={data}
-        onChange={(lang) => {
+        onChange={async (lang) => {
           setLanguage(lang.code);
-          changeLanguage(lang.code)
+          await changeLanguage(Strings, lang.code);
         }}
         cancelText={Strings.t("cancel")}
       >

@@ -64,10 +64,10 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
         setAssessment(assessment);
 
       } else {
-        console.error('Usuario no autenticado');
+        console.error('Unauthenticated user');
       }
     } catch (error) {
-      console.error('Error al manejar la valoración:', error);
+      console.error('Error seting an assessment', error);
     }
   };
   

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { Iconify } from "react-native-iconify";
 import { useIsFocused } from "@react-navigation/native";
 import { Shadow } from "react-native-shadow-2";
 import Colors from "../constants/Colors";
-import { Strings } from "../constants/Strings";
 import IngredientItem from "../components/IngredientItem";
 import Pantry from "../model/Pantry";
 import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
 import IngredientDialog from "../components/IngredientDialog";
 import Ingredient from "../model/Ingredient";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import LanguageContext from "../context/LanguageProvider";
 
 const PantryScreen = () => {
   const [search, setSearch] = useState("");
@@ -24,6 +24,8 @@ const PantryScreen = () => {
   const [diaologVisibility, setDialogVisibility] = useState<boolean>(false);
   const [confirmDialogVisible, setconfirmDialogVisible] = useState<boolean>(false);
   const [removeIngredientIndex, setRemoveIngredientIndex] = useState<number | undefined>();
+
+  const Strings = useContext(LanguageContext);
 
   useEffect(() => {
 
@@ -142,16 +144,16 @@ const PantryScreen = () => {
       <IngredientDialog onClose={() => {setDialogVisibility(false)}} isVisible={diaologVisibility}
         onAddProduct={(ingredient: Ingredient) => {addIngredient(ingredient)}}/>
 
-      <ConfirmationDialog text={"Estás seguro de que quieres eliminar este objeto de la lista ?"} 
+      <ConfirmationDialog text={Strings.translate('pantryConfirmationDialog')} 
         isVisible={confirmDialogVisible} onClose={handleConfirmDialog}/>
 
-    {pantry === null || pantry.products.length <= 0 && (
-      <View style={{width: '100%', height: '100%'}}>
-        <Image style={styles.image} src="https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/pantry%2Fpantry.png?alt=media&token=0ed13f05-5963-4964-8319-c00334038dcd"/>
-        <Text style={styles.text}>La despensa está vacía :(</Text>
-      </View>
-    )}
-      </View>
+      {pantry === null || pantry.products.length <= 0 && (
+        <View style={{width: '100%', height: '100%', zIndex: -2}}>
+          <Image style={styles.image} src="https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/pantry%2Fpantry.png?alt=media&token=0ed13f05-5963-4964-8319-c00334038dcd"/>
+          <Text style={styles.text}>{Strings.translate('emptyPantry')}</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Colors.background,
     width: "100%",
-    height: '100%'
+    height: '100%',
   },
 
   searchBarContainer: {

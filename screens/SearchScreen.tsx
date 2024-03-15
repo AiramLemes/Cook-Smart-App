@@ -1,13 +1,16 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text } from "react-native";
 import Colors from "../constants/Colors";
 import { Searchbar } from 'react-native-paper';
-import { getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
+import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
 import RecipeItem from "../components/Recipe";
 import Recipe from "../model/Recipe";
-import { Strings } from "../constants/Strings";
 import { Iconify } from "react-native-iconify";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import ToastUtil from "../utils/ToastUtil";
+import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
 
 const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
@@ -17,10 +20,13 @@ const SearchScreen = (props: {userId: string| undefined}) => {
   const [loading, setLoading] = useState(false);
   const [previousSearch, setPreviousSearch] = useState<string>('');
   const [isRecipesIdsNotEmpty, setIsRecipesIdsNotEmpty] = useState<boolean>(false);
-  const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false);
+  const [deletedItemId, setDeletedItemId] = useState<string|undefined>(undefined);
+  const [updatedList, setUpdatedList] = useState<boolean>(false);
+  const [deleteRecipeDialog, setDeleteRecipeDialog] = useState<boolean>(false);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const Strings = useContext(LanguageContext);
 
   const userId = props.userId;
 
@@ -36,8 +42,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
       setRecipes([]);
     }
     
-    setIsItemDeleted(false);
-  }, [userId, isFocused, isItemDeleted]);
+  }, [userId, isFocused, updatedList]);
 
   const fetchRecipes = useCallback(async (pageSize: number, lastVisibleRef: Recipe | null, query: string) => {
     try {
@@ -87,6 +92,23 @@ const SearchScreen = (props: {userId: string| undefined}) => {
     }
   };
 
+  const handleDeleteRecipe = async (result: boolean) => {
+    if (result && deletedItemId !== undefined) {
+      
+      if (await deleteRecipe(deletedItemId)) {
+        ToastUtil.showToast(Strings.translate('deleteRecipe'), Toast.durations.SHORT);
+        setUpdatedList(!updatedList);
+      }
+      
+      else {
+        ToastUtil.showToast(Strings.translate('deleteRecipeError'), Toast.durations.SHORT);
+      }
+      
+    }
+    
+    setDeleteRecipeDialog(false);
+  };
+
   // useEffect solo para inicialización
   useEffect(() => {
     fetchRecipes(20, null, ''); // No establecer dependencias aquí para evitar bucles infinitos
@@ -119,16 +141,21 @@ const SearchScreen = (props: {userId: string| undefined}) => {
 
 
       {userId && isRecipesIdsNotEmpty && (
+        <>
         <FlatList
         style={styles.recipesContainer}
         data={recipes}
-        renderItem={({ item }) => <RecipeItem recipe={item} userId={userId} onDelete={(value: boolean) => setIsItemDeleted(value)} />}
+        renderItem={({ item }) => <RecipeItem recipe={item} userId={userId} onDelete={(recipeId: string) => {setDeletedItemId(recipeId), setDeleteRecipeDialog(true)}} />}
         keyExtractor={(item) => item.id}
         numColumns={2}
         contentContainerStyle={styles.recipesContainer}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         />
+
+        <ConfirmationDialog text={Strings.translate('deleteRecipeConfirmationDialog')} 
+        isVisible={deleteRecipeDialog} onClose={handleDeleteRecipe}/>
+        </>
       )}
 
       {!userId && (
@@ -146,7 +173,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
 
       {userId && !isRecipesIdsNotEmpty && (
         <View style={styles.noRecipesTextContainer}>
-          <Text style={styles.noRecipesText}>No hay recetas disponibles</Text>
+          <Text style={styles.noRecipesText}>{Strings.translate('noRecipes')} </Text>
         </View>
       )}
 

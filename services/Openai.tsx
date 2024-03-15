@@ -41,7 +41,8 @@ async function generateRecipe(ingredients: string[]) {
       englishVersion: string;
     }`;
 
-    const modelMessage = `ingredients have this interface: ${ingredientInterface} GIVE ALL -THE RESPONSE IN THESE LENGUAGE ${lang}, send it to use Json.parse() and send only the information required without additional comments`;
+    const modelMessage = `ingredients have this interface: ${ingredientInterface} GIVE ALL -THE RESPONSE IN THIS ENGLISH, send it to use Json.parse() and send only the information required without additional comments`;
+
 
     const chatCompletion = await openai.chat.completions.create({
       messages: [
@@ -56,9 +57,9 @@ async function generateRecipe(ingredients: string[]) {
     console.log(recipeResponse)
 
     if (recipeResponse) {
-        const recipe: Recipe = JSON.parse(recipeResponse);
-        recipe.userId = 'chat-gpt'
-        const requiredFields = ['userId', 'title', 'mainImage', 'id', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
+      const recipe: Recipe = JSON.parse(recipeResponse);
+      recipe.userId = 'chat-gpt'
+      const requiredFields = ['userId', 'title', 'mainImage', 'id', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
       const isValidRecipe = requiredFields.every(field => field in recipe);
 
       if (isValidRecipe) {

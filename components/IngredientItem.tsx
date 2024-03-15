@@ -6,7 +6,7 @@ import Ingredient from '../model/Ingredient';
 import { useState } from 'react';
 
 const IngredientItem = (props: {
-  onRemove: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 
+  onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 
 }) => {
   const {size, index} = props;
   const pantryIngredient: boolean =  props.pantryIngredient === undefined ? false : true;
@@ -34,13 +34,19 @@ const IngredientItem = (props: {
   };
 
 
+  const capitalizeFirstLetter = (text: string) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
   return !pantryIngredient ? (
     <View>
       <View style={styles.ingredientContainer}>
         <View style={styles.ingredientIcon}>
           {getIngredientIcon(ingredient!!.englishVersion, size)}
         </View>
-        <Text style={styles.ingredientName}>{ingredient!!.name}</Text>
+        
+        <Text style={styles.ingredientName}>{capitalizeFirstLetter(ingredient!!.name)}</Text>
+
         <Text style={styles.ingredientAmount}>{ingredient!!.amount + ' ' + ingredient.unit}</Text>
       </View>
     </View>
@@ -320,6 +326,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     marginBottom: 15,
+    alignItems: 'center',
   },
 
   ingredientIcon: {

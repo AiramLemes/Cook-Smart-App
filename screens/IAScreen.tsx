@@ -1,5 +1,5 @@
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Colors from "../constants/Colors";
 import { Iconify } from "react-native-iconify";
 import { generateRecipe } from "../services/Openai";
@@ -7,6 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import CookingAnimation from "../utils/CookingAnimation";
+import LanguageContext from "../context/LanguageProvider";
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {
@@ -17,6 +18,7 @@ const IAScreen = ({navigation}) => {
   const [search, setSearch] = useState<string>("");
 
   const textInputRef = useRef(null);
+  const Strings = useContext(LanguageContext);
 
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [creatingRecipe, setCreatingRecipe] = useState<boolean>(false);
@@ -71,7 +73,7 @@ const IAScreen = ({navigation}) => {
     }
 
     else {
-      ToastUtil.showToast('There has been an error generating the recipe, please try it again', Toast.durations.SHORT);
+      ToastUtil.showToast(Strings.translate('iaRecipeError'), Toast.durations.SHORT);
     }
 
 
@@ -84,12 +86,12 @@ const IAScreen = ({navigation}) => {
 
       {!creatingRecipe && (
         <>
-        <Text style={styles.title}>Crea tus recetas personalizadas con la ayuda de ...</Text>
+        <Text style={styles.title}>{Strings.translate('iaTitle')}</Text>
         <Image style={styles.image} source={{ uri: "https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/ai%2Fchat%20gpt%20image.webp?alt=media&token=1020e5ee-2c08-4e99-a0df-9524eb6810bd" }} />
 
         <View style={styles.addProductContainer}>
           <TextInput
-            placeholder="Introduce un producto"
+            placeholder={Strings.translate('iaAddProduct')}
             style={styles.textInput}
             value={search}
             onChangeText={handleSearch}
@@ -109,7 +111,7 @@ const IAScreen = ({navigation}) => {
         {/* <TouchableOpacity style={styles.createRecipeButton} > */}
         <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
 
-          <Text style={{ fontSize: 18, textAlign: 'center', padding: 5}}>Sorpréndeme</Text>
+          <Text style={{ fontSize: 18, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>
         </>
       )}
@@ -118,7 +120,7 @@ const IAScreen = ({navigation}) => {
       {creatingRecipe && (
         <View style={{width: '100%', height: '30%', justifyContent: 'center'}}>
           <CookingAnimation/>
-          <Text style={styles.cookingText}>Wait a minute...</Text>
+          <Text style={styles.cookingText}>{Strings.translate('iaAnimationText')}</Text>
         </View>
       )}
     </View>

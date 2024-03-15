@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { Iconify } from "react-native-iconify";
 import { Dialog, TextInput } from "react-native-paper";
 import Colors from "../constants/Colors";
 import Ingredient from "../model/Ingredient";
 import { translateIngredientToEnglish, translateText } from "../services/TransaltionService";
-import { Strings } from "../constants/Strings";
 import { addIngredientToPantry } from "../repository/FirebasePantry";
-import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
 
 const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boolean }) => {
 
@@ -20,6 +19,8 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   const [nameError, setNameError] = useState<boolean>(false);  
   const [amountError, setAmountError] = useState<boolean>(false);
   const [unitError, setUnitError] = useState<boolean>(false);
+
+  const Strings = useContext(LanguageContext);
   
   function isEmpty(text: string) {
     return text.trim().length === 0;
@@ -87,7 +88,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
       }
       else {
         clearForm();
-        ToastUtil.showToast('El producto ya se encuentra en la despensa', Toast.durations.SHORT);
+        ToastUtil.showToast(Strings.t('itemAlreadyInPantryMessage'), Toast.durations.SHORT);
       }
     }
 
@@ -98,16 +99,15 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
     props.onClose();
   };
 
-
   return (
     <Dialog visible={props.isVisible} style={styles.dialogContainer}>
       <View style={styles.dialogContent}>
-        <Text>Nombre del ingrediente:</Text>
+        <Text>{Strings.translate('enterIngredientName')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={setName}
-            placeholder="Ingresa el nombre"
+            placeholder={Strings.translate('ingredientNameInput')}
             placeholderTextColor={nameError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -115,14 +115,14 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
           <Iconify icon="material-symbols-light:shelves-outline" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>Cantidad:</Text>
+        <Text>{Strings.translate('amount')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => {setAmount(parseInt(text))}}
             value={amount?.toString()}
             keyboardType="numeric"
-            placeholder="Ingresa la cantidad"
+            placeholder={Strings.translate('ingredientAmountInput')}
             placeholderTextColor={amountError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -130,13 +130,13 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
           <Iconify icon="material-symbols-light:balance" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>Unidad:</Text>
+        <Text>{Strings.translate('unit')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={setUnit}
             value={unit}
-            placeholder="Ingresa la unidad"
+            placeholder={Strings.translate('ingredientUnitInput')}
             placeholderTextColor={unitError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
@@ -149,7 +149,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
         
         <View>
           <Button
-            title="Aceptar"
+            title={Strings.translate('accept')}
             onPress={() => {addIngredient()}}
             color={Colors.primary}
           />
@@ -157,7 +157,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
 
         <View>
           <Button
-            title="Cancelar"
+            title={Strings.translate('cancel')}
             onPress={handleClose}
             color={Colors.primary}
           />

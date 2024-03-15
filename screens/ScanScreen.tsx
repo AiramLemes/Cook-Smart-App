@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native';
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
@@ -8,6 +8,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { getProduct } from '../repository/FirebaseProduct';
 import Product from '../model/Product';
 import FaceColor from '../utils/RatingFaceColor';
+import LanguageContext from '../context/LanguageProvider';
+
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -17,11 +19,14 @@ const ScanScreen = ({ navigation }) => {
   const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+
+  const Strings = useContext(LanguageContext);
+  
   let currentProductId = "";
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = (await Camera.requestCameraPermissionsAsync());
       setHasPermission(status === 'granted');
     };
 
@@ -57,9 +62,9 @@ const ScanScreen = ({ navigation }) => {
       {isFocused && (
         <View style={styles.barcode}>
           {hasPermission === null ? (
-            <Text>Requesting for camera permission</Text>
+            <Text>{Strings.translate('scanPermissionMessage')}</Text>
           ) : hasPermission === false ? (
-            <Text>No access to camera</Text>
+            <Text style={{textAlign: 'center'}}>{Strings.translate('scanNoPermission')}</Text>
           ) : (
             <Camera
               style={StyleSheet.absoluteFill}

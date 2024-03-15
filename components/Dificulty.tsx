@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Iconify } from "react-native-iconify";
-import { Strings } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 const Dificulty = (props: {dificulty: number, size: number}) => {
+
+  const Strings = useContext(LanguageContext);
+  
   const dificulty = props.dificulty;
   const size = props.size
   return (

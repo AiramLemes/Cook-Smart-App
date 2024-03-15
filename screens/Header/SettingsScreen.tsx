@@ -1,19 +1,21 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import User from "../../model/User";
 import { getUserData, loadUserData } from "../../repository/FirebaseUser";
 import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
-import { Strings } from "../../constants/Strings";
 import LanguagePicker from "../../components/LanguagePicker";
+import LanguageContext from "../../context/LanguageProvider";
 
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
   const [userData, setUserData] = useState<User | null>(null);
+
+  const Strings = useContext(LanguageContext);
   
 
   useEffect(() => {
