@@ -71,6 +71,5 @@ async function changeLanguage(i18n: I18n, language: string) {
   await Updates.reloadAsync();
 }
 
-const Strings = new I18n();
 
-export { loadTranslations, saveLanguagePreference, loadLanguagePreference, changeLanguage, Strings };
+export { loadTranslations, saveLanguagePreference, loadLanguagePreference, changeLanguage };
