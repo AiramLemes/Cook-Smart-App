@@ -115,9 +115,18 @@ async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
   const matchingRecipeIds: string[] = [];
 
   querySnapshot.forEach((doc) => {
-    const title = (doc.data() as Recipe).title.toLowerCase();
+    const recipe = (doc.data() as Recipe)
+    console.log(recipe);
+    const title = recipe.title.toLowerCase();
+    const category = recipe.category.toLowerCase();
+
     if (title.includes(recipeTitle.toLowerCase())) {
       matchingRecipeIds.push(doc.id);
+    }
+    else {
+      if (category.includes(recipeTitle.toLowerCase())) {
+        matchingRecipeIds.push(doc.id);
+      }
     }
   });
 

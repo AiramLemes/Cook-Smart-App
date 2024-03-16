@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { auth, firestore } from "../firebaseConfig";
 import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"; 
 import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres únicos
@@ -7,10 +7,11 @@ import User from "../model/User";
 import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import ToastUtil from "../utils/ToastUtil";
-import { Strings } from "../constants/Strings";
 import { createPantry } from "./FirebasePantry";
+import LanguageContext from "../context/LanguageProvider";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
+const Strings = LanguageContext;
 
 async function getUserImage(callback: (imageURL: string) => void) {
   try {
@@ -163,7 +164,9 @@ async function uploadImageAsync(uri: string) {
   });
 
   const storageRef = ref(getStorage(), `users/${auth.currentUser?.uid}/`);
-  const fileRef = ref(storageRef, uuid());
+  const date = new Date();
+  const fileName = `users/${auth.currentUser?.uid}/` + date.getFullYear() + date.getTime();
+  const fileRef = ref(storageRef, fileName);
   const result = await uploadBytes(fileRef, blob);
 
   const imageUrl: string = await getDownloadURL(fileRef);

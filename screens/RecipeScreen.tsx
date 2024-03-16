@@ -100,21 +100,27 @@ const RecipeScreen = ({ navigation, route }) => {
       case 'imagesList':
         return (
           <>
-          <FlatList
-            horizontal
-            style={styles.imagesList}
-            data={renderRecipe.images}
-            renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
-            keyExtractor={(image) => image}
-          />
+          {!isAiRecipe && (
+          <>
+            <FlatList
+              horizontal
+              style={styles.imagesList}
+              data={renderRecipe.images}
+              renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
+              keyExtractor={(image) => image}
+            />
+
+            <StarsPicker recipe={recipe}></StarsPicker>
+          </>
+          )}
 
           {isAiRecipe && (   
             <Image src={recipe.mainImage} style={styles.aiImage}/>
            )}
      
-           {!isAiRecipe && (
-             <StarsPicker recipe={recipe}></StarsPicker>
-           )}
+           
+             
+           
            </>
         );
       case 'preparation':
@@ -347,7 +353,7 @@ const styles = StyleSheet.create({
 
   aiImage: {
     width: '80%',
-    height: '10%',
+    height: 140,
     borderWidth: 1,
     borderColor: Colors.primary,
     borderRadius: 10,
