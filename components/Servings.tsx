@@ -54,11 +54,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between', // add space between items
+    textAlignVertical: 'center',
+    alignItems: 'center',
   },
 
   servingsText: {
     fontSize: 15,
     textAlignVertical: 'center',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
 
   servingsCotainer: {
@@ -69,7 +73,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // add space between items
     width: '60%', // increase width
     height: 40,
-    paddingHorizontal: 20, // add horizontal padding
+    paddingHorizontal: 20, // add horizontal padding,
+    textAlignVertical: 'center',
   },
 
   text: {

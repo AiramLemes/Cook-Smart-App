@@ -116,7 +116,9 @@ const styles = StyleSheet.create({
 
   container: {
     width: '100%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+    alignContent: 'center',
   },
 
   title: {
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     marginBottom: 15,
+
   },
 
   ingredientIcon: {
@@ -160,7 +163,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between', 
     width: '80%', 
-    paddingStart: 10
+    paddingStart: 10,
+    
   },
 
   icon:{
@@ -170,7 +174,9 @@ const styles = StyleSheet.create({
 
   ingredientText: {
     textAlignVertical: 'center',
-    fontSize: 17
+    fontSize: 17,
+    alignSelf: 'center'
+
   }
 
 

@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
 
   section: {
     margin: 10,
-    marginTop: 30
+    marginTop: 30,
   },
 
   preparationItem: {
@@ -325,13 +325,12 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
-    alignSelf: 'center',
     flexDirection: 'row',
     marginBottom: 25,
     padding: 20,
-    textAlign: 'justify'
-  },
-
+    textAlign: 'justify',
+    paddingTop: 20
+  }
 
 
 });

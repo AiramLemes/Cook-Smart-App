@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 140,
     borderRadius: 24,
-    borderBlockColor: Colors.black,
+    borderColor: Colors.black,
     borderWidth: 1,
     flex: 1,
     margin: 5,
