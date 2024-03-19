@@ -1,8 +1,10 @@
 import axios from "axios";
-import { Strings } from "../constants/Strings";
 import Recipe from "../model/Recipe";
 import Ingredient from "../model/Ingredient";
 import { auth } from "../firebaseConfig";
+import LanguageContext from '../context/LanguageProvider';
+import { useContext } from "react";
+import { currentLanguage } from "../constants/Strings";
 
 const deepLAuthKey = '4baaa94c-9ff2-876b-19d2-25aaee96c25f:fx';
 
@@ -43,7 +45,7 @@ const language_mapping: Record<string, string> = {
 
 const translateText = async (textLang: string, text: string, forceEnglish: boolean = false) => {
   
-  if (Strings.locale === textLang && !forceEnglish) {
+  if (currentLanguage === textLang && !forceEnglish) {
     return text;
   }
 
@@ -51,9 +53,12 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
   const authKey = deepLAuthKey
   // console.log('Locale: ', Strings.locale)
   // console.log('Mapping: ', language_mapping[Strings.locale])
-  const targetLang = forceEnglish ? 'EN-US' : language_mapping[Strings.locale];
-  const sourceLang = language_mapping[textLang];
-  // console.log('TARGET_ ', targetLang)
+  const targetLang = forceEnglish ? 'EN-US' : language_mapping[currentLanguage];
+  let sourceLang = language_mapping[textLang];
+
+  if (sourceLang.length > 2) {
+    sourceLang = sourceLang.substring(0,2) // Translating API does not allow country code in sourceLang
+  }
 
  
   const headers = {
@@ -65,6 +70,7 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
   data.append('text', text);
   data.append('target_lang', targetLang);
   data.append('source_lang', sourceLang);
+
 
 
   try {
