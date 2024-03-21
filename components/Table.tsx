@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
-import Product from '../model/Product';
 import LanguageContext from '../context/LanguageProvider';
+import Product from '../model/Product';
 
 
 const Table = (props: { product: Product }) => {

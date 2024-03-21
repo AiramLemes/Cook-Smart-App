@@ -1,15 +1,15 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useContext } from "react";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { Iconify } from "react-native-iconify";
+import Colors from "../constants/Colors";
+import LanguageContext from "../context/LanguageProvider";
 import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
-import SearchScreen from "../screens/SearchScreen";
-import React, { useContext } from "react";
-import Colors from "../constants/Colors";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Iconify } from "react-native-iconify";
 import ScanScreen from "../screens/ScanScreen";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import SearchScreen from "../screens/SearchScreen";
 import HomeTopTab from "./HomeTopTab";
-import LanguageContext from "../context/LanguageProvider";
 
 
 const Tab = createBottomTabNavigator();

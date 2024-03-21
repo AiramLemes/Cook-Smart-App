@@ -1,16 +1,16 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
-import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text } from "react-native";
-import Colors from "../constants/Colors";
-import { Searchbar } from 'react-native-paper';
-import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
-import RecipeItem from "../components/Recipe";
-import Recipe from "../model/Recipe";
-import { Iconify } from "react-native-iconify";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import ConfirmationDialog from "../components/ConfirmationDialog";
-import ToastUtil from "../utils/ToastUtil";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Iconify } from "react-native-iconify";
+import { Searchbar } from 'react-native-paper';
 import Toast from "react-native-root-toast";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import RecipeItem from "../components/Recipe";
+import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
+import Recipe from "../model/Recipe";
+import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
+import ToastUtil from "../utils/ToastUtil";
 
 const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');

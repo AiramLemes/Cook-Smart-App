@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native';
-import { Iconify } from "react-native-iconify";
-import Colors from "../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
-import { getProduct } from '../repository/FirebaseProduct';
-import Product from '../model/Product';
-import FaceColor from '../utils/RatingFaceColor';
-import LanguageContext from '../context/LanguageProvider';
+import { Camera } from 'expo-camera';
 import * as Linking from 'expo-linking';
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Colors from "../constants/Colors";
+import LanguageContext from '../context/LanguageProvider';
+import Product from '../model/Product';
+import { getProduct } from '../repository/FirebaseProduct';
 
 
 // @ts-ignore

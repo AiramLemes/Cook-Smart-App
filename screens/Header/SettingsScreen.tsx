@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "../../constants/Colors";
-import User from "../../model/User";
-import { Iconify } from 'react-native-iconify';
-import LanguagePicker from "../../components/LanguagePicker";
-import LanguageContext from "../../context/LanguageProvider";
 import * as Linking from 'expo-linking';
-import { getCurrentUser } from "../../repository/FirebaseUser";
 import { signOut } from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Iconify } from 'react-native-iconify';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import LanguagePicker from "../../components/LanguagePicker";
+import Colors from "../../constants/Colors";
+import LanguageContext from "../../context/LanguageProvider";
 import { auth } from "../../firebaseConfig";
+import User from "../../model/User";
+import { getCurrentUser } from "../../repository/FirebaseUser";
 
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {

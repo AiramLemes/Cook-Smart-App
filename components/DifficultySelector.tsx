@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";

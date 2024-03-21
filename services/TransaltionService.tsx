@@ -1,10 +1,7 @@
 import axios from "axios";
-import Recipe from "../model/Recipe";
-import Ingredient from "../model/Ingredient";
-import { auth } from "../firebaseConfig";
-import LanguageContext from '../context/LanguageProvider';
-import { useContext } from "react";
 import { currentLanguage } from "../constants/Strings";
+import Ingredient from "../model/Ingredient";
+import Recipe from "../model/Recipe";
 
 const deepLAuthKey = '4baaa94c-9ff2-876b-19d2-25aaee96c25f:fx';
 
@@ -141,4 +138,5 @@ const translateIngredientToEnglish = async (textLang: string, ingredient: string
 
 
 
-export { translateText, translateRecipe, translateIngredientsToEnglish, translateIngredientToEnglish };
+export { translateIngredientToEnglish, translateIngredientsToEnglish, translateRecipe, translateText };
+

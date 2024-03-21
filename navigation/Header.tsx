@@ -1,12 +1,10 @@
-import { View, StyleSheet, Image, Text, Pressable, Platform } from "react-native";
-import React, { useEffect, useState } from "react";
-import Colors from "../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Colors from "../constants/Colors";
 import { getUserImage } from "../repository/FirebaseUser";
-import ToastUtil from "../utils/ToastUtil";
-import Toast from "react-native-root-toast";
 
 const Header = () => {
   

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 
 const FaceColor = ({ rate, size }) => {

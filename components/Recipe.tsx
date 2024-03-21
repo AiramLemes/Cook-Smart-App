@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import Colors from "../constants/Colors";
-import { Shadow } from 'react-native-shadow-2';
-import Stars from "./Stars";
-import Recipe from "../model/Recipe";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
-import { deleteRecipe } from "../repository/FirebaseRecipes";
+import { Shadow } from 'react-native-shadow-2';
+import Colors from "../constants/Colors";
+import Recipe from "../model/Recipe";
+import Stars from "./Stars";
 
 const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: string) => void;}) => {
   

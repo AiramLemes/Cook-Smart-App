@@ -1,16 +1,15 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import BackgroundSVG from "../../assets/landing/BackgroundSVG";
-import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useContext, useState } from "react";
-import Colors from "../../constants/Colors";
-import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
-import PoweredSVG from "../../assets/landing/PoweredSVG";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import ToastUtil from "../../utils/ToastUtil";
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-root-toast";
-import { checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser } from "../../repository/FirebaseUser";
-import { Strings } from "../../constants/Strings";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BackgroundSVG from "../../assets/landing/BackgroundSVG";
+import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
+import LogoSVG from "../../assets/landing/LogoSVG";
+import PoweredSVG from "../../assets/landing/PoweredSVG";
+import Colors from "../../constants/Colors";
 import LanguageContext from "../../context/LanguageProvider";
+import { checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser } from "../../repository/FirebaseUser";
+import ToastUtil from "../../utils/ToastUtil";
 
 // @ts-ignore
 const RegisterScreen = ({navigation}) => {

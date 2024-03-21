@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, serverTimestamp, startAfter, updateDoc, where } from "firebase/firestore";
+import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
-import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
 import { User } from "../model/User";
 import { deleteUserRecipe } from "./FirebaseUser";
 
@@ -374,4 +374,4 @@ async function updateRecipeAssessment(recipeId: string, numberOfRatings: number,
 
 
 
-export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes, updateRecipe, handleRecipeLike, updateRecipeAssessment };
+export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, handleRecipeLike, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment };

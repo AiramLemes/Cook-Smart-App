@@ -1,15 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, Image, View, TextInput, ScrollView } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
+import { sendPasswordResetEmail, updateEmail } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import Colors from "../../constants/Colors";
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
+import Toast from "react-native-root-toast";
+import Colors from "../../constants/Colors";
+import LanguageContext from "../../context/LanguageProvider";
+import { auth } from "../../firebaseConfig";
 import User from "../../model/User";
 import { checkEmail, checkEmailPattern, checkUserName, getCurrentUser, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
-import * as ImagePicker from 'expo-image-picker';
 import ToastUtil from "../../utils/ToastUtil";
-import Toast from "react-native-root-toast";
-import { auth } from "../../firebaseConfig";
-import { sendPasswordResetEmail, updateEmail } from "firebase/auth";
-import LanguageContext from "../../context/LanguageProvider";
 
 
 //@ts-ignore

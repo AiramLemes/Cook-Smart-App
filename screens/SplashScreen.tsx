@@ -1,7 +1,5 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StyleSheet, View } from "react-native";
 import Colors from "../constants/Colors";
-import SplashScreenSVG from "../assets/SplashScreenSVG";
 
 // @ts-ignore
 const SplashScreen = () => {

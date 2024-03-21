@@ -1,16 +1,15 @@
+import LottieView from 'lottie-react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native';
-import Colors from '../constants/Colors';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
+import Toast from 'react-native-root-toast';
 import CategoryList from '../components/Category';
+import Colors from '../constants/Colors';
+import LanguageContext from '../context/LanguageProvider';
 import Recipe from '../model/Recipe';
 import { addRecipe, updateRecipe } from '../repository/FirebaseRecipes';
-import ToastUtil from '../utils/ToastUtil';
-import Toast from 'react-native-root-toast';
 import { assignRecipeToUser } from '../repository/FirebaseUser';
-import LanguageContext from '../context/LanguageProvider';
-import LottieAnimation from '../utils/CookingAnimation';
-import LottieView from 'lottie-react-native';
+import ToastUtil from '../utils/ToastUtil';
 
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {

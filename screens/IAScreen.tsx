@@ -1,14 +1,13 @@
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Colors from "../constants/Colors";
-import { Iconify } from "react-native-iconify";
-import { generateRecipe } from "../services/Openai";
 import { useIsFocused } from "@react-navigation/native";
-import ToastUtil from "../utils/ToastUtil";
-import Toast from "react-native-root-toast";
-import LanguageContext from "../context/LanguageProvider";
-import LottieAnimation from "../utils/CookingAnimation";
 import LottieView from "lottie-react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Iconify } from "react-native-iconify";
+import Toast from "react-native-root-toast";
+import Colors from "../constants/Colors";
+import LanguageContext from "../context/LanguageProvider";
+import { generateRecipe } from "../services/Openai";
+import ToastUtil from "../utils/ToastUtil";
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {

@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import Colors from '../constants/Colors';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
-import Recipe from '../model/Recipe';
 import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
-import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
+import StarsPicker from '../components/StarsPicker';
+import Colors from '../constants/Colors';
+import LanguageContext from '../context/LanguageProvider';
 import { auth } from '../firebaseConfig';
+import Recipe from '../model/Recipe';
 import { handleRecipeLike } from '../repository/FirebaseRecipes';
 import { getUserNameById } from '../repository/FirebaseUser';
-import StarsPicker from '../components/StarsPicker';
-import LanguageContext from '../context/LanguageProvider';
+import { translateRecipe } from '../services/TransaltionService';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {

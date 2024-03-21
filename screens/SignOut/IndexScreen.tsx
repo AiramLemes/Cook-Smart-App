@@ -1,11 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BackgroundSVG from "../../assets/landing/BackgroundSVG";
-import LogoSVG from "../../assets/landing/LogoSVG";
 import React, { useContext } from "react";
-import Colors from "../../constants/Colors";
-import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
-import PoweredSVG from "../../assets/landing/PoweredSVG";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BackgroundSVG from "../../assets/landing/BackgroundSVG";
+import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
+import LogoSVG from "../../assets/landing/LogoSVG";
+import PoweredSVG from "../../assets/landing/PoweredSVG";
+import Colors from "../../constants/Colors";
 import LanguageContext from "../../context/LanguageProvider";
 
 // @ts-ignore

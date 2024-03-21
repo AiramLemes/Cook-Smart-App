@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../constants/Colors';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
+import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {

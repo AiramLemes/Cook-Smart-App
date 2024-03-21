@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, FlatList, Dimensions, ActivityIndicator, Platform } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Colors from "../../constants/Colors";
 import { useIsFocused } from "@react-navigation/native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import Carousel, { ParallaxImage } from "react-native-snap-carousel";
+import RecipeItem from "../../components/Recipe";
+import Colors from "../../constants/Colors";
+import LanguageContext from "../../context/LanguageProvider";
 import Recipe from "../../model/Recipe";
 import { getBestRecipes, getNewestRecipes } from "../../repository/FirebaseRecipes";
-import RecipeItem from "../../components/Recipe";
-import Carousel, { ParallaxImage } from "react-native-snap-carousel";
-import { Title } from "react-native-paper";
-import LanguageContext from "../../context/LanguageProvider";
 
 const DiscoverRecipesScreen = ({ navigation }) => {
 

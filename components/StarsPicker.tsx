@@ -1,11 +1,11 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import Colors from "../constants/Colors";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
+import Colors from "../constants/Colors";
 import Recipe from "../model/Recipe";
-import { getCurrentUser, updateUser } from "../repository/FirebaseUser";
-import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
 import User from "../model/User";
+import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
+import { getCurrentUser, updateUser } from "../repository/FirebaseUser";
 
 const Stars = (props: {recipe: Recipe, size?: number}) => {
 

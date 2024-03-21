@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";

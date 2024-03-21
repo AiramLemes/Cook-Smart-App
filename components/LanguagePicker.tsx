@@ -1,9 +1,9 @@
-import React, { useState, useRef, useContext } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useContext, useRef, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import ModalSelector from "react-native-modal-selector";
-import LanguageContext from "../context/LanguageProvider";
 import { changeLanguage } from "../constants/Strings";
+import LanguageContext from "../context/LanguageProvider";
 
 const LanguagePicker = () => {
   

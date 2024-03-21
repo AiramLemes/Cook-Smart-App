@@ -1,7 +1,7 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
-import Colors from "../constants/Colors";
+import { StyleSheet, View } from "react-native";
 import { Iconify } from "react-native-iconify";
+import Colors from "../constants/Colors";
 
 const Stars = (props: { assessment: number, size: number }) => {
   const { assessment, size } = props;

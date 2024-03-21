@@ -1,14 +1,13 @@
-import { Timestamp, collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore } from "../firebaseConfig";
-import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"; 
-import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres únicos
 
-import User from "../model/User";
-import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
+import User from "../model/User";
 import ToastUtil from "../utils/ToastUtil";
 import { createPantry } from "./FirebasePantry";
-import LanguageContext from "../context/LanguageProvider";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
 const Strings = LanguageContext;
@@ -291,5 +290,4 @@ async function createUser(email: string, password: string, userName: string) {
 
 
 
-export { getCurrentUser, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, 
-  updateUser, assignRecipeToUser, deleteUserRecipe, getUserNameById, createUser };
+export { assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser, getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync };

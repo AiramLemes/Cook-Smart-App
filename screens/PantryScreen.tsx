@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Text, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Searchbar } from "react-native-paper";
-import { Iconify } from "react-native-iconify";
 import { useIsFocused } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Iconify } from "react-native-iconify";
+import { Searchbar } from "react-native-paper";
 import { Shadow } from "react-native-shadow-2";
-import Colors from "../constants/Colors";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import IngredientDialog from "../components/IngredientDialog";
 import IngredientItem from "../components/IngredientItem";
+import Colors from "../constants/Colors";
+import LanguageContext from "../context/LanguageProvider";
+import Ingredient from "../model/Ingredient";
 import Pantry from "../model/Pantry";
 import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
-import IngredientDialog from "../components/IngredientDialog";
-import Ingredient from "../model/Ingredient";
-import ConfirmationDialog from "../components/ConfirmationDialog";
-import LanguageContext from "../context/LanguageProvider";
 
 const PantryScreen = () => {
   const [search, setSearch] = useState("");
