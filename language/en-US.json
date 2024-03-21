@@ -122,6 +122,8 @@
   "homeInspiration": "INSPIRATION",
   "homeUserRecipes": "YOUR RECIPES",
   "giveCameraPermissions": "Giving permissions to the camera",
-  "aiErrorGeneratingRecipe": "There was an error generating the recipe, please try again."
+  "aiErrorGeneratingRecipe": "There was an error generating the recipe, please try again.",
+  "publishRecipe": "Publishing recipe...",
+  "createUserError": "An error has occurred, try changing the email."
     
 }

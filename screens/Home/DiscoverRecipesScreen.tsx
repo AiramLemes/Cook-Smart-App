@@ -35,7 +35,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
     };
 
     fetchData();
-  }, []);
+  }, [onFocus]);
 
 
   // const getItemLayout = (_: any, index: number) => {
@@ -55,15 +55,15 @@ const DiscoverRecipesScreen = ({ navigation }) => {
   
   const entries = [
     {
-      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fchat-gpt.png?alt=media&token=f4790a12-423a-4a6a-b447-2138f06a8771',
+      image: require('../../assets/carousel/chat-gpt.png'),
       title: Strings.translate('carouselImageTitle1')
     },
     {
-      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fscan.png?alt=media&token=74fba929-33b1-40b3-bfcb-70f259c627c6',
+      image: require('../../assets/carousel/scan.png'),
       title: Strings.translate('carouselImageTitle2')
     },
     {
-      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/carousel%2Fpantry.png?alt=media&token=882a2ac0-5a79-4aac-bde1-de8771b86f40',
+      image: require('../../assets/carousel/pantry.png'),
       title: Strings.translate('carouselImageTitle3')
     },
   ];
@@ -77,7 +77,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
     return (
       <View>
         <ParallaxImage
-          source={{uri: item.image}}
+          source={item.image}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0}

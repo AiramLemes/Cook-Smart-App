@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
 import { Iconify } from "react-native-iconify";
 import Recipe from "../model/Recipe";
-import { getCurrentUserData, updateUser } from "../repository/FirebaseUser";
+import { getCurrentUser, updateUser } from "../repository/FirebaseUser";
 import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
 import User from "../model/User";
 
@@ -17,7 +17,7 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
 
     const fetchUserData = async () => {
       try {
-        const user: User | null = await getCurrentUserData();
+        const user: User | null = await getCurrentUser();
   
         if (user) {
 
@@ -39,8 +39,9 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
   const handleAssessment = async (assessment: number) => {
     try {
       
-      const currentUser: User | null = await getCurrentUserData();
+      const currentUser: User | null = await getCurrentUser();
       console.log(currentUser)
+      
       if (currentUser) {
         let newNumberOfRatings
 
@@ -122,3 +123,4 @@ const styles = StyleSheet.create({
   }
 
 });
+

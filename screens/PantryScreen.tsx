@@ -148,8 +148,8 @@ const PantryScreen = () => {
         isVisible={confirmDialogVisible} onClose={handleConfirmDialog}/>
 
       {pantry === null || pantry.products.length <= 0 && (
-        <View style={{width: '100%', height: '100%', zIndex: -2}}>
-          <Image style={styles.image} src="https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/pantry%2Fpantry.png?alt=media&token=0ed13f05-5963-4964-8319-c00334038dcd"/>
+        <View style={{width: '100%', height: '100%', justifyContent: 'center', zIndex: -2}}>
+          <Image style={styles.image} source={require('../assets/carousel/pantry.png')}/>
           <Text style={styles.text}>{Strings.translate('emptyPantry')}</Text>
         </View>
       )}
@@ -203,7 +203,9 @@ const styles = StyleSheet.create({
 
   image: {
     width: '100%',
-    height: '70%',
+    height: '20%',
+    marginBottom: 80,
+    alignSelf: 'center',
     zIndex: -1
   },
 

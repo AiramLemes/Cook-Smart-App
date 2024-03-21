@@ -9,6 +9,8 @@ import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import { assignRecipeToUser } from '../repository/FirebaseUser';
 import LanguageContext from '../context/LanguageProvider';
+import LottieAnimation from '../utils/CookingAnimation';
+import LottieView from 'lottie-react-native';
 
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {
@@ -21,6 +23,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const [resting , setResting] = useState('');
   const [steps, setSteps] = useState('');
   const [category, setCategory] = useState('');
+  const [creatingRecipe, setCreatingRecipe] = useState(false);
 
   const Strings = useContext(LanguageContext);
 
@@ -50,19 +53,24 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 
 
       if (!editable) {
+        setCreatingRecipe(true);
         const recipeId = await addRecipe(recipe);
         if (!recipeId) {
           ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
         }
         else {
           if (await assignRecipeToUser(recipeId)) {
+            setCreatingRecipe(false);
             navigation.navigate('Home');
             ToastUtil.showToast(Strings.translate('createRecipe'), Toast.durations.SHORT);
           }
           else {
+            setCreatingRecipe(false);
             ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
           }
         }
+
+        setCreatingRecipe(false);
       }
 
       else {
@@ -193,25 +201,29 @@ const AddRecipeForm2 = ({ navigation, route }) => {
         </View>
 
       </View>
-  {/*
+
       <View style={styles.section}>
-        <Text style={styles.sectionText}>{Strings.t('')}</Text>
-        <TextInput style={styles.stepsSection}/>
-      </View> */}
+        <Text style={styles.sectionText}>{Strings.t('steps')}</Text>
 
-    <View style={styles.section}>
-      <Text style={styles.sectionText}>{Strings.t('steps')}</Text>
+        <TextInput
+          multiline={true}
+          style={styles.stepsSection}
+          value={steps}
+          autoCapitalize='sentences'
+          onChangeText={setSteps}
+          placeholder={Strings.translate('stepsForm')}
+          placeholderTextColor= {stepsError? 'red': 'black'}
+        />
+      </View>
 
-      <TextInput
-        multiline={true}
-        style={styles.stepsSection}
-        value={steps}
-        autoCapitalize='sentences'
-        onChangeText={setSteps}
-        placeholder={Strings.translate('stepsForm')}
-        placeholderTextColor= {stepsError? 'red': 'black'}
-      />
-    </View>
+      {creatingRecipe && (
+        <View style={styles.loadingContainer}>
+          <LottieView source={require('../assets/Creating recipe.json')}
+          style={{height: '20%', width: '50%'}}
+          autoPlay/>
+          <Text style={{fontSize: 20}}>{Strings.translate('publishRecipe')}</Text>
+        </View>
+      )}
 
     </ScrollView>
   );
@@ -330,7 +342,18 @@ const styles = StyleSheet.create({
     padding: 20,
     textAlign: 'justify',
     paddingTop: 20
-  }
+  },
+
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
 
 
 });

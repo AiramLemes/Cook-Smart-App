@@ -38,7 +38,7 @@ async function loadTranslations(i18n: I18n, locale: string) {
         // Manejar el caso en el que no se encuentre el idioma
         break;
     }
-    console.log('Translations loaded:', translations);
+    // console.log('Translations loaded:', translations);
     i18n.translations[locale] = translations;
   } catch (error) {
     console.error('Error loading translations:', error);

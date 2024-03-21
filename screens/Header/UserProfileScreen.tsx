@@ -1,24 +1,23 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, Image, View, TextInput, ScrollView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import { Iconify } from "react-native-iconify";
 import User from "../../model/User";
-import { checkEmail, checkEmailPattern, checkUserName, getUserData, loadUserData, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
+import { checkEmail, checkEmailPattern, checkUserName, getCurrentUser, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
 import * as ImagePicker from 'expo-image-picker';
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import { auth } from "../../firebaseConfig";
-import { sendPasswordResetEmail, updateCurrentUser, updateEmail, verifyPasswordResetCode } from "firebase/auth";
+import { sendPasswordResetEmail, updateEmail } from "firebase/auth";
 import LanguageContext from "../../context/LanguageProvider";
 
 
 //@ts-ignore
 const UserProfileScreen = ({ navigation }) => {
 
-  const [userData, setUserData] = useState<User | null>(null);
-  const [image, setImage] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const [user, setUser] = useState<User | null>(null);
+  const [image, setImage] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [userName, setUserName] = useState<string>("");
 
   const [userNameError, setUserNameError] = useState<boolean>(false);
@@ -27,15 +26,13 @@ const UserProfileScreen = ({ navigation }) => {
   const Strings = useContext(LanguageContext);
   
   useEffect(() => {
-    const fetchData = async () => {
-      await loadUserData();
-      const user = getUserData();
-      // @ts-ignore
-      setUserData(user);
-      setImage(user!!.image);
+    const getUser = async () => {
+      const user = await getCurrentUser();
+      setUser(user);
+      setImage(user?.image);
     };
 
-    fetchData();
+    getUser();
   }, []);
 
   const pickImage = async () => {
@@ -98,20 +95,16 @@ const UserProfileScreen = ({ navigation }) => {
       if (await checkUserName(userName)) {
         let message;
 
-        const updatedUserName = {userName: userName};
-        const result = await updateUser(updatedUserName);
+        const result = await updateUser({userName: userName});
         result ? message = Strings.t('changeUserNameMsg') : message = Strings.t('errorChangingUserName');
           ToastUtil.showToast(message, Toast.durations.SHORT);
         
         if (result) {
-          const user: User = {
+          const updatadedUser = {
+            ...user!!,
             userName: userName,
-            email: userData!!.email,
-            image: userData!!.image,
-            recipesIds: [],
-            assessments: []
           };
-          setUserData(user);
+          setUser(updatadedUser);
           setUserName("");
           setUserNameError(false);
         }
@@ -128,7 +121,7 @@ const UserProfileScreen = ({ navigation }) => {
   }
 
   function handleChangePassword() {
-    sendPasswordResetEmail(auth, userData!!.email)
+    sendPasswordResetEmail(auth, user!!.email)
     ToastUtil.showToast(Strings.t('recoverPasswordMsg'), Toast.durations.SHORT);
   }
 
@@ -148,7 +141,7 @@ const UserProfileScreen = ({ navigation }) => {
         <View style={styles.sectionUserData}>
           <Text style={styles.userDataTitle}>{Strings.t('userName')}</Text>
           <View style={styles.userDataInputWithIcon}>
-            <Text style={styles.userDataInputText}>{userData?.userName}</Text>
+            <Text style={styles.userDataInputText}>{user?.userName}</Text>
             <Iconify icon="mdi:user" size={24} color="black" />
           </View>
         </View>
@@ -156,7 +149,7 @@ const UserProfileScreen = ({ navigation }) => {
         <View style={styles.sectionUserData}>
           <Text style={styles.userDataTitle}>{Strings.t('email')}</Text>
           <View style={styles.userDataInputWithIcon}>
-            <Text style={styles.userDataInputText}>{userData?.email}</Text>
+            <Text style={styles.userDataInputText}>{user?.email}</Text>
             <Iconify icon="ic:baseline-email" size={24} color="black" />
           </View>
         </View>

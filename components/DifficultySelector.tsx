@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
   text: {
     justifyContent: 'center',
     alignSelf: 'center', 
-  
+    textAlign: 'center',
+    maxWidth: '25%'  
   },
 
   difficultyContainer: {
@@ -128,7 +129,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     borderRadius: 10,
-    margin: '2%',
     width: '24%',
     height: 60,
     backgroundColor: Colors.lightGray,

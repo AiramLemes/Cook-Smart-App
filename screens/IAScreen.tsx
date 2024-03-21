@@ -6,8 +6,9 @@ import { generateRecipe } from "../services/Openai";
 import { useIsFocused } from "@react-navigation/native";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
-import CookingAnimation from "../utils/CookingAnimation";
 import LanguageContext from "../context/LanguageProvider";
+import LottieAnimation from "../utils/CookingAnimation";
+import LottieView from "lottie-react-native";
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {
@@ -88,7 +89,7 @@ const IAScreen = ({navigation}) => {
       {!creatingRecipe && (
         <>
         <Text style={styles.title}>{Strings.translate('iaTitle')}</Text>
-        <Image style={styles.image} source={{ uri: "https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/ai%2Fchat%20gpt%20image.webp?alt=media&token=1020e5ee-2c08-4e99-a0df-9524eb6810bd" }} />
+        <Image style={styles.image} source={require('../assets/carousel/chat-gpt.png')} />
 
         <View style={styles.addProductContainer}>
           <TextInput
@@ -120,7 +121,9 @@ const IAScreen = ({navigation}) => {
       
       {creatingRecipe && (
         <View style={{width: '100%', height: '30%', justifyContent: 'center'}}>
-          <CookingAnimation/>
+          <LottieView source={require('../assets/Cooking Animation.json')}
+          style={{height: '100%', width: '100%'}}
+          autoPlay/>
           <Text style={styles.cookingText}>{Strings.translate('iaAnimationText')}</Text>
         </View>
       )}

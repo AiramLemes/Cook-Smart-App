@@ -123,7 +123,9 @@
   "homeInspiration": "INSPIRATION",
   "homeUserRecipes": "IHRE REZEPTE",
   "giveCameraPermissions": "Erteilen von Berechtigungen für die Kamera",
-  "aiErrorGeneratingRecipe": "Bei der Erstellung des Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  "aiErrorGeneratingRecipe": "Bei der Erstellung des Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+  "publishRecipe": "Rezept veröffentlichen...",
+  "createUserError": "Es ist ein Fehler aufgetreten, versuchen Sie, Ihre E-Mail-Adresse zu ändern."
     
 }
   

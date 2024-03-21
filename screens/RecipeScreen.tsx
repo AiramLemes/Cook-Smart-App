@@ -78,7 +78,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Iconify icon="lets-icons:back" size={33} color="black" />
             </TouchableOpacity>
-            <Text style={styles.title}>{renderRecipe.title}</Text>
+            <Text style={styles.title}>{recipe.title}</Text>
             {!editable && (
               <TouchableOpacity onPress={handleLike}>
                 {liked ? (
@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 20,
+    maxWidth: '80%'
   },
 
   imagesList: {

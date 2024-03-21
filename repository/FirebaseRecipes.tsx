@@ -116,7 +116,6 @@ async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
 
   querySnapshot.forEach((doc) => {
     const recipe = (doc.data() as Recipe)
-    console.log(recipe);
     const title = recipe.title.toLowerCase();
     const category = recipe.category.toLowerCase();
 
@@ -320,7 +319,6 @@ async function getBestRecipes(maxRecipes: number): Promise<Recipe[]> {
 
 
 async function handleRecipeLike(userId: string, recipeId: string) {
-
   try {
     const recipesCollection = collection(firestore, 'recipes');
     

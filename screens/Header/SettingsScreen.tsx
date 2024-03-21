@@ -3,31 +3,29 @@ import React, { useContext, useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import User from "../../model/User";
-import { getUserData, loadUserData } from "../../repository/FirebaseUser";
-import { auth } from "../../firebaseConfig";
 import { Iconify } from 'react-native-iconify';
 import LanguagePicker from "../../components/LanguagePicker";
 import LanguageContext from "../../context/LanguageProvider";
 import * as Linking from 'expo-linking';
+import { getCurrentUser } from "../../repository/FirebaseUser";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
-  const [userData, setUserData] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const Strings = useContext(LanguageContext);
   
 
   useEffect(() => {
-    const fetchData = async () => {
-      await loadUserData();
-      const user = getUserData();
-      // @ts-ignore
-      setUserData(user)
+    const getUser = async () => {
+      setUser(await getCurrentUser());
     };
 
-    fetchData();
+    getUser();
   }, []);
 
 
@@ -41,11 +39,11 @@ const SettingsScreen = ({navigation}) => {
   
         <View style={{alignContent: 'center'}}>
           <Image
-            source={{ uri: userData?.image }}
+            source={{ uri: user?.image }}
             style={styles.userImage}
           />
   
-          <Text style={styles.userName}>@{userData?.userName}</Text>
+          <Text style={styles.userName}>@{user?.userName}</Text>
         </View>
   
         <View>
@@ -73,7 +71,7 @@ const SettingsScreen = ({navigation}) => {
   
         </View>
   
-        <TouchableOpacity style={{...styles.logOutButton, backgroundColor: Colors.secondary}} onPress={() => {auth.signOut()}}>
+        <TouchableOpacity style={{...styles.logOutButton, backgroundColor: Colors.secondary}} onPress={() => {signOut(auth)}}>
           <Text style={styles.buttonText}>{Strings.t('logOut')}</Text>
         </TouchableOpacity>
   

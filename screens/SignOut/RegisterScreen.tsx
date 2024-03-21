@@ -8,7 +8,7 @@ import PoweredSVG from "../../assets/landing/PoweredSVG";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ToastUtil from "../../utils/ToastUtil";
 import Toast from "react-native-root-toast";
-import { checkEmailPattern, checkPassword, checkUserName, createUser } from "../../repository/FirebaseUser";
+import { checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser } from "../../repository/FirebaseUser";
 import { Strings } from "../../constants/Strings";
 import LanguageContext from "../../context/LanguageProvider";
 
@@ -22,7 +22,7 @@ const RegisterScreen = ({navigation}) => {
   const [emailError, setEmailError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [userNameError, setUserNameError] = useState<boolean>(false);
-  const [usedEmail, setUsedEmail] = useState<boolean>(false);
+  const [usedEmailError, setUsedEmailError] = useState<boolean>(false);
 
   const Strings = useContext(LanguageContext);
 
@@ -34,18 +34,26 @@ const RegisterScreen = ({navigation}) => {
       const isValidEmail = checkEmailPattern(email);
       setEmailError(!isValidEmail);
       const isValidPassword= checkPassword(password);
-      setPasswordError(!isValidEmail);
+      setPasswordError(!isValidPassword);
       const isValidUserName = await checkUserName(userName);
       setUserNameError(!isValidUserName);
 
       if (isValidEmail && isValidPassword && isValidUserName) {
-        
-        if (await createUser(email, password, userName)) {
-          ToastUtil.showToast(Strings.t('createUser'), Toast.durations.SHORT);
+
+        if (await checkEmail(email)) {
+          setUsedEmailError(false);
+          if (await createUser(email, password, userName)) {
+            ToastUtil.showToast(Strings.t('createUser'), Toast.durations.SHORT);
+          }
+          
+          else {
+            ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT);
+          }
         }
-        
+
         else {
-          ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT);
+          ToastUtil.showToast(Strings.t('createUserError'), Toast.durations.SHORT);
+          setUsedEmailError(true);
         }
       }
     }
@@ -76,12 +84,16 @@ const RegisterScreen = ({navigation}) => {
         )}
 
 
-      <TextInput style={[styles.emailInput, emailError && styles.errorInput]}
+      <TextInput style={[styles.emailInput, emailError && styles.errorInput, usedEmailError && styles.errorInput]}
         value={email} inputMode="email" autoCapitalize="none" 
         keyboardType="email-address" onChangeText={setEmail} placeholder={Strings.t('email')}/>
 
         {emailError && (
-          <Text style={styles.errorMessage}>{usedEmail? Strings.t('invalidEmail'): Strings.t('usedEmail')}</Text>
+          <Text style={styles.errorMessage}>{Strings.t('invalidEmail')}</Text>
+        )}
+
+        {usedEmailError && (
+          <Text style={styles.errorMessage}>{Strings.t('usedEmail')}</Text>
         )}
 
       <TextInput style={[styles.passwordInput, passwordError && styles.errorInput]}
