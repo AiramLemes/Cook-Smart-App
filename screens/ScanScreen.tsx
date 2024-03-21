@@ -2,12 +2,14 @@ import { useIsFocused } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as Linking from 'expo-linking';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
 import LanguageContext from '../context/LanguageProvider';
 import Product from '../model/Product';
 import { getProduct } from '../repository/FirebaseProduct';
+import FaceColor from '../utils/RatingFaceColor';
+import { Iconify } from 'react-native-iconify';
 
 
 // @ts-ignore
@@ -43,6 +45,10 @@ const ScanScreen = ({ navigation }) => {
         setIsHidden(false);
       }
     }
+  };
+
+  const handleGoButtonPress = () => {
+    navigation.navigate('Product', scannedProduct);
   };
 
 
@@ -83,7 +89,26 @@ const ScanScreen = ({ navigation }) => {
       {/* productExists */}
       {productExists && !isHidden && (
         <View style={styles.productCard}>
-          {/* Resto del código */}
+          <View style={styles.column}>
+            <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
+          </View>
+          <View style={{ ...styles.column, flex: 3, left: 10}}>
+            <Text style={{fontSize: 17}} >{scannedProduct!!.name}</Text>
+            <Text>{scannedProduct!!.brand}</Text>
+            <View style={styles.rating}>
+              <FaceColor rate={scannedProduct!!.rate} size={20}/>
+              <Text>  {scannedProduct!!.rate}/100</Text>
+            </View>
+          </View>
+          <View style={styles.column}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
+              <Iconify icon="material-symbols:close" size={24} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
+              <Iconify icon="carbon:next-filled" size={33} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </SafeAreaView>

@@ -40,7 +40,6 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
     try {
       
       const currentUser: User | null = await getCurrentUser();
-      console.log(currentUser)
       
       if (currentUser) {
         let newNumberOfRatings
