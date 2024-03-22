@@ -58,7 +58,10 @@
     "react-native-table-component": "^1.2.2",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
-    "expo-linking": "~6.2.2"
+    "expo-linking": "~6.2.2",
+    "expo-notifications": "~0.27.6",
+    "expo-task-manager": "~11.7.2",
+    "expo-background-fetch": "~11.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

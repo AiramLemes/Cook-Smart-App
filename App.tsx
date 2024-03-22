@@ -14,6 +14,16 @@ import { useState, useEffect, createContext } from 'react';
 import { I18n } from 'i18n-js';
 import { loadLanguagePreference, loadTranslations } from './constants/Strings';
 import LanguageContext from './context/LanguageProvider';
+import * as Notifications from 'expo-notifications';
+import './backgroundTasks';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const Stack = createNativeStackNavigator();
 
@@ -26,14 +36,21 @@ function App() {
     const translations = async () => {
       await loadLanguagePreference(Strings);
       await loadTranslations(Strings, Strings.locale);
-      setStrings(Strings);
+      setStrings(Strings);  
     }
-
+    
+    const setNotifications = async () => {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.HIGH,
+      });
+    }
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
     });
 
     translations();
+    setNotifications();
 
     return () => unsubscribe();
   }, [Strings.onChange]);

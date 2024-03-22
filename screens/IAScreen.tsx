@@ -8,6 +8,7 @@ import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
 import { generateRecipe } from "../services/Openai";
 import ToastUtil from "../utils/ToastUtil";
+import { sendNotificationWithType } from "../utils/NotificationsHandler";
 
 const windowWidth = Dimensions.get('window').width;
 const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
@@ -113,7 +114,8 @@ const IAScreen = ({navigation}) => {
         />
 
         {/* <TouchableOpacity style={styles.createRecipeButton} > */}
-        <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
+        {/* <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}> */}
+        <TouchableOpacity style={styles.createRecipeButton} onPress={() =>{sendNotificationWithType('pantry')}}>
 
           <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>
