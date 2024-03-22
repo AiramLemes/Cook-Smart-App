@@ -1,7 +1,7 @@
 interface Ingredient {
   name: string,
   unit: string,
-  amount: number | string,
+  amount: number,
   englishVersion: string     
 }
 

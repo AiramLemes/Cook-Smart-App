@@ -283,6 +283,7 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   
   container: {
+    flexGrow: 1,
     backgroundColor: Colors.background,
     paddingHorizontal: 10
   },

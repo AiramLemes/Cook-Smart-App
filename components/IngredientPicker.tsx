@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
   },
 
   addButton: {
-    width: '34%',
-    height: 30,
+    width: '40%',
+    minHeight: 30,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.lightGray,
