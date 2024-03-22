@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, PixelRatio, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-root-toast";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
@@ -12,6 +12,8 @@ import { checkEmailPattern, checkPassword, logIn } from "../../repository/Fireba
 import ToastUtil from "../../utils/ToastUtil";
 
 
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
 const LoginScreen = ({navigation}) => {
@@ -55,34 +57,37 @@ const LoginScreen = ({navigation}) => {
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.right,}}>
-      <BackgroundSVG style={styles.background}></BackgroundSVG>
-     
-    
-      <LogoSVG/>
 
-      <Text style={styles.title} >COOK SMART !</Text>
-
-      <TextInput style={[styles.emailInput, emailError && styles.errorInput]}
-        value={email} inputMode="email" autoCapitalize="none" 
-        keyboardType="email-address" onChangeText={setEmail} placeholder={Strings.t('email')}/>
-
-        {emailError && (
-          <Text style={styles.errorMessage}>{Strings.t('invalidEmail')}</Text>
-        )}
-        
-
-      <TextInput style={[styles.passwordInput, passwordError && styles.errorInput]}
-        value={password} onChangeText={setPassword} placeholder={Strings.t('password')}
-        secureTextEntry={true} autoCorrect={false}/>
-
-        {passwordError && (
-          <Text style={styles.errorMessage}>{Strings.t('invalidPassword')}</Text>
-        )}
-
-      <TouchableOpacity style={styles.logInButton} onPress={handleLogIn}>
-        <Text style={styles.buttonText}>{Strings.t('logIn')}</Text>
-      </TouchableOpacity>
+      <ScrollView style={{width: '100%'}} contentContainerStyle={styles.container}>
+        <BackgroundSVG style={styles.background}></BackgroundSVG>
       
+        <View style={{alignSelf: 'center'}}>
+          <LogoSVG/>
+        </View>
+
+        <Text style={styles.title} >COOK SMART !</Text>
+
+        <TextInput style={[styles.inputs, emailError && styles.errorInput]}
+          value={email} inputMode="email" autoCapitalize="none" 
+          keyboardType="email-address" onChangeText={setEmail} placeholder={Strings.t('email')}/>
+
+          {emailError && (
+            <Text style={styles.errorMessage}>{Strings.t('invalidEmail')}</Text>
+          )}
+          
+
+        <TextInput style={[styles.inputs, passwordError && styles.errorInput, {backgroundColor: Colors.secondary}]}
+          value={password} onChangeText={setPassword} placeholder={Strings.t('password')}
+          secureTextEntry={true} autoCorrect={false}/>
+
+          {passwordError && (
+            <Text style={styles.errorMessage}>{Strings.t('invalidPassword')}</Text>
+          )}
+
+        <TouchableOpacity style={{...styles.inputs, backgroundColor: Colors.terciary}} onPress={handleLogIn}>
+          <Text style={styles.buttonText}>{Strings.t('logIn')}</Text>
+        </TouchableOpacity>
+        
 
         <View style={styles.poweredSection}>
 
@@ -93,7 +98,7 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.poweredIATitle}>{Strings.t('powered')}</Text>
 
         <Text style={styles.registerNav} onPress={() => navigation.navigate('Register')}>{Strings.t('register')}</Text>
-
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -103,8 +108,8 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignContent: 'center',
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.background
@@ -112,7 +117,8 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 22,
-    padding: 20
+    padding: 20,
+    alignSelf: 'center'
   },
 
   background: {
@@ -120,12 +126,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: '100%',
+    height: '100%',
   },
 
 
-  emailInput: {
+  inputs: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -133,20 +139,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     backgroundColor: Colors.primary,
-    width: 300,
-    marginTop: 30
-  },
-
-  passwordInput: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 10,
-    elevation: 3,
-    backgroundColor: Colors.secondary,
-    width: 300,
-    marginTop: 30
+    width: '75%',
+    marginTop: 30,
+    alignSelf: 'center',
+    fontSize: adjustedFontSize,
   },
 
   errorInput: {
@@ -159,23 +155,9 @@ const styles = StyleSheet.create({
     color: Colors.error
   },
 
-  logInButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 10,
-    elevation: 3,
-    backgroundColor: Colors.terciary,
-    width: 300,
-    marginTop: 30
-  },
-
   buttonText: {
-    fontSize: 18,
-    lineHeight: 21,
+    fontSize: adjustedFontSize,
     fontWeight: 'bold',
-    letterSpacing: 0.25,
     color: 'black',
     textDecorationLine: 'underline',
   },
@@ -185,18 +167,21 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     justifyContent: 'space-around',
-    marginTop: 20 // Opcional: para ajustar el espacio en la parte superior
+    marginTop: 20, // Opcional: para ajustar el espacio en la parte superior
+    alignSelf: 'center'
+
   },
 
   poweredSectionSVG: {
-    width: 40,
-    height: 40,
-    margin: 30
+    width: '10%',
+    height: '100%',
+    margin: 30,
   },
 
   poweredIATitle: {
-    fontSize: 14,
-    margin: 50
+    fontSize: adjustedFontSize,
+    margin: 50,
+    alignSelf: 'center'
   },
 
   registerNav: {

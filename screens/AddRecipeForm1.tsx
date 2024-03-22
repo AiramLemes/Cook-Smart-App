@@ -283,13 +283,8 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   
   container: {
-    flex: 1,
     backgroundColor: Colors.background,
-    paddingHorizontal: '3%'
-  },
-
-  scrollViewContent: {
-    width: '97%',
+    paddingHorizontal: 10
   },
 
   recipeTitle: {
@@ -297,6 +292,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 20,
+    marginBottom: 20
   },
 
   titleContainer: {

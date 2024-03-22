@@ -11,6 +11,7 @@ class ToastUtil {
         animation: true,
         hideOnPress: true,
         textColor: Colors.textPrimary,
+        containerStyle: {marginBottom: 35},
         backgroundColor: Colors.toasts
     });
   }

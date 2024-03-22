@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightGray,
     alignItems: 'center', // align items vertically in the center
     justifyContent: 'space-between', // add space between items
-    width: '60%', // increase width
+    width: '55%', // increase width
     height: 40,
     paddingHorizontal: 20, // add horizontal padding,
     textAlignVertical: 'center',

@@ -1,13 +1,16 @@
 import { useIsFocused } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, PixelRatio, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Toast from "react-native-root-toast";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
 import { generateRecipe } from "../services/Openai";
 import ToastUtil from "../utils/ToastUtil";
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {
@@ -112,7 +115,7 @@ const IAScreen = ({navigation}) => {
         {/* <TouchableOpacity style={styles.createRecipeButton} > */}
         <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
 
-          <Text style={{ fontSize: 18, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
+          <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>
         </>
       )}
@@ -137,6 +140,7 @@ export default IAScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    flex:1 ,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: Colors.background,
@@ -146,10 +150,10 @@ const styles = StyleSheet.create({
 
   title: {
     color: Colors.textPrimary,
-    fontSize: 18,
+    fontSize: adjustedFontSize,
     textAlign: 'center',
     width: '80%',
-    marginBottom: 30,
+    marginBottom: 20,
   },
 
   image: {
@@ -174,6 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     borderColor: Colors.black,
     borderWidth: 1,
+    fontSize: adjustedFontSize,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -207,13 +212,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: Colors.black,
-    backgroundColor: Colors.lightGray
+    backgroundColor: Colors.lightGray,
+    justifyContent: 'center'
   },
 
   cookingText: {
     textAlign: 'center',
-    marginTop: 20,
-    fontSize: 20
+    marginTop: 30,
+    fontSize: adjustedFontSize
   }
   
 });

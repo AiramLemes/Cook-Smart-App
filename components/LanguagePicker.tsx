@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   buttonWithIcon: {
     borderRadius: 10,
     backgroundColor: "rgba(254, 211, 77, 0.28)",
-    width: 330,
+    width: '80%',
+    alignSelf: 'center',
     height: 40,
     marginTop: 25,
     paddingHorizontal: 10,

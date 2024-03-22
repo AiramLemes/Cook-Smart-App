@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useContext } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { Dimensions, KeyboardAvoidingView, Platform } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
@@ -13,6 +13,9 @@ import HomeTopTab from "./HomeTopTab";
 
 
 const Tab = createBottomTabNavigator();
+
+const imageDimensions = (Dimensions.get('window').width / 8);
+const iconDimension = (Dimensions.get('window').width / 16);
 
 const BottomTab = () => {
   
@@ -27,7 +30,7 @@ const BottomTab = () => {
       screenOptions={{
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
-        tabBarStyle: { backgroundColor: Colors.secondary }
+        tabBarStyle: { backgroundColor: Colors.secondary, height: imageDimensions }
       }}
     >
       <Tab.Screen
@@ -36,8 +39,9 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home-outline" color={color} size={size} />
+            <MaterialCommunityIcons name="home-outline" color={color} size={iconDimension} />
           ),
+          tabBarAllowFontScaling: true
         }}
       />
 
@@ -48,8 +52,9 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="fridge-outline" color={color} size={size} />
+            <MaterialCommunityIcons name="fridge-outline" color={color} size={iconDimension} />
             ),
+            tabBarAllowFontScaling: true
           }}
       />
 
@@ -59,8 +64,9 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+            <MaterialCommunityIcons name="magnify" color={color} size={iconDimension} />
           ),
+          tabBarAllowFontScaling: true
         }}
       />
 
@@ -71,8 +77,9 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="qrcode-scan" color={color} size={size} />
+            <MaterialCommunityIcons name="qrcode-scan" color={color} size={iconDimension} />
           ),
+          tabBarAllowFontScaling: true
         }}
       />
 
@@ -82,8 +89,9 @@ const BottomTab = () => {
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Iconify icon="fluent:brain-circuit-24-regular" size={size} color={color}/>
+            <Iconify icon="fluent:brain-circuit-24-regular" color={color} size={iconDimension}/>
             ),
+            tabBarAllowFontScaling: true
           }}
       />
 

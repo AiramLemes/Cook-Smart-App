@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, PixelRatio, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackgroundSVG from "../../assets/landing/BackgroundSVG";
 import ChatGPTSVG from "../../assets/landing/ChatGPTSVG";
@@ -8,11 +8,16 @@ import PoweredSVG from "../../assets/landing/PoweredSVG";
 import Colors from "../../constants/Colors";
 import LanguageContext from "../../context/LanguageProvider";
 
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
+
 // @ts-ignore
 const IndexScreen = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
   const Strings = useContext(LanguageContext);
+
+  
 
   return (
     <SafeAreaView style={{...styles.container, paddingTop: insets.top,
@@ -25,12 +30,12 @@ const IndexScreen = ({navigation}) => {
         <Text style={styles.title} >COOK SMART !</Text>
 
        
-          <TouchableOpacity style={styles.logInButton}  onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.buttons}  onPress={() => navigation.navigate('Login')}>
             <Text style={styles.buttonText}>{Strings.t('logIn')}</Text>
           </TouchableOpacity>
      
   
-          <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity style={{...styles.buttons, backgroundColor: Colors.secondary}} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.buttonText}>{Strings.t('register')}</Text>
           </TouchableOpacity>
        
@@ -67,32 +72,21 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   
-  logInButton: {
+  buttons: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    height: '6%',
     paddingHorizontal: 32,
     borderRadius: 10,
     elevation: 3,
     backgroundColor: Colors.primary,
-    width: 300,
+    width: '75%',
     marginTop: 30
   },
 
-  registerButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 10,
-    elevation: 3,
-    backgroundColor: Colors.secondary,
-    width: 300,
-    marginTop: 30
-  },
   
   buttonText: {
-    fontSize: 16,
+    fontSize: adjustedFontSize,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
   },
 
   poweredIATitle: {
-    fontSize: 18,
+    fontSize: adjustedFontSize,
     margin: 50
   }
 });

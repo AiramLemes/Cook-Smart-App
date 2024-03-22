@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, PixelRatio, StyleSheet } from "react-native";
 import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 import DiscoverRecipesScreen from '../screens/Home/DiscoverRecipesScreen';
@@ -8,6 +8,9 @@ import OwnRecipesScreen from '../screens/Home/OwnRecipesScreen';
 
 
 const Tab = createMaterialTopTabNavigator();
+
+
+const adjustedFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 30;
 
 const HomeTopTab = () => {
 
@@ -23,7 +26,7 @@ const HomeTopTab = () => {
           backgroundColor: 'black', // Color de la línea indicadora
         },
         tabBarStyle: styles.tab,
-        tabBarLabelStyle: { fontSize: 14, marginTop: 2 },
+        tabBarLabelStyle: { fontSize: adjustedFontSize, marginTop: 2 },
         
       }}
     >

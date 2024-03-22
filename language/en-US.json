@@ -75,7 +75,7 @@
   "itemAlreadyInPantryMessage": "The product is already in the pantry",
   "pantryConfirmationDialog": "Are you sure you want to remove this item from the list?",
   "deleteRecipeConfirmationDialog": "Are you sure you want to delete the recipe? This action cannot be undone.",
-  "noRecipes": "No prescriptions available",
+  "noRecipes": "No recipes available",
   "deletedRecipe": "Recipe successfully deleted",
   "deleteRecipeError": "An error occurred while deleting the recipe",
   "salad": "Salads",

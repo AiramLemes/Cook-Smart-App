@@ -1,16 +1,18 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Iconify } from "react-native-iconify";
-import { Searchbar } from 'react-native-paper';
-import Toast from "react-native-root-toast";
-import ConfirmationDialog from "../components/ConfirmationDialog";
-import RecipeItem from "../components/Recipe";
+import React, { useState, useCallback, useEffect, useContext } from "react";
+import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text, PixelRatio, Dimensions } from "react-native";
 import Colors from "../constants/Colors";
-import LanguageContext from "../context/LanguageProvider";
-import Recipe from "../model/Recipe";
+import { Searchbar } from 'react-native-paper';
 import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
+import RecipeItem from "../components/Recipe";
+import Recipe from "../model/Recipe";
+import { Iconify } from "react-native-iconify";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 import ToastUtil from "../utils/ToastUtil";
+import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
+
+const titleFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 20;
 
 const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   noRecipesText: {
-    fontSize: 20,
+    fontSize: titleFontSize,
     color: Colors.black, // Puedes ajustar el color según tus preferencias
   },
 

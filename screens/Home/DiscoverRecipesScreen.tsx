@@ -1,12 +1,16 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, PixelRatio, ScrollView, StyleSheet, Text, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import RecipeItem from "../../components/Recipe";
 import Colors from "../../constants/Colors";
 import LanguageContext from "../../context/LanguageProvider";
 import Recipe from "../../model/Recipe";
 import { getBestRecipes, getNewestRecipes } from "../../repository/FirebaseRecipes";
+
+
+const normalFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 26;
+const titleFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 20;
 
 const DiscoverRecipesScreen = ({ navigation }) => {
 
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
   },
   
   categoryText: {
-    fontSize: 20,
+    fontSize: titleFontSize,
     marginLeft: 16,
     marginBottom: 8,
     textDecorationLine: 'underline'
@@ -192,6 +196,7 @@ const styles = StyleSheet.create({
 
   title: {
     marginBottom: 40,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: normalFontSize
   }
 });

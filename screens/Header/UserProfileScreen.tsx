@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { sendPasswordResetEmail, updateEmail } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, PixelRatio, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Toast from "react-native-root-toast";
 import Colors from "../../constants/Colors";
@@ -11,6 +11,9 @@ import User from "../../model/User";
 import { checkEmail, checkEmailPattern, checkUserName, getCurrentUser, updateUser, uploadImageAsync } from "../../repository/FirebaseUser";
 import ToastUtil from "../../utils/ToastUtil";
 
+const imageDimensions = (Dimensions.get('window').width / 2) - (10 * 2);
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 //@ts-ignore
 const UserProfileScreen = ({ navigation }) => {
@@ -213,15 +216,16 @@ const styles = StyleSheet.create({
   },
 
   userImage: {
-    width: 160,
-    height: 160,
+    width: imageDimensions,
+    height: imageDimensions,
     borderRadius: 200,
     borderColor: Colors.imageBorder,
     borderWidth: 1,
+    marginTop: 40
   },
 
   imageSectionText: {
-    fontSize: 18,
+    fontSize: adjustedFontSize,
     marginBottom: 50
   },
 
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
 
   userDataTitle: {
     textAlign: 'left',
-    fontSize: 15,
+    fontSize: adjustedFontSize,
     margin: 10,
   },
 
@@ -248,7 +252,7 @@ const styles = StyleSheet.create({
   },
 
   userDataInputText: {
-    fontSize: 16,
+    fontSize: adjustedFontSize,
     letterSpacing: 0.25,
     fontWeight: 'normal',
     color: 'black',
@@ -265,7 +269,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 16,
+    fontSize: adjustedFontSize,
     letterSpacing: 0.25,
     fontWeight: 'normal',
     color: 'black',

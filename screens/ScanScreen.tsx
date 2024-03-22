@@ -2,7 +2,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as Linking from 'expo-linking';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, PixelRatio, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
 import LanguageContext from '../context/LanguageProvider';
@@ -11,6 +11,9 @@ import { getProduct } from '../repository/FirebaseProduct';
 import FaceColor from '../utils/RatingFaceColor';
 import { Iconify } from 'react-native-iconify';
 
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -69,7 +72,7 @@ const ScanScreen = ({ navigation }) => {
             </View>
           ) : hasPermission === false ? (
             <View style={styles.centeredMessageContainer}>
-              <Text style={{ textAlign: 'center' }}>{Strings.translate('scanNoPermission')}</Text>
+              <Text style={{ textAlign: 'center', fontSize: adjustedFontSize}}>{Strings.translate('scanNoPermission')}</Text>
               <TouchableOpacity  onPress={() => {Linking.openSettings()}}>
                 <Text style={styles.permissionText}>{Strings.translate('giveCameraPermissions')}</Text>
               </TouchableOpacity>
@@ -93,7 +96,7 @@ const ScanScreen = ({ navigation }) => {
             <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
           </View>
           <View style={{ ...styles.column, flex: 3, left: 10}}>
-            <Text style={{fontSize: 17}} >{scannedProduct!!.name}</Text>
+            <Text style={{fontSize: adjustedFontSize}} >{scannedProduct!!.name}</Text>
             <Text>{scannedProduct!!.brand}</Text>
             <View style={styles.rating}>
               <FaceColor rate={scannedProduct!!.rate} size={20}/>
@@ -139,7 +142,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     textDecorationLine: 'underline',
-    color: Colors.blue
+    color: Colors.blue,
+    fontSize: adjustedFontSize
   },
 
   productCardContainer: {
