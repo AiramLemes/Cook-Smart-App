@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
@@ -33,15 +33,15 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
 
     const getImageSource = (categoryName: string) => {
       const categoryImageMapping = {
-        'Salads': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fsalad.png?alt=media&token=ad67635f-c83b-4c7e-901a-db6b42876e55',
-        'Pasta': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fpasta.png?alt=media&token=eddacece-d52a-4b4a-91bb-a87bd2ce0139',
-        'Meat': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fmeat.png?alt=media&token=3da33b0f-9afd-48ce-b115-7eee1a32641e',
-        'Fish': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Ffish.png?alt=media&token=895c69c0-cf6a-41d4-8736-a73eb6a81cc1',
-        'Vegetarian': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fvegetarian.png?alt=media&token=645b02a6-bf2c-4251-b74f-7e37fe4c0e40',
-        'Desserts': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fdesserts.png?alt=media&token=062a6537-702b-4e89-9671-8d9bb23c5f66',
-        'Soups': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fsoup.png?alt=media&token=37b5b55c-5453-4718-9131-9b632fe6ded9',
-        'Drinks': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fdrinks.png?alt=media&token=adfdd5bf-f19a-455e-a3fc-089ca390d3df',
-        'Breakfast': 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/foodCategories%2Fbreakfast.png?alt=media&token=41df66ee-3fa3-4a0f-b471-3c349a38eb86'
+        'Salads': require('../assets/foodCategories/salad.png'),
+        'Pasta': require('../assets/foodCategories/pasta.png'),
+        'Meat': require('../assets/foodCategories/meat.png'),
+        'Fish': require('../assets/foodCategories/fish.png'),
+        'Vegetarian': require('../assets/foodCategories/vegetarian.png'),
+        'Desserts': require('../assets/foodCategories/desserts.png'),
+        'Soups': require('../assets/foodCategories/soup.png'),
+        'Drinks': require('../assets/foodCategories/drinks.png'),
+        'Breakfast': require('../assets/foodCategories/breakfast.png')
       };
       //@ts-ignore
       return categoryImageMapping[categoryName];
@@ -79,7 +79,7 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
             <Iconify icon="charm:tick" size={20} color="black" />
           </View>
         )}
-        <Image source={{ uri: getImageSource(categoryName) }} style={styles.image} />
+        <Image source={getImageSource(categoryName)} style={styles.image} />
         <Text style={styles.text}>{categoryName}</Text>
       </TouchableOpacity>
     );
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 140,
     borderRadius: 24,
-    borderBlockColor: Colors.black,
+    borderColor: Colors.black,
     borderWidth: 1,
     flex: 1,
     margin: 5,

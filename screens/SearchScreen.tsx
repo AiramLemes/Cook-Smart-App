@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, View, ActivityIndicator, TouchableOpacity, Text, PixelRatio, Dimensions } from "react-native";
 import Colors from "../constants/Colors";
 import { Searchbar } from 'react-native-paper';
 import { deleteRecipe, getAllRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty } from "../repository/FirebaseRecipes";
@@ -11,6 +11,8 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import LanguageContext from "../context/LanguageProvider";
+
+const titleFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 20;
 
 const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   noRecipesText: {
-    fontSize: 20,
+    fontSize: titleFontSize,
     color: Colors.black, // Puedes ajustar el color según tus preferencias
   },
 

@@ -1,14 +1,14 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from "react-native";
 import React, { useContext, useEffect } from "react";
-import Colors from "../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Iconify } from "react-native-iconify";
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Collapsible from 'react-native-collapsible';
+import { Iconify } from "react-native-iconify";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Table from "../components/Table";
-import { getBetterProducts } from "../repository/FirebaseProduct";
-import Product from "../model/Product";
-import FaceColor from "../utils/RatingFaceColor";
+import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
+import Product from "../model/Product";
+import { getBetterProducts } from "../repository/FirebaseProduct";
+import FaceColor from "../utils/RatingFaceColor";
 
 // @ts-ignore
 const ProductScreen = ({ navigation, route }) => {

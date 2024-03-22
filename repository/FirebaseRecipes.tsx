@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, serverTimestamp, startAfter, updateDoc, where } from "firebase/firestore";
+import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
-import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
 import { User } from "../model/User";
 import { deleteUserRecipe } from "./FirebaseUser";
 
@@ -115,9 +115,17 @@ async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
   const matchingRecipeIds: string[] = [];
 
   querySnapshot.forEach((doc) => {
-    const title = (doc.data() as Recipe).title.toLowerCase();
+    const recipe = (doc.data() as Recipe)
+    const title = recipe.title.toLowerCase();
+    const category = recipe.category.toLowerCase();
+
     if (title.includes(recipeTitle.toLowerCase())) {
       matchingRecipeIds.push(doc.id);
+    }
+    else {
+      if (category.includes(recipeTitle.toLowerCase())) {
+        matchingRecipeIds.push(doc.id);
+      }
     }
   });
 
@@ -311,7 +319,6 @@ async function getBestRecipes(maxRecipes: number): Promise<Recipe[]> {
 
 
 async function handleRecipeLike(userId: string, recipeId: string) {
-
   try {
     const recipesCollection = collection(firestore, 'recipes');
     
@@ -367,4 +374,4 @@ async function updateRecipeAssessment(recipeId: string, numberOfRatings: number,
 
 
 
-export { getAllRecipes, addRecipe, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, deleteRecipe, getNewestRecipes, getBestRecipes, updateRecipe, handleRecipeLike, updateRecipeAssessment };
+export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, handleRecipeLike, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment };

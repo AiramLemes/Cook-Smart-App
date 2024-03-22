@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import LanguageContext from "../context/LanguageProvider";
 

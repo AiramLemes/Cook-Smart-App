@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
-import Colors from '../constants/Colors';
-import { Iconify } from 'react-native-iconify';
 import * as ImagePicker from 'expo-image-picker';
-import DificultySelector from '../components/DifficultySelector';
-import Servings from '../components/Servings';
-import IngredientPicker from '../components/IngredientPicker';
-import Recipe from '../model/Recipe';
-import ToastUtil from '../utils/ToastUtil';
-import Toast from 'react-native-root-toast';
 import { Timestamp } from 'firebase/firestore';
-import Ingredient from '../model/Ingredient';
-import { translateIngredientToEnglish, translateIngredientsToEnglish, translateText } from '../services/TransaltionService';
+import React, { useContext, useEffect, useState } from 'react';
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Iconify } from 'react-native-iconify';
+import Toast from 'react-native-root-toast';
+import DificultySelector from '../components/DifficultySelector';
+import IngredientPicker from '../components/IngredientPicker';
+import Servings from '../components/Servings';
+import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
+import Ingredient from '../model/Ingredient';
+import Recipe from '../model/Recipe';
+import { translateText } from '../services/TransaltionService';
+import ToastUtil from '../utils/ToastUtil';
 
 //@ts-ignore
 const AddRecipeForm1 = ({ navigation, route }) => {
@@ -283,13 +283,8 @@ const AddRecipeForm1 = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   
   container: {
-    flex: 1,
     backgroundColor: Colors.background,
-    paddingHorizontal: '3%'
-  },
-
-  scrollViewContent: {
-    width: '97%',
+    paddingHorizontal: 10
   },
 
   recipeTitle: {
@@ -297,6 +292,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 20,
+    marginBottom: 20
   },
 
   titleContainer: {

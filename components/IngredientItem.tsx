@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Colors from '../constants/Colors';
-import { updatePantryIngredient } from '../repository/FirebasePantry';
 import Ingredient from '../model/Ingredient';
-import { useState } from 'react';
+import { updatePantryIngredient } from '../repository/FirebasePantry';
 
 const IngredientItem = (props: {
   onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 

@@ -10,6 +10,7 @@ import frFR from '../language/fr-FR.json';
 import itIT from '../language/it-IT.json'; 
 import ptPT from '../language/pt-PT.json'; 
 
+let currentLanguage: string;
 
 async function loadTranslations(i18n: I18n, locale: string) {
   try {
@@ -37,7 +38,7 @@ async function loadTranslations(i18n: I18n, locale: string) {
         // Manejar el caso en el que no se encuentre el idioma
         break;
     }
-    console.log('Translations loaded:', translations);
+    // console.log('Translations loaded:', translations);
     i18n.translations[locale] = translations;
   } catch (error) {
     console.error('Error loading translations:', error);
@@ -58,8 +59,10 @@ async function loadLanguagePreference(i18n: I18n) {
     const preferredLanguage = await AsyncStorage.getItem('preferredLanguage');
     if (preferredLanguage) {
       i18n.locale = preferredLanguage;
+      currentLanguage = preferredLanguage;
     } else {
       i18n.locale = Localization.locale;
+      currentLanguage = Localization.locale;
     }
   } catch (error) {
     console.error('Error loading language preference:', error);
@@ -72,4 +75,5 @@ async function changeLanguage(i18n: I18n, language: string) {
 }
 
 
-export { loadTranslations, saveLanguagePreference, loadLanguagePreference, changeLanguage };
+
+export { loadTranslations, saveLanguagePreference, loadLanguagePreference, changeLanguage, currentLanguage};

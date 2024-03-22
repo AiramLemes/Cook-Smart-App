@@ -27,7 +27,9 @@ const Colors = {
     gray: '#D9D9D9',
 
     lightGray: '#FBF8F8',
-    ligthGreen: '#DEFFC0'
+    ligthGreen: '#DEFFC0',
+
+    blue: '#00A3FF'
   };
   
   export default Colors;

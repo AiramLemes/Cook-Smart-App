@@ -1,11 +1,11 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import Colors from "../constants/Colors";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
+import Colors from "../constants/Colors";
 import Recipe from "../model/Recipe";
-import { getCurrentUserData, updateUser } from "../repository/FirebaseUser";
-import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
 import User from "../model/User";
+import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
+import { getCurrentUser, updateUser } from "../repository/FirebaseUser";
 
 const Stars = (props: {recipe: Recipe, size?: number}) => {
 
@@ -17,7 +17,7 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
 
     const fetchUserData = async () => {
       try {
-        const user: User | null = await getCurrentUserData();
+        const user: User | null = await getCurrentUser();
   
         if (user) {
 
@@ -39,8 +39,8 @@ const Stars = (props: {recipe: Recipe, size?: number}) => {
   const handleAssessment = async (assessment: number) => {
     try {
       
-      const currentUser: User | null = await getCurrentUserData();
-      console.log(currentUser)
+      const currentUser: User | null = await getCurrentUser();
+      
       if (currentUser) {
         let newNumberOfRatings
 
@@ -122,3 +122,4 @@ const styles = StyleSheet.create({
   }
 
 });
+

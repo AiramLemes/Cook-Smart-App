@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Platform } from 'react-native';
-import { Iconify } from "react-native-iconify";
-import Colors from "../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
-import { getProduct } from '../repository/FirebaseProduct';
-import Product from '../model/Product';
-import FaceColor from '../utils/RatingFaceColor';
+import { Camera } from 'expo-camera';
+import * as Linking from 'expo-linking';
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, PixelRatio, Dimensions } from 'react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Colors from "../constants/Colors";
 import LanguageContext from '../context/LanguageProvider';
+import Product from '../model/Product';
+import { getProduct } from '../repository/FirebaseProduct';
+import FaceColor from '../utils/RatingFaceColor';
+import { Iconify } from 'react-native-iconify';
 
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
 const ScanScreen = ({ navigation }) => {
@@ -31,7 +35,7 @@ const ScanScreen = ({ navigation }) => {
     };
 
     getBarCodeScannerPermissions();
-  }, []);
+  }, [isFocused]);
 
   // @ts-ignore
   const handleBarCodeScanned = async ({ data }) => {
@@ -45,10 +49,11 @@ const ScanScreen = ({ navigation }) => {
       }
     }
   };
-  // navigation.navigate('Product', scannedProduct)
+
   const handleGoButtonPress = () => {
     navigation.navigate('Product', scannedProduct);
   };
+
 
   return (
     <SafeAreaView
@@ -62,9 +67,18 @@ const ScanScreen = ({ navigation }) => {
       {isFocused && (
         <View style={styles.barcode}>
           {hasPermission === null ? (
-            <Text>{Strings.translate('scanPermissionMessage')}</Text>
+            <View style={styles.centeredMessageContainer}>
+              <Text>{Strings.translate('scanPermissionMessage')}</Text>
+            </View>
           ) : hasPermission === false ? (
-            <Text style={{textAlign: 'center'}}>{Strings.translate('scanNoPermission')}</Text>
+            <View style={styles.centeredMessageContainer}>
+              <Text style={{ textAlign: 'center', fontSize: adjustedFontSize}}>{Strings.translate('scanNoPermission')}</Text>
+              <TouchableOpacity  onPress={() => {Linking.openSettings()}}>
+                <Text style={styles.permissionText}>{Strings.translate('giveCameraPermissions')}</Text>
+              </TouchableOpacity>
+              
+            </View>
+            
           ) : (
             <Camera
               style={StyleSheet.absoluteFill}
@@ -72,54 +86,66 @@ const ScanScreen = ({ navigation }) => {
               onBarCodeScanned={handleBarCodeScanned}
             />
           )}
-
         </View>
       )}
-{/* productExists */}
-    { productExists && !isHidden && (
-      <View style={styles.productCard}>
-        <View style={styles.column}>
-          <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
-        </View>
-        <View style={{ ...styles.column, flex: 3, left: 10}}>
-          <Text style={{fontSize: 17}} >{scannedProduct!!.name}</Text>
-          <Text>{scannedProduct!!.brand}</Text>
-          <View style={styles.rating}>
-            <FaceColor rate={scannedProduct!!.rate} size={20}/>
-            <Text>  {scannedProduct!!.rate}/100</Text>
+  
+      {/* productExists */}
+      {productExists && !isHidden && (
+        <View style={styles.productCard}>
+          <View style={styles.column}>
+            <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
+          </View>
+          <View style={{ ...styles.column, flex: 3, left: 10}}>
+            <Text style={{fontSize: adjustedFontSize}} >{scannedProduct!!.name}</Text>
+            <Text>{scannedProduct!!.brand}</Text>
+            <View style={styles.rating}>
+              <FaceColor rate={scannedProduct!!.rate} size={20}/>
+              <Text>  {scannedProduct!!.rate}/100</Text>
+            </View>
+          </View>
+          <View style={styles.column}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
+              <Iconify icon="material-symbols:close" size={24} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
+              <Iconify icon="carbon:next-filled" size={33} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.column}>
-          <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
-            <Iconify icon="material-symbols:close" size={24} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
-            <Iconify icon="carbon:next-filled" size={33} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-  )}
-
+      )}
     </SafeAreaView>
-  )
-};
-
+  );
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignContent: 'center',
+    backgroundColor: Colors.background,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 20,
   },
   barcode: {
     width: '100%',
     height: '100%',
   },
+  centeredMessageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  title: {
+    fontSize: 20,
+  },
+
+  permissionText: {
+    textAlign: 'center',
+    marginTop: 20,
+    textDecorationLine: 'underline',
+    color: Colors.blue,
+    fontSize: adjustedFontSize
+  },
+
   productCardContainer: {
     position: 'absolute',
     bottom: 0,

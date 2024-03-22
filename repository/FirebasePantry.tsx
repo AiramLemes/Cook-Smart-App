@@ -1,7 +1,7 @@
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../firebaseConfig";
-import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, setDoc, where } from "firebase/firestore";
-import Pantry from "../model/Pantry";
 import Ingredient from "../model/Ingredient";
+import Pantry from "../model/Pantry";
 
 
 async function getPantry(): Promise<Pantry> {
@@ -145,4 +145,4 @@ async function createPantry(userId: string): Promise<boolean> {
 //   }
 // }
 
-export { getPantry, updatePantryIngredient, removeIngredientFromPantry, addIngredientToPantry, createPantry};
+export { addIngredientToPantry, createPantry, getPantry, removeIngredientFromPantry, updatePantryIngredient };

@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import Colors from '../constants/Colors';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
-import Recipe from '../model/Recipe';
 import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
-import { translateIngredientsToEnglish, translateRecipe } from '../services/TransaltionService';
+import StarsPicker from '../components/StarsPicker';
+import Colors from '../constants/Colors';
+import LanguageContext from '../context/LanguageProvider';
 import { auth } from '../firebaseConfig';
+import Recipe from '../model/Recipe';
 import { handleRecipeLike } from '../repository/FirebaseRecipes';
 import { getUserNameById } from '../repository/FirebaseUser';
-import StarsPicker from '../components/StarsPicker';
-import LanguageContext from '../context/LanguageProvider';
+import { translateRecipe } from '../services/TransaltionService';
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
@@ -78,7 +78,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Iconify icon="lets-icons:back" size={33} color="black" />
             </TouchableOpacity>
-            <Text style={styles.title}>{renderRecipe.title}</Text>
+            <Text style={styles.title}>{recipe.title}</Text>
             {!editable && (
               <TouchableOpacity onPress={handleLike}>
                 {liked ? (
@@ -100,21 +100,27 @@ const RecipeScreen = ({ navigation, route }) => {
       case 'imagesList':
         return (
           <>
-          <FlatList
-            horizontal
-            style={styles.imagesList}
-            data={renderRecipe.images}
-            renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
-            keyExtractor={(image) => image}
-          />
+          {!isAiRecipe && (
+          <>
+            <FlatList
+              horizontal
+              style={styles.imagesList}
+              data={renderRecipe.images}
+              renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
+              keyExtractor={(image) => image}
+            />
+
+            <StarsPicker recipe={recipe}></StarsPicker>
+          </>
+          )}
 
           {isAiRecipe && (   
             <Image src={recipe.mainImage} style={styles.aiImage}/>
            )}
      
-           {!isAiRecipe && (
-             <StarsPicker recipe={recipe}></StarsPicker>
-           )}
+           
+             
+           
            </>
         );
       case 'preparation':
@@ -232,6 +238,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 20,
+    maxWidth: '80%'
   },
 
   imagesList: {
@@ -347,7 +354,7 @@ const styles = StyleSheet.create({
 
   aiImage: {
     width: '80%',
-    height: '10%',
+    height: 140,
     borderWidth: 1,
     borderColor: Colors.primary,
     borderRadius: 10,

@@ -1,16 +1,16 @@
 import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore } from "../firebaseConfig";
-import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage"; 
-import { v4 as uuid } from "uuid";  // Importación de uuid para generar nombres únicos
 
-import User from "../model/User";
-import Toast from "react-native-root-toast";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import Toast from "react-native-root-toast";
+import LanguageContext from "../context/LanguageProvider";
+import User from "../model/User";
 import ToastUtil from "../utils/ToastUtil";
-import { Strings } from "../constants/Strings";
 import { createPantry } from "./FirebasePantry";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
+const Strings = LanguageContext;
 
 async function getUserImage(callback: (imageURL: string) => void) {
   try {
@@ -57,42 +57,8 @@ async function getUserImage(callback: (imageURL: string) => void) {
 }
 
 
-let userData: User | null = null;
 
-async function fetchUserData(): Promise<User | null> {
-  try {
-    const uid = auth.currentUser?.uid;
-
-    if (uid) {
-      const userDocRef = doc(firestore, 'users', uid);
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        userData = userDocSnapshot.data() as User;
-        return userData;
-      }
-      else {
-        return null;
-      }
-    } 
-    return null;
-  } catch (error) {
-    console.error('Error al obtener datos del usuario:', error);
-    return null;
-  }
-}
-
-// Llamas a esta función cuando sea necesario cargar o recargar los datos del usuario
-async function loadUserData() {
-  await fetchUserData();
-}
-
-// Accedes directamente a los datos del usuario
-function getUserData(): User | null {
-  return userData;
-}
-
-async function getCurrentUserData(): Promise<User | null> {
+async function getCurrentUser(): Promise<User | null> {
   try {
     const uid = auth.currentUser?.uid;
 
@@ -103,14 +69,15 @@ async function getCurrentUserData(): Promise<User | null> {
       if (userDocSnapshot.exists()) {
         const userData = userDocSnapshot.data() as User;
         return userData;
-      } else {
+      }
+      else {
         return null;
       }
     } 
     return null;
   } catch (error) {
     console.error('Error al obtener datos del usuario:', error);
-    return null; // Asegúrate de manejar los errores y devolver null si algo sale mal.
+    return null;
   }
 }
 
@@ -163,7 +130,9 @@ async function uploadImageAsync(uri: string) {
   });
 
   const storageRef = ref(getStorage(), `users/${auth.currentUser?.uid}/`);
-  const fileRef = ref(storageRef, uuid());
+  const date = new Date();
+  const fileName = `users/${auth.currentUser?.uid}/` + date.getFullYear() + date.getTime();
+  const fileRef = ref(storageRef, fileName);
   const result = await uploadBytes(fileRef, blob);
 
   const imageUrl: string = await getDownloadURL(fileRef);
@@ -293,30 +262,32 @@ async function getUserNameById(userId:string) {
 async function createUser(email: string, password: string, userName: string) {
   try {
     const userId = (await createUserWithEmailAndPassword(auth, email, password)).user.uid
-
+    
     const newUser: User = {
       userName: userName,
       email: email,
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
       recipesIds: [],
-      assessments: [],
+      assessments: {}
     };
-
-    const usersDoc = doc(collection(firestore, 'users'), userId);
     
-    await setDoc(usersDoc, newUser)
+    const usersDocRef = doc(collection(firestore, 'users'), userId);
+    
+    await setDoc(usersDocRef, newUser);
+
       
     createPantry(userId);
     return true;
 
-  } catch(e) {
-    ToastUtil.showToast(Strings.t('generalError'), Toast.durations.SHORT);
+  } catch(e: any) {
+    console.log(e)
+
     return false;
   }
-
 }
 
 
 
-export { loadUserData, getUserData, getUserImage, uploadImageAsync, checkEmail, checkEmailPattern, logIn, checkPassword, checkUserName, 
-  updateUser, assignRecipeToUser, deleteUserRecipe, getUserNameById, getCurrentUserData, createUser };
+
+
+export { assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser, getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync };

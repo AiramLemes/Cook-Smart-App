@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../constants/Colors';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
+import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {
@@ -54,11 +54,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between', // add space between items
+    textAlignVertical: 'center',
+    alignItems: 'center',
   },
 
   servingsText: {
     fontSize: 15,
     textAlignVertical: 'center',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
 
   servingsCotainer: {
@@ -67,9 +71,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightGray,
     alignItems: 'center', // align items vertically in the center
     justifyContent: 'space-between', // add space between items
-    width: '60%', // increase width
+    width: '55%', // increase width
     height: 40,
-    paddingHorizontal: 20, // add horizontal padding
+    paddingHorizontal: 20, // add horizontal padding,
+    textAlignVertical: 'center',
   },
 
   text: {

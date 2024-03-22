@@ -1,13 +1,16 @@
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Colors from "../constants/Colors";
-import { Iconify } from "react-native-iconify";
-import { generateRecipe } from "../services/Openai";
 import { useIsFocused } from "@react-navigation/native";
-import ToastUtil from "../utils/ToastUtil";
+import LottieView from "lottie-react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Dimensions, FlatList, Image, PixelRatio, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Iconify } from "react-native-iconify";
 import Toast from "react-native-root-toast";
-import CookingAnimation from "../utils/CookingAnimation";
+import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
+import { generateRecipe } from "../services/Openai";
+import ToastUtil from "../utils/ToastUtil";
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
 const IAScreen = ({navigation}) => {
@@ -73,6 +76,7 @@ const IAScreen = ({navigation}) => {
     }
 
     else {
+      setCreatingRecipe(false);
       ToastUtil.showToast(Strings.translate('iaRecipeError'), Toast.durations.SHORT);
     }
 
@@ -87,7 +91,7 @@ const IAScreen = ({navigation}) => {
       {!creatingRecipe && (
         <>
         <Text style={styles.title}>{Strings.translate('iaTitle')}</Text>
-        <Image style={styles.image} source={{ uri: "https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/ai%2Fchat%20gpt%20image.webp?alt=media&token=1020e5ee-2c08-4e99-a0df-9524eb6810bd" }} />
+        <Image style={styles.image} source={require('../assets/carousel/chat-gpt.png')} />
 
         <View style={styles.addProductContainer}>
           <TextInput
@@ -111,7 +115,7 @@ const IAScreen = ({navigation}) => {
         {/* <TouchableOpacity style={styles.createRecipeButton} > */}
         <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
 
-          <Text style={{ fontSize: 18, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
+          <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>
         </>
       )}
@@ -119,7 +123,9 @@ const IAScreen = ({navigation}) => {
       
       {creatingRecipe && (
         <View style={{width: '100%', height: '30%', justifyContent: 'center'}}>
-          <CookingAnimation/>
+          <LottieView source={require('../assets/Cooking Animation.json')}
+          style={{height: '100%', width: '100%'}}
+          autoPlay/>
           <Text style={styles.cookingText}>{Strings.translate('iaAnimationText')}</Text>
         </View>
       )}
@@ -134,6 +140,7 @@ export default IAScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    flex:1 ,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: Colors.background,
@@ -143,10 +150,10 @@ const styles = StyleSheet.create({
 
   title: {
     color: Colors.textPrimary,
-    fontSize: 18,
+    fontSize: adjustedFontSize,
     textAlign: 'center',
     width: '80%',
-    marginBottom: 30,
+    marginBottom: 20,
   },
 
   image: {
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     borderColor: Colors.black,
     borderWidth: 1,
+    fontSize: adjustedFontSize,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -204,13 +212,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: Colors.black,
-    backgroundColor: Colors.lightGray
+    backgroundColor: Colors.lightGray,
+    justifyContent: 'center'
   },
 
   cookingText: {
     textAlign: 'center',
-    marginTop: 20,
-    fontSize: 20
+    marginTop: 30,
+    fontSize: adjustedFontSize
   }
   
 });

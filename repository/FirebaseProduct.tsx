@@ -1,5 +1,5 @@
-import { firestore } from "../firebaseConfig";
 import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { firestore } from "../firebaseConfig";
 import Product from "../model/Product";
 
 
@@ -47,4 +47,4 @@ async function getBetterProducts(name: string, rate: number): Promise<Array<Prod
   }
 }
 
-export { getProduct, getBetterProducts };
+export { getBetterProducts, getProduct };

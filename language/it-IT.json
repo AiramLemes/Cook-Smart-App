@@ -120,6 +120,10 @@
   "carouselImageTitle3": "Organizzate la vostra dispensa virtuale senza sforzo!",
   "emptyPantry": "La dispensa è vuota :(",
   "homeInspiration": "ISPIRAZIONE",
-  "homeUserRecipes": "LE VOSTRE RICETTE"
+  "homeUserRecipes": "LE VOSTRE RICETTE",
+  "giveCameraPermissions": "Autorizzazioni per la telecamera",
+  "aiErrorGeneratingRecipe": "Si è verificato un errore nella generazione della ricetta, riprovare.",
+  "publishRecipe": "Ricetta editoriale...",
+  "createUserError": "Si è verificato un errore, provare a cambiare l'e-mail."
 }
   

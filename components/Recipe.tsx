@@ -1,12 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import Colors from "../constants/Colors";
-import { Shadow } from 'react-native-shadow-2';
-import Stars from "./Stars";
-import Recipe from "../model/Recipe";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Dimensions, Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
-import { deleteRecipe } from "../repository/FirebaseRecipes";
+import { Shadow } from 'react-native-shadow-2';
+import Colors from "../constants/Colors";
+import Recipe from "../model/Recipe";
+import Stars from "./Stars";
+
+const imageDimensions = (Dimensions.get('window').width / 2.5) - (10 * 2);
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: string) => void;}) => {
   
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
   },
 
   recipeImage: {
-    width: 140,
-    height: 140,
+    width: imageDimensions,
+    height: imageDimensions,
     borderRadius: 100,
     borderColor: Colors.primary,
     borderWidth: 3,
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   },
 
   recipeTitle: {
-    fontSize: 16,
+    fontSize: adjustedFontSize,
     textShadowColor: 'rgba(0, 0, 0, 0.25)',
     textShadowOffset: {width: -2, height: 2},
     textShadowRadius: 10,

@@ -1,10 +1,8 @@
-import { TouchableOpacity, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
+import { StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import SearchScreen from "../SearchScreen";
 import { auth } from "../../firebaseConfig";
-import { isUserRecipesIdsNotEmpty } from "../../repository/FirebaseRecipes";
+import SearchScreen from "../SearchScreen";
 
 
 
