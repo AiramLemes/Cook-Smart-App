@@ -147,7 +147,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.cooking.amount + '   ' + recipe.cooking.unit}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.cooking.amount + '   ' + renderRecipe.cooking.unit}</Text>
             </View>
   
             <View style={styles.preparationItem}>
