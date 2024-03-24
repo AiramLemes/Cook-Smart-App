@@ -78,7 +78,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Iconify icon="lets-icons:back" size={33} color="black" />
             </TouchableOpacity>
-            <Text style={styles.title}>{recipe.title}</Text>
+            <Text style={styles.title}>{renderRecipe.title}</Text>
             {!editable && (
               <TouchableOpacity onPress={handleLike}>
                 {liked ? (
@@ -115,7 +115,7 @@ const RecipeScreen = ({ navigation, route }) => {
           )}
 
           {isAiRecipe && (   
-            <Image src={recipe.mainImage} style={styles.aiImage}/>
+            <Image src={renderRecipe.mainImage} style={styles.aiImage}/>
            )}
      
            
@@ -130,7 +130,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <View style={styles.preparationGeneralInfo}>
               <Text>{Strings.t('preparation')}</Text>
               <View style={styles.preparationPeopleInfo}>
-                <Dificulty dificulty={recipe.difficulty} size={25}/>
+                <Dificulty dificulty={renderRecipe.difficulty} size={25}/>
               </View>
             </View>
   
@@ -139,7 +139,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.preparation.amount + '   ' +recipe.preparation.unit}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.preparation.amount + '   ' + renderRecipe.preparation.unit}</Text>
             </View>
   
             <View style={styles.preparationItem}>
@@ -147,7 +147,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.cooking.amount + '   ' +recipe.cooking.unit}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.cooking.amount + '   ' + recipe.cooking.unit}</Text>
             </View>
   
             <View style={styles.preparationItem}>
@@ -155,7 +155,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.rest.amount + '   ' +recipe.rest.unit}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.rest.amount + '   ' + renderRecipe.rest.unit}</Text>
             </View>
   
           </View>
@@ -164,7 +164,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <View style={styles.preparationGeneralInfo}>
               <Text>{Strings.t('ingredients')}</Text>
               <View style={styles.preparationPeopleInfo}>
-                <Text style={styles.personText}>{ recipe.servings + ' ' + (recipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
+                <Text style={styles.personText}>{ renderRecipe.servings + ' ' + (renderRecipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
                 <Iconify icon="pepicons-pencil:people" size={30} color="black" />
               </View>
             </View>
