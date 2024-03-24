@@ -124,6 +124,11 @@
   "giveCameraPermissions": "Autorisations pour l'appareil photo",
   "aiErrorGeneratingRecipe": "Une erreur s'est produite lors de la génération de la recette, veuillez réessayer.",
   "publishRecipe": "Recette de l'édition...",
-  "createUserError": "Une erreur s'est produite, essayez de changer votre email."
+  "createUserError": "Une erreur s'est produite, essayez de changer votre email.",
+  "pinch": "pincée",
+  "minutes": "minutes",
+  "hours": "heures",
+  "days": "jours",
+  "time": "Temps"
 }
   

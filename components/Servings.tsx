@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 28;
+
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {
   const [servingsCount, setServinsCount] = useState(1);
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
   },
 
   servingsText: {
-    fontSize: 15,
+    fontSize: adjustedFontSize,
     textAlignVertical: 'center',
     justifyContent: 'center',
     textAlign: 'center'
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 18,
+    fontSize: adjustedFontSize,
     textAlignVertical: 'center',
   
   },

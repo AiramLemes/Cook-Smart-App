@@ -139,7 +139,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.preparation}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.preparation.amount + '   ' +recipe.preparation.unit}</Text>
             </View>
   
             <View style={styles.preparationItem}>
@@ -147,7 +147,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.cooking}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.cooking.amount + '   ' +recipe.cooking.unit}</Text>
             </View>
   
             <View style={styles.preparationItem}>
@@ -155,7 +155,7 @@ const RecipeScreen = ({ navigation, route }) => {
                 <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.rest}</Text>
+              <Text style={styles.preparationItemDuration}>{recipe.rest.amount + '   ' +recipe.rest.unit}</Text>
             </View>
   
           </View>

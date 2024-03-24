@@ -125,7 +125,12 @@
   "giveCameraPermissions": "Erteilen von Berechtigungen für die Kamera",
   "aiErrorGeneratingRecipe": "Bei der Erstellung des Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
   "publishRecipe": "Rezept veröffentlichen...",
-  "createUserError": "Es ist ein Fehler aufgetreten, versuchen Sie, Ihre E-Mail-Adresse zu ändern."
+  "createUserError": "Es ist ein Fehler aufgetreten, versuchen Sie, Ihre E-Mail-Adresse zu ändern.",
+  "pinch": "Prise",
+  "minutes": "Minuten",
+  "hours": "Stunden",
+  "days": "Tage",
+  "time": "Uhrzeit"
     
 }
   

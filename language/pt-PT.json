@@ -124,6 +124,11 @@
   "giveCameraPermissions": "Conceder permissões à câmara",
   "aiErrorGeneratingRecipe": "Ocorreu um erro ao gerar a receita, por favor tente novamente.",
   "publishRecipe": "Receita de publicação...",
-  "createUserError": "Ocorreu um erro, tente alterar o seu e-mail."
+  "createUserError": "Ocorreu um erro, tente alterar o seu e-mail.",
+  "pinch": "pitada",
+  "minutes": "minutos",
+  "hours": "horas",
+  "days": "dias",
+  "time": "Tempo"
 }
   

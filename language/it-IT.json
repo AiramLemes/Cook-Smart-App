@@ -124,6 +124,11 @@
   "giveCameraPermissions": "Autorizzazioni per la telecamera",
   "aiErrorGeneratingRecipe": "Si è verificato un errore nella generazione della ricetta, riprovare.",
   "publishRecipe": "Ricetta editoriale...",
-  "createUserError": "Si è verificato un errore, provare a cambiare l'e-mail."
+  "createUserError": "Si è verificato un errore, provare a cambiare l'e-mail.",
+  "pinch": "pizzico",
+  "minutes": "minuti",
+  "hours": "ore",
+  "days": "giorni",
+  "time": "Tempo"
 }
   

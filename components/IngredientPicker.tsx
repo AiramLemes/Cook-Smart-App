@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, PixelRatio, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
 import Ingredient from "../model/Ingredient";
+import SelectDropdown from 'react-native-select-dropdown'
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 28;
 
 
 const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) => {
 
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [ingredientName, setIngredientName] = useState<string>('');
-  const [ingredientAmount, setIngredientAmount] = useState<string>('');
+  const [ingredientAmount, setIngredientAmount] = useState<number>();
   const [ingredientUnit, setIngredientUnit] = useState<string>('');
 
   const Strings = useContext(LanguageContext);
+
+  const units = ['kg', 'gr', 'L', 'ml', 'u', Strings.t('pinch')];
 
   const initialValue = props.initialValue;
 
@@ -27,8 +33,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
   }, []);
 
   const addIngredient = () => {
-
-    if (ingredientName && ingredientAmount && ingredientUnit) {
+    if (ingredientName && ingredientAmount > 0 && ingredientUnit) {
 
       const newIngredient: Ingredient = {
         name: ingredientName,
@@ -42,7 +47,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
       console.log('Ingredient: ', updatedIngredients)
       setIngredients(updatedIngredients as never);
       setIngredientName('');
-      setIngredientAmount('');
+      setIngredientAmount();
       setIngredientUnit('')
       // console.log('picker: ', updatedIngredients)
       props.onChange(updatedIngredients);
@@ -70,7 +75,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
           <View style={styles.inputsContainer}>
             <Text style={styles.ingredientText}>{ingredient.name}</Text>
             <Text style={styles.ingredientText}>{ingredient.amount.toString()}</Text>
-            <Text style={styles.ingredientText}>{ingredient.unit}</Text>
+            <Text style={[styles.ingredientText, {width: '18%'}]}>{ingredient.unit}</Text>
           </View>
         </View>
       </View>
@@ -93,9 +98,19 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
             <Iconify icon="fluent:food-16-regular" style={styles.icon} size={30} color="black" />
           </View>
           <View style={styles.inputsContainer}>
-            <TextInput placeholder={Strings.translate('enterIngredientName')} value={ingredientName}  onChangeText={setIngredientName}/>
-            <TextInput placeholder={Strings.translate('amount')} value={ingredientAmount}  onChangeText={setIngredientAmount}/>
-            <TextInput placeholder={Strings.translate('unit')} value={ingredientUnit}  onChangeText={setIngredientUnit}/>
+            <TextInput style={styles.ingredientText} placeholder={Strings.translate('enterIngredientName')} value={ingredientName}  onChangeText={setIngredientName}/>
+            <TextInput keyboardType="numeric" style={styles.ingredientText} placeholder={Strings.translate('amount')} value={ingredientAmount?.toString()} onChangeText={setIngredientAmount}/>
+            <SelectDropdown
+              data={units}
+              defaultButtonText={Strings.translate('unit')} 
+              buttonStyle={styles.selector}
+              buttonTextStyle={styles.selectorText}
+              dropdownStyle={{borderRadius: 10}}
+              onSelect={(selectedItem, index) => {setIngredientUnit(selectedItem)}}
+              buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+              rowTextForSelection={(item, index) => { return item }}
+            />
+            {/* <TextInput placeholder={Strings.translate('unit')} value={ingredientUnit}  onChangeText={setIngredientUnit}/> */}
           </View>
         </View>
       </View>
@@ -104,7 +119,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
       <FlatList
         data={ingredients}
         renderItem={({ item, index }) => (<IngredientItem ingredient={item} index={index}/>)}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
       />
     </View>
   );
@@ -174,9 +189,18 @@ const styles = StyleSheet.create({
 
   ingredientText: {
     textAlignVertical: 'center',
-    fontSize: 17,
+    fontSize: adjustedFontSize,
     alignSelf: 'center'
+  },
 
+  selector: {
+    backgroundColor: Colors.lightGray,
+    width: '25%',
+    height: '98%'
+  },
+
+  selectorText: {
+    fontSize: adjustedFontSize
   }
 
 

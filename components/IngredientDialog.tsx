@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useContext, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import { Dialog, TextInput } from "react-native-paper";
-import Colors from "../constants/Colors";
-import Ingredient from "../model/Ingredient";
-import { translateIngredientToEnglish, translateText } from "../services/TransaltionService";
-import { addIngredientToPantry } from "../repository/FirebasePantry";
-import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
+import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
+import Ingredient from "../model/Ingredient";
+import { addIngredientToPantry } from "../repository/FirebasePantry";
+import { translateIngredientToEnglish } from "../services/TransaltionService";
+import ToastUtil from "../utils/ToastUtil";
+import IngredientUnitSelector from "./IngredientUnitSelector";
 
 const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boolean }) => {
 
@@ -102,20 +103,19 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   return (
     <Dialog visible={props.isVisible} style={styles.dialogContainer}>
       <View style={styles.dialogContent}>
-        <Text>{Strings.translate('enterIngredientName')}:</Text>
+      <Text style={[nameError ? { color: Colors.error } : { color: Colors.black }]}>{Strings.translate('enterIngredientName')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={setName}
             placeholder={Strings.translate('ingredientNameInput')}
-            placeholderTextColor={nameError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
           />
           <Iconify icon="material-symbols-light:shelves-outline" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>{Strings.translate('amount')}:</Text>
+        <Text style={[amountError ? { color: Colors.error } : { color: Colors.black }]}>{Strings.translate('amount')}:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -123,16 +123,15 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
             value={amount?.toString()}
             keyboardType="numeric"
             placeholder={Strings.translate('ingredientAmountInput')}
-            placeholderTextColor={amountError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
           />
           <Iconify icon="material-symbols-light:balance" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
 
-        <Text>{Strings.translate('unit')}:</Text>
+        <Text style={[unitError ? { color: Colors.error } : { color: Colors.black }]}>{Strings.translate('unit')}:</Text>
         <View style={styles.inputContainer}>
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             onChangeText={setUnit}
             value={unit}
@@ -140,7 +139,8 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
             placeholderTextColor={unitError? Colors.error : Colors.black}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
-          />
+          /> */}
+          <IngredientUnitSelector onChange={setUnit}/>
           <Iconify icon="ph:calculator-light" size={24} color="black" style={{ marginLeft: 10 }}/>
         </View>
       </View>
