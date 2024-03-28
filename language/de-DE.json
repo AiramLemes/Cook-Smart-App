@@ -134,7 +134,8 @@
   "addOutOfStockIngredients": "Sie möchten nicht vorrätige Zutaten auf Ihre Einkaufsliste setzen?",
   "addMissingIngredients": "Sie haben einige Zutaten nicht, wollen Sie sie auf Ihre Einkaufsliste setzen?",
   "addIngredientsSuccessfulMessage": "Die Zutaten wurden korrekt hinzugefügt",
-  "prepareRecipe": "Rezept vorbereiten"
+  "prepareRecipe": "Rezept vorbereiten",
+  "favouriteRecipes": "Bevorzugte Rezepte"
     
 }
   

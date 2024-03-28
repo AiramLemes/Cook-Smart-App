@@ -7,6 +7,7 @@ import UserProfileScreen from "../screens/Header/UserProfileScreen";
 import ProductScreen from "../screens/ProductScreen";
 import RecipeScreen from "../screens/RecipeScreen";
 import BottomTab from "./BottomTab";
+import LikedRecipesScreen from "../screens/Header/LikedRecipesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,12 @@ const StackNav = ({navigation}) => (
     <Stack.Screen
       name="AddRecipeForm2"
       component={AddRecipeForm2}
+      options={{ headerShown: false}}
+    />
+
+    <Stack.Screen
+      name="LikedRecipes"
+      component={LikedRecipesScreen}
       options={{ headerShown: false}}
     />
 
