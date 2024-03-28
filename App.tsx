@@ -1,20 +1,21 @@
-import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootSiblingParent } from 'react-native-root-siblings';
-import { auth } from './firebaseConfig';
+import * as Notifications from 'expo-notifications';
+import * as SplashScreen from 'expo-splash-screen';
 import { User } from 'firebase/auth';
+import { I18n } from 'i18n-js';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { loadLanguagePreference, loadTranslations } from './constants/Strings';
+import LanguageContext from './context/LanguageProvider';
+import { auth } from './firebaseConfig';
+import Header from './navigation/Header';
+import StackNav from './navigation/StackNav';
 import IndexScreen from './screens/SignOut/IndexScreen';
 import LoginScreen from './screens/SignOut/LogInScreen';
 import RegisterScreen from './screens/SignOut/RegisterScreen';
-import Header from './navigation/Header';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import StackNav from './navigation/StackNav';
-import { useState, useEffect, createContext } from 'react';
-import { I18n } from 'i18n-js';
-import { loadLanguagePreference, loadTranslations } from './constants/Strings';
-import LanguageContext from './context/LanguageProvider';
-import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +45,8 @@ function App() {
 
     translations();
     SplashScreen.preventAutoHideAsync();
-
+    setNotifications();
+    
     return () => unsubscribe();
   }, [Strings.onChange]);
 

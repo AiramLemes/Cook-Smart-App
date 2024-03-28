@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Dimensions, FlatList, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import RecipeItem from '../../components/Recipe';
 import Colors from "../../constants/Colors";
@@ -90,9 +90,10 @@ const LikedRecipesScreen = ({ navigation }) => {
         
       {loading && (
         <View style={styles.loadingContainer}>
-          <LottieView source={require('../../assets/Loading Animation.json')}
+          {/* <LottieView source={require('../../assets/Loading Animation.json')}
           style={{height: '30%', width: '30%'}}
-          autoPlay/>
+          autoPlay/> */}
+          <ActivityIndicator size="large" color={Colors.primary} />
       </View>
       )}
     </View>
