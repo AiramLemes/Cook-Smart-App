@@ -8,14 +8,12 @@ import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 import { auth } from '../firebaseConfig';
 import Recipe from '../model/Recipe';
-import { handleRecipeLike } from '../repository/FirebaseRecipes';
 import { addIngredientsToShoppingList, addOrRemoveLikedRecipe, getCurrentUser, getUserNameById } from '../repository/FirebaseUser';
 import { translateRecipe } from '../services/TransaltionService';
 import { consumeIngredients } from '../repository/FirebasePantry';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
-import { User } from 'firebase/auth';
 
 
 const windowWidth = Dimensions.get('window').width;
