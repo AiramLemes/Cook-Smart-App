@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
   dialogContainer: {
     backgroundColor: Colors.terciary,
     width: '60%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center'
   },
 
   dialogContent: {

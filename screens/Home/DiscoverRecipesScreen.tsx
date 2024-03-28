@@ -38,7 +38,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
     };
 
     fetchData();
-  }, [onFocus]);
+  }, []);
 
 
   // const getItemLayout = (_: any, index: number) => {

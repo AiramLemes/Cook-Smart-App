@@ -1,6 +1,6 @@
 import LottieView from 'lottie-react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Dimensions, PixelRatio, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Toast from 'react-native-root-toast';
 import CategoryList from '../components/Category';
@@ -10,6 +10,11 @@ import Recipe from '../model/Recipe';
 import { addRecipe, updateRecipe } from '../repository/FirebaseRecipes';
 import { assignRecipeToUser } from '../repository/FirebaseUser';
 import ToastUtil from '../utils/ToastUtil';
+import SelectDropdown from 'react-native-select-dropdown';
+
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 28;
 
 //@ts-ignore
 const AddRecipeForm2 = ({ navigation, route }) => {
@@ -23,31 +28,92 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   const [steps, setSteps] = useState('');
   const [category, setCategory] = useState('');
   const [creatingRecipe, setCreatingRecipe] = useState(false);
+  const [preparationTimeUnit, setPreparationTimeUnit] = useState('');
+  const [cookingTimeUnit, setCookingTimeUnit] = useState('');
+  const [restingTimeUnit, setRestingTimeUnit] = useState('');
 
+  
   const Strings = useContext(LanguageContext);
+  
+  const timeUnits = [Strings.translate('minutes'), Strings.translate('hours'), Strings.translate('days')];
 
+  const preparationTimeUnitRef = useRef();
+  const cookingTimeUnitRef = useRef();
+  const restingTimeUnitRef = useRef();
 
   useEffect(() => {
     if (editable) {
-      setPreparation(recipe.preparation);
-      setCooking(recipe.cooking);
-      setResting(recipe.rest);
+      setPreparation(recipe.preparation.amount.toString());
+      setPreparationTimeUnit(recipe.preparation.unit);
+      preparationTimeUnitRef.current.selectIndex(recipe.preparation.index);
+
+
+      setCooking(recipe.cooking.amount.toString());
+      setCookingTimeUnit(recipe.cooking.unit);
+      cookingTimeUnitRef.current.selectIndex(recipe.cooking.index);
+
+
+
+      setResting(recipe.rest.amount.toString());
+      setRestingTimeUnit(recipe.rest.unit);
+      restingTimeUnitRef.current.selectIndex(recipe.rest.index);
+
       setSteps(recipe.steps.join('/n'));
     }
   }, []);
 
   const [categoryError, setCategoryError] = useState(false);
-  const [preparationsError, setPreparationsError] = useState(false);
+  const [preparationError, setPreparationError] = useState(false);
+  const [cookingError, setCookingError] = useState(false);
+  const [restingError, setRestingError] = useState(false);
+  const [timeUnitError, setTimeUnitError] = useState(false);
   const [stepsError, setStepsError] = useState(false);
 
+  
+  const getTimeSelectorIndex = (unit: string) => {
+    
+    let index = 0;
+    
+    switch (unit) {
+      case Strings.translate('minutes'):
+        index = 0;
+        break;
+
+      case Strings.translate('hours'):
+        index = 1;
+        break;
+
+      case Strings.translate('days'):
+        index = 2;
+        break;
+    }
+
+    return index;
+  };
 
   const createRecipe = async () => {
 
     if (validateForms()) {
       recipe.steps = formatSteps(steps);
-      recipe.cooking = cooking;
-      recipe.rest = resting;
-      recipe.preparation = preparation;
+
+      recipe.preparation = {
+        amount: parseInt(preparation), 
+        unit: preparationTimeUnit,
+        index: getTimeSelectorIndex(preparationTimeUnit)
+      };
+
+      recipe.cooking = {
+        amount: parseInt(cooking), 
+        unit: cookingTimeUnit,
+        index: getTimeSelectorIndex(cookingTimeUnit)
+      };
+
+      recipe.rest = {
+        amount: parseInt(resting), 
+        unit: restingTimeUnit,
+        index: getTimeSelectorIndex(restingTimeUnit)
+      };
+
       recipe.category = category;
 
 
@@ -93,8 +159,9 @@ const AddRecipeForm2 = ({ navigation, route }) => {
     const categoryResult = isCategoryValid();
     const stepsResult = isStepsValid();
     const preparationResult = arePreparationItemsValid();
-
-    return categoryResult && stepsResult && preparationResult;
+    const timeUnits = cookingTimeUnit != '' && restingTimeUnit != '' && preparationTimeUnit != '';
+    setTimeUnitError(!timeUnits);
+    return categoryResult && stepsResult && preparationResult && timeUnits;
 
   }
 
@@ -111,11 +178,15 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 
   const arePreparationItemsValid = () => {
 
-    const pattern = /^\d*\s?[mhs]$/;
+    const preparationResult = parseInt(preparation) <= 0 || preparation == '';
+    const cookingResult = parseInt(cooking) <= 0 || cooking == '';
+    const restingResult = parseInt(resting) <= 0 || resting == '';
+    
+    setPreparationError(preparationResult);
+    setCookingError(cookingResult);
+    setRestingError(restingResult);
 
-    const result =  pattern.test(preparation) && pattern.test(cooking) && pattern.test(resting);
-    setPreparationsError(!result);
-    return result;
+    return !preparationResult && !cookingResult && !restingResult;;
 
   }
 
@@ -177,8 +248,25 @@ const AddRecipeForm2 = ({ navigation, route }) => {
             <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && preparation === '' ? 'red': 'black'}
-            value={preparation} onChangeText={setPreparation}  style={styles.preparationItemDuration}/>
+
+          <SelectDropdown
+            ref={preparationTimeUnitRef}
+            data={timeUnits}
+            defaultButtonText={Strings.translate('time')} 
+            buttonStyle={styles.selector}
+            buttonTextStyle={{fontSize: adjustedFontSize, color: timeUnitError && preparationTimeUnit === '' ? 'red' : 'black' }}
+            dropdownStyle={{borderRadius: 10, marginTop: -30}}
+            onSelect={(selectedItem, index) => {setPreparationTimeUnit(selectedItem)}}
+            buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+            rowTextForSelection={(item, index) => { return item }}
+          />
+
+          <TextInput placeholder='0' keyboardType='numeric'  placeholderTextColor={preparationError? 'red' : 'black'}
+            value={preparation} onChangeText={setPreparation}  style={[
+              styles.preparationItemDuration,
+              { color: parseInt(cooking) <= 0  && resting !== '' ? 'red' : 'black' }
+            ]} />
+          
         </View>
 
         <View style={styles.preparationItem}>
@@ -186,8 +274,23 @@ const AddRecipeForm2 = ({ navigation, route }) => {
             <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && cooking === '' ? 'red': 'black'}
-            value={cooking} onChangeText={setCooking}  style={styles.preparationItemDuration}/>
+
+          <SelectDropdown
+            ref={cookingTimeUnitRef}
+            data={timeUnits}
+            defaultButtonText={Strings.translate('time')} 
+            buttonStyle={styles.selector}
+            buttonTextStyle={{fontSize: adjustedFontSize, color: timeUnitError && cookingTimeUnit === '' ? 'red' : 'black' }}
+            dropdownStyle={{borderRadius: 10, marginTop: -30}}
+            onSelect={(selectedItem, index) => {setCookingTimeUnit(selectedItem)}}
+            buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+            rowTextForSelection={(item, index) => { return item }}
+            />
+          <TextInput placeholder='0' keyboardType='numeric'  placeholderTextColor={cookingError ? 'red' : 'black'}
+            value={cooking} onChangeText={setCooking}  style={[
+            styles.preparationItemDuration,
+            { color: parseInt(cooking) <= 0  && resting !== '' ? 'red' : 'black' }
+          ]} />
         </View>
 
         <View style={styles.preparationItem}>
@@ -195,8 +298,24 @@ const AddRecipeForm2 = ({ navigation, route }) => {
             <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
           </View>
           <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-          <TextInput placeholder='0 m' placeholderTextColor={preparationsError && resting === '' ? 'red': 'black'}
-            value={resting} onChangeText={setResting}  style={styles.preparationItemDuration}/>
+
+          <TextInput placeholder='0' keyboardType='numeric'  placeholderTextColor={restingError? 'red' : 'black'}
+            value={resting} onChangeText={setResting}  style={[
+            styles.preparationItemDuration,
+            { color: parseInt(cooking) <= 0  && resting !== '' ? 'red' : 'black' }
+          ]} />
+
+          <SelectDropdown
+            ref={restingTimeUnitRef}
+            data={timeUnits}
+            defaultButtonText={Strings.translate('time')} 
+            buttonStyle={styles.selector}
+            buttonTextStyle={{fontSize: adjustedFontSize, color: timeUnitError && restingTimeUnit === '' ? 'red' : 'black' }}
+            dropdownStyle={{borderRadius: 10, marginTop: -30}}
+            onSelect={(selectedItem, index) => {setRestingTimeUnit(selectedItem)}}
+            buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+            rowTextForSelection={(item, index) => { return item }}
+            />
         </View>
 
       </View>
@@ -325,7 +444,8 @@ const styles = StyleSheet.create({
   preparationItemDuration: {
     fontSize: 15,
     position: 'absolute',
-    right: 15,
+    right: '17%',
+    marginRight: 20,
     alignSelf: 'center'
   },
 
@@ -352,6 +472,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+
+  selector: {
+    backgroundColor: 'transparent',
+    width: '30%',
+    height: '98%',
+    position: 'absolute',
+    right: -20,
+    borderRadius: 10,
+    alignSelf: 'center'
   },
 
 

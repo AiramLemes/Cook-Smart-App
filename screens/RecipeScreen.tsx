@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Dificulty from '../components/Dificulty';
 import IngredientItem from '../components/IngredientItem';
@@ -9,8 +9,17 @@ import LanguageContext from '../context/LanguageProvider';
 import { auth } from '../firebaseConfig';
 import Recipe from '../model/Recipe';
 import { handleRecipeLike } from '../repository/FirebaseRecipes';
-import { getUserNameById } from '../repository/FirebaseUser';
+import { addIngredientsToShoppingList, addOrRemoveLikedRecipe, getCurrentUser, getUserNameById } from '../repository/FirebaseUser';
 import { translateRecipe } from '../services/TransaltionService';
+import { consumeIngredients } from '../repository/FirebasePantry';
+import ConfirmationDialog from '../components/ConfirmationDialog';
+import ToastUtil from '../utils/ToastUtil';
+import Toast from 'react-native-root-toast';
+import { User } from 'firebase/auth';
+
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 28;
 
 //@ts-ignore
 const RecipeScreen = ({ navigation, route }) => {
@@ -23,35 +32,52 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const [liked, setLiked] = useState<boolean>(false);
   const [userName, setUserName] = useState<string | undefined>();
+  const [userLikedRecipe, setUserLikedRecipes] = useState<string[]>([]);
 
   const [isAiRecipe, setIsAiRecipe] = useState<boolean>(false);
+
+
+  const [outOfStockIngredients, setOutOfStockIngredients] = useState<string[]>();
+  const [missingIngredients, setMissingIngredients] = useState<string[]>();
+
+  const [missingIngredientsDialogVisibility, setMissingIngredientsDialogVisibility] = useState<boolean>(false);
+  const [outOfStockIngredientsDialogVisibility, setOutOfStockIngredientsDialogVisibility] = useState<boolean>(false);
+
 
   const Strings = useContext(LanguageContext);
 
   useEffect(() => {
-    const fetchData = async () => {  
-      setUserName(await getUserNameById(recipe.userId)); 
+    const fetchData = async () => {
+      setUserName(await getUserNameById(recipe.userId));
+
       if (recipe.lang != Strings.locale) {
         setLoading(true);
         try {
           const translatedRecipe = await translateRecipe(recipe.lang, recipe);
           setRenderRecipe(translatedRecipe);
-        
+
         } catch (error) {
           console.error('Error translating:', error);
         }
         setLoading(false);
       }
-  
+
     };
 
-  
-    fetchData(); 
-    setLiked(recipe.likedUsersId.includes(userId));
+    const getUserLikedRecipes = async () => {
+      const user = await getCurrentUser();
+      setUserLikedRecipes(user!!.likedRecipes);
 
+      user?.likedRecipes.find((recipeId) => recipeId === recipe.id ? setLiked(true) : '');
+
+    }
+
+
+    fetchData();
+    getUserLikedRecipes();
     setIsAiRecipe(recipe.userId === 'chat-gpt');
 
-  }, []); 
+  }, []);
 
 
   if (loading) {
@@ -65,10 +91,54 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const handleLike = async () => {
 
-    const likedUsersId = await handleRecipeLike(userId, recipe.id);
-    if (likedUsersId) setLiked(likedUsersId.includes(userId));
+    setLiked(!liked);
+    const likedUsersId = await addOrRemoveLikedRecipe(recipe.id);
 
-  }
+  };
+
+
+  const handleCloseDialog = async (accepted: boolean, index: number) => {
+
+    if (accepted) {
+      if (index == 0) {
+        setOutOfStockIngredientsDialogVisibility(false);
+        if (await addIngredientsToShoppingList(outOfStockIngredients!!)) {
+          ToastUtil.showToast(Strings.t('addIngredientsSuccessfulMessage'), Toast.durations.SHORT);
+        }
+        setMissingIngredientsDialogVisibility(true);
+      }
+
+      else {
+        setMissingIngredientsDialogVisibility(false);
+        if (await addIngredientsToShoppingList(missingIngredients!!)) {
+          ToastUtil.showToast(Strings.t('addIngredientsSuccessfulMessage'), Toast.durations.SHORT);
+        }
+      }
+    }
+    else {
+      if (index == 0) {
+        setOutOfStockIngredientsDialogVisibility(false);
+        setMissingIngredientsDialogVisibility(true);
+      }
+
+      else {
+        setMissingIngredientsDialogVisibility(false);
+      }
+    }
+
+  };
+
+
+  const handleConsumeIngredients = async () => {
+    const reducedPantryIngredients = await consumeIngredients(renderRecipe.ingredients);
+    setOutOfStockIngredients(reducedPantryIngredients.exhaustedIngredients);
+    setMissingIngredients(reducedPantryIngredients.missingIngredients);
+    if (reducedPantryIngredients.exhaustedIngredients.length >= 1) {
+      setOutOfStockIngredientsDialogVisibility(true);
+    } else {
+      setMissingIngredientsDialogVisibility(true);
+    }
+  };
 
   const renderItem = ({ item }) => {
     switch (item.type) {
@@ -78,7 +148,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Iconify icon="lets-icons:back" size={33} color="black" />
             </TouchableOpacity>
-            <Text style={styles.title}>{recipe.title}</Text>
+            <Text style={styles.title}>{renderRecipe.title}</Text>
             {!editable && (
               <TouchableOpacity onPress={handleLike}>
                 {liked ? (
@@ -111,16 +181,20 @@ const RecipeScreen = ({ navigation, route }) => {
             />
 
             <StarsPicker recipe={recipe}></StarsPicker>
+
           </>
           )}
 
-          {isAiRecipe && (   
-            <Image src={recipe.mainImage} style={styles.aiImage}/>
+          {isAiRecipe && (
+            <Image src={renderRecipe.mainImage} style={styles.aiImage}/>
            )}
-     
-           
-             
-           
+
+            <TouchableOpacity style={styles.consumeButton} onPress={handleConsumeIngredients}>
+              <Text style={styles.consumeButtonText}>{Strings.translate('prepareRecipe')}</Text>
+              <View style={{alignSelf: 'center'}}>
+                <Iconify icon="lucide:cooking-pot" size={20} color="black" />
+              </View>
+            </TouchableOpacity>
            </>
         );
       case 'preparation':
@@ -130,45 +204,45 @@ const RecipeScreen = ({ navigation, route }) => {
             <View style={styles.preparationGeneralInfo}>
               <Text>{Strings.t('preparation')}</Text>
               <View style={styles.preparationPeopleInfo}>
-                <Dificulty dificulty={recipe.difficulty} size={25}/>
+                <Dificulty dificulty={renderRecipe.difficulty} size={25}/>
               </View>
             </View>
-  
+
             <View style={styles.preparationItem}>
               <View style={styles.preparationItemIcon}>
                 <Iconify icon="ri:knife-line" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('preparation')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.preparation}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.preparation.amount + '   ' + renderRecipe.preparation.unit}</Text>
             </View>
-  
+
             <View style={styles.preparationItem}>
               <View style={styles.preparationItemIcon}>
                 <Iconify icon="mdi:pot-mix-outline" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('cooking')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.cooking}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.cooking.amount + '   ' + renderRecipe.cooking.unit}</Text>
             </View>
-  
+
             <View style={styles.preparationItem}>
               <View style={styles.preparationItemIcon}>
                 <Iconify icon="carbon:smoke" style={{alignSelf: 'center'}} size={30} color="black" />
               </View>
               <Text style={styles.preparationItemText}>{Strings.t('rest')}</Text>
-              <Text style={styles.preparationItemDuration}>{recipe.rest}</Text>
+              <Text style={styles.preparationItemDuration}>{renderRecipe.rest.amount + '   ' + renderRecipe.rest.unit}</Text>
             </View>
-  
+
           </View>
-          
+
           <View style={styles.preparation}>
             <View style={styles.preparationGeneralInfo}>
               <Text>{Strings.t('ingredients')}</Text>
               <View style={styles.preparationPeopleInfo}>
-                <Text style={styles.personText}>{ recipe.servings + ' ' + (recipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
+                <Text style={styles.personText}>{ renderRecipe.servings + ' ' + (renderRecipe.servings > 1 ? Strings.t('servings') : Strings.t('serving'))}</Text>
                 <Iconify icon="pepicons-pencil:people" size={30} color="black" />
               </View>
             </View>
-  
+
             <FlatList
               data={renderRecipe.ingredients}
               renderItem={({ item, index }) => (
@@ -177,17 +251,18 @@ const RecipeScreen = ({ navigation, route }) => {
               keyExtractor={(item, index) => item.name}
             />
           </View>
-  
+
           <View style={styles.preparation}>
             <View style={styles.preparationGeneralInfo}>
               <Text>{Strings.t('steps')}</Text>
             </View>
-  
+
             <View style={styles.stepsSection}>
               <Text style={styles.stepsText}>{renderRecipe.steps.map((item, index) => `${index + 1}.- ${item}\n\n`).join('')}</Text>
             </View>
           </View>
-          </>
+
+        </>
 
         );
       default:
@@ -211,9 +286,17 @@ const RecipeScreen = ({ navigation, route }) => {
     );
   }
 
-  return <FlatList data={sections} renderItem={renderItem} keyExtractor={(item) => item.key} contentContainerStyle={styles.container} />;
+  return <>
+    <FlatList data={sections} renderItem={renderItem} keyExtractor={(item) => item.key} contentContainerStyle={styles.container}/>
+
+    <ConfirmationDialog text={Strings.t('addOutOfStockIngredients')}
+      isVisible={outOfStockIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 0)}}/>
+              
+    <ConfirmationDialog text={Strings.t('addMissingIngredients')}
+      isVisible={missingIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 1)}}/>
+  </>
 };
-  
+
 
 
 const styles = StyleSheet.create({
@@ -230,7 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: 10,
-    paddingRight: 10, 
+    paddingRight: 10,
     paddingTop: 20,
   },
 
@@ -247,7 +330,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: 'center'
   },
-  
+
 
   images: {
     // width: '40%',
@@ -269,17 +352,17 @@ const styles = StyleSheet.create({
   preparationGeneralInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', 
+    alignItems: 'center',
     marginBottom: 20
   },
 
   preparationPeopleInfo: {
     flexDirection: 'row',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
 
   personText: {
-    marginRight: 10, 
+    marginRight: 10,
   },
 
   preparationItem: {
@@ -308,7 +391,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 15,
     marginLeft: 10,
-    
+
   },
 
   preparationItemDuration: {
@@ -361,6 +444,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     objectFit: 'contain',
     margin: 20,
+  },
+
+  consumeButtonText: {
+    fontSize: adjustedFontSize,
+    textAlign: 'center',
+    alignSelf: 'center',
+    textDecorationLine: 'underline',
+    marginRight: 10
+  },
+
+  consumeButton: {
+    width: '60%',
+    height: 30,
+    borderColor: Colors.black,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 20,
+    justifyContent: 'center',
+    backgroundColor: Colors.secondary,
+    flexDirection: 'row',
   }
 
 

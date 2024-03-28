@@ -4,6 +4,7 @@ interface User {
   image: string;
   recipesIds: string[];
   assessments: Map<string, number>;
+  likedRecipes: string[];
 }
 
 

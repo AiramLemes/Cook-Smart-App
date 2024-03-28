@@ -173,8 +173,6 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         category: editableRecipe ? editableRecipe.category : '',
         userId: editableRecipe ? editableRecipe.userId : '',
         timestamp: editableRecipe ? editableRecipe.timestamp : new Timestamp(0, 0),
-        likes: 0,
-        likedUsersId: [],
         numberOfRatings: 0,
         totalRating: 0,
       }
@@ -285,7 +283,8 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: Colors.background,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    flexGrow:1 
   },
 
   recipeTitle: {
@@ -316,7 +315,8 @@ const styles = StyleSheet.create({
 
   imagesList: {
     paddingTop: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    paddingBottom: 10
   },
   
 

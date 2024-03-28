@@ -14,16 +14,7 @@ import { useState, useEffect, createContext } from 'react';
 import { I18n } from 'i18n-js';
 import { loadLanguagePreference, loadTranslations } from './constants/Strings';
 import LanguageContext from './context/LanguageProvider';
-import * as Notifications from 'expo-notifications';
-import './backgroundTasks';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,12 +36,14 @@ function App() {
         importance: Notifications.AndroidImportance.HIGH,
       });
     }
+    
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      SplashScreen.hideAsync();
     });
 
     translations();
-    setNotifications();
+    SplashScreen.preventAutoHideAsync();
 
     return () => unsubscribe();
   }, [Strings.onChange]);

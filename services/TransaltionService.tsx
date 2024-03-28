@@ -111,12 +111,27 @@ const translateRecipe = async (textLang: string, recipe: Recipe) => {
         };
       })
     );
-
+    
     const translatedRecipe: Recipe = {
       ...recipe,
       title: (await translateText(textLang, recipe.title)) as string,
       ingredients: translatedIngredients,
       steps: await Promise.all(recipe.steps.map((item) => translateText(textLang, item))) as string[],
+      preparation: {
+        amount: recipe.preparation.amount,
+        unit: (await translateText(textLang, recipe.preparation.unit)) as string,
+        index: recipe.preparation.index
+      },
+      cooking: {
+        amount: recipe.cooking.amount,
+        unit: (await translateText(textLang, recipe.cooking.unit)) as string,
+        index: recipe.cooking.index
+      },
+      rest: {
+        amount: recipe.rest.amount,
+        unit: (await translateText(textLang, recipe.rest.unit)) as string,
+        index: recipe.rest.index
+      }
     };
 
     // console.log('Translated Recipe:', translatedRecipe);

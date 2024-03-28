@@ -124,6 +124,15 @@
   "giveCameraPermissions": "Giving permissions to the camera",
   "aiErrorGeneratingRecipe": "There was an error generating the recipe, please try again.",
   "publishRecipe": "Publishing recipe...",
-  "createUserError": "An error has occurred, try changing the email."
+  "createUserError": "An error has occurred, try changing the email.",
+  "pinch": "pinch",
+  "minutes": "minutes",
+  "hours": "hours",
+  "days": "days",
+  "time": "Time",
+  "addOutOfStockIngredients": "Want to add out-of-stock ingredients to your shopping list?",
+  "addMissingIngredients": "You don't have some ingredients, do you want to add them to the shopping list?",
+  "addIngredientsSuccessfulMessage": "Ingredients were added correctly",
+  "prepareRecipe": "Prepare recipe"
     
 }

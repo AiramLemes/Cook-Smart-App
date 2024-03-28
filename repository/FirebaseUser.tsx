@@ -268,6 +268,7 @@ async function createUser(email: string, password: string, userName: string) {
       email: email,
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
       recipesIds: [],
+      likedRecipes: [],
       assessments: {}
     };
     
@@ -287,7 +288,67 @@ async function createUser(email: string, password: string, userName: string) {
 }
 
 
+async function addIngredientsToShoppingList(ingredients: string[]) {
+  try {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      const currentShoppingList = userDocSnapshot.data()?.shoppingList || [];
+
+      const uniqueIngredients = Array.from(new Set([...currentShoppingList, ...ingredients])).sort();
+
+      await updateDoc(userDocRef, { shoppingList: uniqueIngredients });
+
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error adding ingredients to shopping list:', error);
+    return false;
+  }
+}
+
+
+async function addOrRemoveLikedRecipe(recipeId: string) {
+  try {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+
+      const userDocSnapshot = await getDoc(userDocRef);
+      const user = userDocSnapshot.data() as User;
+
+      const recipeIndex = user.likedRecipes.findIndex(id => id === recipeId);
+
+      if (recipeIndex !== -1) {
+        user.likedRecipes.splice(recipeIndex, 1);
+      } else {
+        user.likedRecipes.push(recipeId);
+      }
+
+      await updateDoc(userDocRef, { likedRecipes: user.likedRecipes });
+
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error adding or removing recipe from liked list:', error);
+    return false;
+  }
+}
 
 
 
-export { assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser, getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync };
+
+
+
+
+
+export { assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser, 
+  getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync, addIngredientsToShoppingList, addOrRemoveLikedRecipe };
