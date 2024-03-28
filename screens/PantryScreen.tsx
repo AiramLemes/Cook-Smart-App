@@ -13,7 +13,7 @@ import Ingredient from "../model/Ingredient";
 import Pantry from "../model/Pantry";
 import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
 
-const PantryScreen = () => {
+const PantryScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
 
@@ -43,7 +43,6 @@ const PantryScreen = () => {
 
   const removeIngredient = (index: number) => {
     setconfirmDialogVisible(true);
-    // Set the index to be removed in the state
     setRemoveIngredientIndex(index);
   };
 
@@ -135,9 +134,15 @@ const PantryScreen = () => {
     )}
 
      
-      <TouchableOpacity style={styles.addButton} onPress={() => {setDialogVisibility(true)}}>
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {setDialogVisibility(true)}}>
         <Shadow style={{ borderRadius: 30 }} distance={3}>
           <Iconify icon="tdesign:add-circle" size={40} color={Colors.primary} />
+        </Shadow>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{...styles.bottomButton, right: 0, left: 20}} onPress={() => {navigation.navigate('ShoppingList')}}>
+        <Shadow style={{ borderRadius: 30 }} distance={3}>
+          <Iconify icon="material-symbols:playlist-add-check-circle-outline-rounded" size={40} color={Colors.primary} />
         </Shadow>
       </TouchableOpacity>
 
@@ -194,7 +199,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 
-  addButton: {
+  bottomButton: {
     position: "absolute",
     bottom: 20,
     right: 20,

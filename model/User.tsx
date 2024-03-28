@@ -1,3 +1,5 @@
+import Ingredient from "./Ingredient";
+
 interface User {
   userName: string;
   email: string;
@@ -5,6 +7,7 @@ interface User {
   recipesIds: string[];
   assessments: Map<string, number>;
   likedRecipes: string[];
+  shoppingList: Ingredient[];
 }
 
 
