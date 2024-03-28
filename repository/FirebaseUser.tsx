@@ -1,16 +1,14 @@
 import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore } from "../firebaseConfig";
-
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import Toast from "react-native-root-toast";
-import LanguageContext from "../context/LanguageProvider";
 import User from "../model/User";
 import ToastUtil from "../utils/ToastUtil";
 import { createPantry } from "./FirebasePantry";
+import Ingredient from "../model/Ingredient";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
-const Strings = LanguageContext;
 
 async function getUserImage(callback: (imageURL: string) => void) {
   try {
@@ -288,7 +286,7 @@ async function createUser(email: string, password: string, userName: string) {
 }
 
 
-async function addIngredientsToShoppingList(ingredients: string[]) {
+async function addIngredientsToShoppingList(...ingredients: Ingredient[]): Promise<Ingredient[] | false> {
   try {
     const uid = auth.currentUser?.uid;
 
@@ -298,11 +296,21 @@ async function addIngredientsToShoppingList(ingredients: string[]) {
       const userDocSnapshot = await getDoc(userDocRef);
       const currentShoppingList = userDocSnapshot.data()?.shoppingList || [];
 
-      const uniqueIngredients = Array.from(new Set([...currentShoppingList, ...ingredients])).sort();
+      const uniqueIngredients = [...currentShoppingList];
+
+      ingredients.forEach((ingredient) => {
+        console.log(ingredient)
+        const alreadyExists = uniqueIngredients.some((item: Ingredient) => item.name.toLowerCase() === ingredient.name.toLowerCase());
+        if (!alreadyExists) {
+          uniqueIngredients.push(ingredient);
+        }
+      });
+
+      uniqueIngredients.sort((a, b) => a.name.localeCompare(b.name));
 
       await updateDoc(userDocRef, { shoppingList: uniqueIngredients });
 
-      return true;
+      return uniqueIngredients;
     }
     
     return false;
@@ -345,10 +353,33 @@ async function addOrRemoveLikedRecipe(recipeId: string) {
 
 
 
+async function updateIngredientFromShoppingList(updatedIngredients: Ingredient[]) {
+  try {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+      const userDocRef = doc(firestore, 'users', uid);
+
+      await updateDoc(userDocRef, { shoppingList: updatedIngredients});
+
+      return true;
+    }
+    return false;
+
+  } catch (error) {
+    console.error('Error adding ingredients to shopping list:', error);
+    return false;
+  }
+}
 
 
 
 
 
-export { assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser, 
-  getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync, addIngredientsToShoppingList, addOrRemoveLikedRecipe };
+
+
+export {
+  addIngredientsToShoppingList, addOrRemoveLikedRecipe, assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser,
+  getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync, updateIngredientFromShoppingList
+};
+

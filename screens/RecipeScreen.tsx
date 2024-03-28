@@ -14,6 +14,7 @@ import { consumeIngredients } from '../repository/FirebasePantry';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
+import Ingredient from '../model/Ingredient';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -35,8 +36,8 @@ const RecipeScreen = ({ navigation, route }) => {
   const [isAiRecipe, setIsAiRecipe] = useState<boolean>(false);
 
 
-  const [outOfStockIngredients, setOutOfStockIngredients] = useState<string[]>();
-  const [missingIngredients, setMissingIngredients] = useState<string[]>();
+  const [outOfStockIngredients, setOutOfStockIngredients] = useState<Ingredient[]>();
+  const [missingIngredients, setMissingIngredients] = useState<Ingredient[]>();
 
   const [missingIngredientsDialogVisibility, setMissingIngredientsDialogVisibility] = useState<boolean>(false);
   const [outOfStockIngredientsDialogVisibility, setOutOfStockIngredientsDialogVisibility] = useState<boolean>(false);

@@ -134,6 +134,9 @@
   "addMissingIngredients": "Non avete alcuni ingredienti, volete aggiungerli alla vostra lista della spesa?",
   "addIngredientsSuccessfulMessage": "Gli ingredienti sono stati aggiunti correttamente",
   "prepareRecipe": "Preparare la ricetta",
-  "favouriteRecipes": "Ricette preferite"
+  "favouriteRecipes": "Ricette preferite",
+  "ingredientAlreadyInShoppingList": "L'ingrediente è già presente nella lista!",
+  "shoppingList": "Lista della spesa",
+  "emptyShoppingList": "L'elenco degli acquisti è vuoto"
 }
   

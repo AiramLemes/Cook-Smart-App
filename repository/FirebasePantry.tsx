@@ -148,8 +148,8 @@ async function createPantry(userId: string): Promise<boolean> {
 async function consumeIngredients(recipeIngredients: Ingredient[]) {
   try {
     const pantry = await getPantry();
-    const missingIngredients: string[] = [];
-    const exhaustedIngredients: string[] = [];
+    const missingIngredients: Ingredient[] = [];
+    const exhaustedIngredients: Ingredient[] = [];
     
     for (let i = 0; i < recipeIngredients.length; i++) {
       const recipeIngredient = recipeIngredients[i];
@@ -170,14 +170,14 @@ async function consumeIngredients(recipeIngredients: Ingredient[]) {
 
         if (remainingAmount <= 0) {
           remainingAmount = 0;
-          exhaustedIngredients.push(pantryIngredient.englishVersion);
+          exhaustedIngredients.push(pantryIngredient);
         } 
         
         // console.log('En la despensa:', pantryIngredient.amount + pantryIngredient.unit + ' Si le quito ' + recipeIngredient.amount + ' ' + recipeIngredient.unit +'  . Lo que queda:  ' + remainingAmount)
         await updatePantryIngredient(remainingAmount , i);
       } else {
 
-        missingIngredients.push(recipeIngredient.englishVersion);
+        missingIngredients.push(recipeIngredient);
       }
     }
     

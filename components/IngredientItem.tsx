@@ -6,7 +6,7 @@ import Ingredient from '../model/Ingredient';
 import { updatePantryIngredient } from '../repository/FirebasePantry';
 
 const IngredientItem = (props: {
-  onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number 
+  onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number, shoppingList?: boolean 
 }) => {
   const {size, index} = props;
   const pantryIngredient: boolean =  props.pantryIngredient === undefined ? false : true;
@@ -56,21 +56,24 @@ const IngredientItem = (props: {
         <View style={styles.ingredientIcon}>
           {getIngredientIcon(ingredient!!.englishVersion, size)}
         </View>
-        <Text style={{...styles.ingredientName}}>{ingredient!!.name}</Text>
-          
-        <View style={styles.counter}>
-          <TouchableOpacity onLongPress={() => {handleAmountChange('plus')}} onPress={() => {handleAmountChange('plus')}}>
-            <Iconify icon="ic:baseline-plus" size={25} color={Colors.black} />
-          </TouchableOpacity>
+        <Text style={styles.ingredientName}>{ingredient!!.name}</Text>
+        {!props.shoppingList && (
+        <>
+          <View style={styles.counter}>
+            <TouchableOpacity onLongPress={() => {handleAmountChange('plus')}} onPress={() => {handleAmountChange('plus')}}>
+              <Iconify icon="ic:baseline-plus" size={25} color={Colors.black} />
+            </TouchableOpacity>
 
-          <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient!!.amount}</Text>
+            <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient!!.amount}</Text>
 
-          <TouchableOpacity  onLongPress={() => {handleAmountChange('minus')}} onPress={() => {handleAmountChange('minus')}}>
-            <Iconify icon="ic:baseline-minus" size={25} color={Colors.black} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity  onLongPress={() => {handleAmountChange('minus')}} onPress={() => {handleAmountChange('minus')}}>
+              <Iconify icon="ic:baseline-minus" size={25} color={Colors.black} />
+            </TouchableOpacity>
+          </View>
+          <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient!!.unit}</Text>
+          </>
+        )}
 
-        <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient!!.unit}</Text>
 
         <TouchableOpacity onPress={() => {props.onRemove()}}>
           <Iconify icon="mdi:delete-outline" style={styles.icon} size={30} color="black" />
@@ -328,9 +331,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignItems: 'center',
   },
-
+  
   ingredientIcon: {
-    width: '13 %',
+    width: '13%',
     height: '100%',
     backgroundColor: Colors.primary,
     borderTopLeftRadius: 9,
@@ -359,7 +362,7 @@ const styles = StyleSheet.create({
   counter: {
     flexDirection: 'row',
     alignContent: 'space-around',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 });
 

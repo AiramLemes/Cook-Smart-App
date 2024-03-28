@@ -21,7 +21,6 @@ const IAScreen = ({navigation}) => {
 
   const [search, setSearch] = useState<string>("");
 
-  const textInputRef = useRef(null);
   const Strings = useContext(LanguageContext);
 
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -101,7 +100,6 @@ const IAScreen = ({navigation}) => {
             value={search}
             onChangeText={handleSearch}
             multiline
-            ref={textInputRef}
           />
         </View>
 
@@ -114,8 +112,7 @@ const IAScreen = ({navigation}) => {
         />
 
         {/* <TouchableOpacity style={styles.createRecipeButton} > */}
-        {/* <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}> */}
-        <TouchableOpacity style={styles.createRecipeButton} onPress={() =>{sendNotificationWithType('pantry')}}>
+        <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
 
           <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>

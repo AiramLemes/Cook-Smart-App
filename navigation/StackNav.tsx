@@ -8,6 +8,7 @@ import ProductScreen from "../screens/ProductScreen";
 import RecipeScreen from "../screens/RecipeScreen";
 import BottomTab from "./BottomTab";
 import LikedRecipesScreen from "../screens/Header/LikedRecipesScreen";
+import ShoppingList from "../screens/ShoppingList";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,12 @@ const StackNav = ({navigation}) => (
     <Stack.Screen
       name="LikedRecipes"
       component={LikedRecipesScreen}
+      options={{ headerShown: false}}
+    />
+
+    <Stack.Screen
+      name="ShoppingList"
+      component={ShoppingList}
       options={{ headerShown: false}}
     />
 
