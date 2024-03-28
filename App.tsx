@@ -27,7 +27,14 @@ function App() {
     const translations = async () => {
       await loadLanguagePreference(Strings);
       await loadTranslations(Strings, Strings.locale);
-      setStrings(Strings);
+      setStrings(Strings);  
+    }
+    
+    const setNotifications = async () => {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.HIGH,
+      });
     }
     
     const unsubscribe = auth.onAuthStateChanged((user) => {
