@@ -2,7 +2,6 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, qu
 import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
-import { User } from "../model/User";
 import { deleteUserRecipe } from "./FirebaseUser";
 
 async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, queryText: string): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
@@ -339,9 +338,42 @@ async function updateRecipeAssessment(recipeId: string, numberOfRatings: number,
 }
 
 
+async function getRecipesById(recipesIds: string[], lastVisible: Recipe | null, pageSize: number) {
+
+  if (recipesIds.length == 0) {
+    return { recipes: [], lastVisible: null };
+  }
+
+  const recipesCollection = collection(firestore, 'recipes');
+
+  let recipesQuery = query(
+    recipesCollection,
+    where('id', 'in', recipesIds),
+    orderBy('title')
+  );
+    
+
+  if (lastVisible) {
+    recipesQuery = query(recipesQuery, startAfter(lastVisible.title));
+  }
+
+  const paginatedQuery = query(recipesQuery, limit(pageSize));
+
+  const querySnapshot = await getDocs(paginatedQuery);
+
+  const recipes: Recipe[] = [];
+
+  querySnapshot.forEach((doc) => recipes.push(doc.data() as Recipe));
+
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  const newLastVisible = lastDoc ? (lastDoc.data() as Recipe) : null;
+
+  return { recipes: recipes, lastVisible: newLastVisible };
+}
 
 
 
 
 
-export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment };
+
+export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment, getRecipesById };

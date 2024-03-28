@@ -132,9 +132,16 @@ const UserProfileScreen = ({ navigation }) => {
 
     <ScrollView style={styles.scrollViewContent}>
       <View style={{alignItems: 'center'}}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Iconify icon="lets-icons:back" size={33} color="black" />
-        </TouchableOpacity>
+        <View style={styles.topButtons}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Iconify icon="lets-icons:back" size={33} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => navigation.navigate('LikedRecipes')}>
+            <Text style={{marginRight: 10}}>{Strings.translate('favouriteRecipes')}</Text>
+            <Iconify icon="solar:list-heart-minimalistic-bold" size={33} color="black" />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.imageSection} onPress={pickImage}>
           <Image source={{ uri: image }} style={styles.userImage} />
@@ -200,19 +207,20 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: Colors.background,
-  },
-
-  backButton: {
-    position: 'absolute',
-    top: 5,
-    left: 10,
-    padding: 10,
+    paddingHorizontal: 20, 
+    paddingTop: 10
   },
 
   imageSection: {
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20
+    marginTop: 10
+  },
+
+  topButtons: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    width: '100%'
   },
 
   userImage: {
@@ -230,7 +238,7 @@ const styles = StyleSheet.create({
   },
 
   sectionUserData: {
-    width: '90%',
+    width: '100%',
     marginBottom: 20,
   },
 
