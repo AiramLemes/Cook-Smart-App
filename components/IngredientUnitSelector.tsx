@@ -12,7 +12,7 @@ const IngredientUnitSelector = (props: {onChange: any}) => {
     { key: 1, label: 'gr'},
     { key: 2, label: 'ml'},
     { key: 3, label: 'L'},
-    { key: 4, label: 'u'},
+    // { key: 4, label: 'u'},
   ];
 
   const handleSelectUnit = (option: { key: number; label: string; }) => {

@@ -129,6 +129,10 @@
   "minutes": "minutos",
   "hours": "horas",
   "days": "dias",
-  "time": "Tempo"
+  "time": "Tempo",
+  "addOutOfStockIngredients": "Quer acrescentar ingredientes que não estão em stock à sua lista de compras?",
+  "addMissingIngredients": "Não tem alguns ingredientes, quer adicioná-los à sua lista de compras?",
+  "addIngredientsSuccessfulMessage": "Os ingredientes foram adicionados corretamente",
+  "prepareRecipe": "Preparar a receita"
 }
   

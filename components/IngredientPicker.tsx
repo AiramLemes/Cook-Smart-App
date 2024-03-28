@@ -19,7 +19,7 @@ const IngredientPicker = (props: {onChange: any; initialValue?: Ingredient[]}) =
 
   const Strings = useContext(LanguageContext);
 
-  const units = ['kg', 'gr', 'L', 'ml', 'u', Strings.t('pinch')];
+  const units = ['kg', 'gr', 'L', 'ml'];
 
   const initialValue = props.initialValue;
 

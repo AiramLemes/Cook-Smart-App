@@ -14,6 +14,7 @@ import { useState, useEffect, createContext } from 'react';
 import { I18n } from 'i18n-js';
 import { loadLanguagePreference, loadTranslations } from './constants/Strings';
 import LanguageContext from './context/LanguageProvider';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,12 +29,14 @@ function App() {
       await loadTranslations(Strings, Strings.locale);
       setStrings(Strings);
     }
-
+    
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      SplashScreen.hideAsync();
     });
 
     translations();
+    SplashScreen.preventAutoHideAsync();
 
     return () => unsubscribe();
   }, [Strings.onChange]);

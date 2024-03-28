@@ -173,8 +173,6 @@ const AddRecipeForm1 = ({ navigation, route }) => {
         category: editableRecipe ? editableRecipe.category : '',
         userId: editableRecipe ? editableRecipe.userId : '',
         timestamp: editableRecipe ? editableRecipe.timestamp : new Timestamp(0, 0),
-        likes: 0,
-        likedUsersId: [],
         numberOfRatings: 0,
         totalRating: 0,
       }

@@ -318,36 +318,6 @@ async function getBestRecipes(maxRecipes: number): Promise<Recipe[]> {
 }
 
 
-async function handleRecipeLike(userId: string, recipeId: string) {
-  try {
-    const recipesCollection = collection(firestore, 'recipes');
-    
-    const recipeDocRef = doc(recipesCollection, recipeId);
-    
-    const recipe = (await getDoc(recipeDocRef)).data() as Recipe;
-
-    let updatedLikedUsersId: string[]
-
-    if (recipe.likedUsersId.includes(userId)) {
-      updatedLikedUsersId = recipe.likedUsersId.filter((id) => id !== userId);
-    }
-    else {
-      updatedLikedUsersId = recipe.likedUsersId.concat(userId);
-    }
-
-
-    const likes = updatedLikedUsersId.length;
-
-    await updateDoc(recipeDocRef, {likedUsersId: updatedLikedUsersId, likes: likes});
-
-    return updatedLikedUsersId;
-    
-  } catch (storageError) {
-    console.error('Liked Recipe', storageError);
-  }
-}
-
-
 async function updateRecipeAssessment(recipeId: string, numberOfRatings: number, newTotalRating: number, normalizedAssessment: number) {
   try {
     const recipesCollection = collection(firestore, 'recipes');
@@ -374,4 +344,4 @@ async function updateRecipeAssessment(recipeId: string, numberOfRatings: number,
 
 
 
-export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, handleRecipeLike, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment };
+export { addRecipe, deleteRecipe, getAllRecipes, getBestRecipes, getNewestRecipes, getRecipesByUserWithSearch, isUserRecipesIdsNotEmpty, updateRecipe, updateRecipeAssessment };

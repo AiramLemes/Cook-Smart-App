@@ -145,4 +145,78 @@ async function createPantry(userId: string): Promise<boolean> {
 //   }
 // }
 
-export { addIngredientToPantry, createPantry, getPantry, removeIngredientFromPantry, updatePantryIngredient };
+async function consumeIngredients(recipeIngredients: Ingredient[]) {
+  try {
+    const pantry = await getPantry();
+    const missingIngredients: string[] = [];
+    const exhaustedIngredients: string[] = [];
+    
+    for (let i = 0; i < recipeIngredients.length; i++) {
+      const recipeIngredient = recipeIngredients[i];
+      const recipeNameLower = recipeIngredient.englishVersion.toLowerCase();
+      
+
+      const pantryIngredient = pantry.products.find((pantryItem) => {
+        return pantryItem.englishVersion.toLowerCase().includes(recipeNameLower) || recipeNameLower.includes(pantryItem.englishVersion.toLowerCase());
+      });
+      
+      if (pantryIngredient) {
+        
+        const convertedAmount = await convertUnit(recipeIngredient.unit.toLowerCase(), recipeIngredient.amount, pantryIngredient.unit.toLowerCase());
+
+        // console.log('Producto:', pantryIngredient.englishVersion)
+
+        let remainingAmount = pantryIngredient.amount - convertedAmount;
+
+        if (remainingAmount <= 0) {
+          remainingAmount = 0;
+          exhaustedIngredients.push(pantryIngredient.englishVersion);
+        } 
+        
+        // console.log('En la despensa:', pantryIngredient.amount + pantryIngredient.unit + ' Si le quito ' + recipeIngredient.amount + ' ' + recipeIngredient.unit +'  . Lo que queda:  ' + remainingAmount)
+        await updatePantryIngredient(remainingAmount , i);
+      } else {
+
+        missingIngredients.push(recipeIngredient.englishVersion);
+      }
+    }
+    
+    console.log('Ingredientes agotados:', exhaustedIngredients);
+    console.log('Ingredientes faltantes:', missingIngredients);
+    return {
+      exhaustedIngredients: exhaustedIngredients,
+      missingIngredients: missingIngredients
+    }
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    throw error;
+  }
+}
+
+
+
+
+async function convertUnit(fromUnit: string, fromAmount: number, toUnit: string): Promise<number> {
+
+
+  let toAmount = fromAmount; 
+  
+  if (fromUnit === 'kg' && toUnit === 'g') {
+    toAmount *= 1000;
+
+  } else if (fromUnit === 'gr' && toUnit === 'kg') {
+    toAmount /= 1000;
+  
+  } else if (fromUnit === 'l' && toUnit === 'ml') {
+    toAmount *= 1000;
+  
+  } else if (fromUnit === 'ml' && toUnit === 'l') {
+    toAmount /= 1000;
+  
+  } 
+  
+  return toAmount;
+}
+
+
+export { addIngredientToPantry, consumeIngredients, createPantry, getPantry, removeIngredientFromPantry, updatePantryIngredient };
