@@ -181,8 +181,8 @@ async function consumeIngredients(recipeIngredients: Ingredient[]) {
       }
     }
     
-    console.log('Ingredientes agotados:', exhaustedIngredients);
-    console.log('Ingredientes faltantes:', missingIngredients);
+    // console.log('Ingredientes agotados:', exhaustedIngredients);
+    // console.log('Ingredientes faltantes:', missingIngredients);
     return {
       exhaustedIngredients: exhaustedIngredients,
       missingIngredients: missingIngredients

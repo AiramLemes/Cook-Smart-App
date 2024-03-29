@@ -286,7 +286,7 @@ async function createUser(email: string, password: string, userName: string) {
 }
 
 
-async function addIngredientsToShoppingList(...ingredients: Ingredient[]): Promise<Ingredient[] | false> {
+async function addIngredientsToShoppingList(ingredients: Ingredient[]): Promise<Ingredient[] | false> {
   try {
     const uid = auth.currentUser?.uid;
 
@@ -294,18 +294,16 @@ async function addIngredientsToShoppingList(...ingredients: Ingredient[]): Promi
       const userDocRef = doc(firestore, 'users', uid);
 
       const userDocSnapshot = await getDoc(userDocRef);
-      const currentShoppingList = userDocSnapshot.data()?.shoppingList || [];
+      const currentShoppingList = userDocSnapshot.data()!.shoppingList;
 
-      const uniqueIngredients = [...currentShoppingList];
-
+      const uniqueIngredients: Ingredient[] = [...currentShoppingList];
       ingredients.forEach((ingredient) => {
-        console.log(ingredient)
         const alreadyExists = uniqueIngredients.some((item: Ingredient) => item.name.toLowerCase() === ingredient.name.toLowerCase());
         if (!alreadyExists) {
           uniqueIngredients.push(ingredient);
         }
       });
-
+      
       uniqueIngredients.sort((a, b) => a.name.localeCompare(b.name));
 
       await updateDoc(userDocRef, { shoppingList: uniqueIngredients });
