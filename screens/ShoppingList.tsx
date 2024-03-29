@@ -61,7 +61,7 @@ const ShoppingList = ({ navigation }) => {
         englishVersion: await translateText(Strings.locale, item[0], true)
       }
       
-      const result = await addIngredientsToShoppingList(newIngredient);
+      const result = await addIngredientsToShoppingList([newIngredient]);
       
       if (result) {
         result.length == shoppingList.length ? 
@@ -87,6 +87,7 @@ const ShoppingList = ({ navigation }) => {
         data={shoppingList}
         renderItem={({ item, index }) => <IngredientItem ingredient={item} size={30} shoppingList pantryIngredient onRemove={() => {removeIngredient(index)}} />}
         style={styles.listContainer}
+        contentContainerStyle={{paddingBottom: 30}}
         keyExtractor={(item) => item.name}
       />
 
@@ -167,6 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     height: windowWidth,
+    marginBottom: 60
   },
 
   ingredientContainer: {
