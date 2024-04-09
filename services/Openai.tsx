@@ -1,6 +1,5 @@
 import OpenAI from 'openai';
 import Recipe from '../model/Recipe';
-import Ingredient from '../model/Ingredient';
 
 const openai = new OpenAI({
   apiKey: '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', 
@@ -85,33 +84,4 @@ async function generateRecipe(ingredients: string[]) {
 }
 
 
-// async function approximateConversion(pantryIngredient: Ingredient, recipeIngredient: Ingredient): Promise<number> {
-  
-
-//   const userMessage = `reduce the quantity of this product ${recipeIngredient} to this one ${pantryIngredient}, 
-//     in case the units do not match, put an approximate result;`;
-
-//   const modelMessage = 'return me the result in json {result: number}';
-
-//   const chatCompletion = await openai.chat.completions.create({
-//     messages: [
-//       { role: 'user', content: userMessage },
-//       { role: 'assistant', content: modelMessage },
-//     ],
-//     model: 'gpt-3.5-turbo-1106',
-//   });
-  
-
-
-//   const recipeResponse = chatCompletion.choices[0]?.message?.content;
-//   console.log('RESPUESTA: ', recipeResponse);
-//   // // Extract the numeric value from the API response (if possible)
-//   // const match = completion.match(/[\d.]+/);
-//   // if (match) {
-//   //   return parseFloat(match[0]);
-//   // } else {
-//   //   throw new Error('Unable to obtain a valid response from the API.');
-//   // }
-
-// }
 export { generateRecipe };

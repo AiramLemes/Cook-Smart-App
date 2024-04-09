@@ -7,7 +7,7 @@ import User from "../model/User";
 import { updateRecipeAssessment } from "../repository/FirebaseRecipes";
 import { getCurrentUser, updateUser } from "../repository/FirebaseUser";
 
-const Stars = (props: {recipe: Recipe, size?: number}) => {
+const Stars = (props: {recipe: Recipe}) => {
 
   const recipe = props.recipe;
   const [assessment, setAssessment] = useState<number>(0);

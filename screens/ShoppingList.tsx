@@ -1,15 +1,15 @@
 import { useIsFocused } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, PixelRatio, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
-import LanguageContext from '../context/LanguageProvider';
-import { addIngredientsToShoppingList, getCurrentUser, updateIngredientFromShoppingList } from '../repository/FirebaseUser';
-import Colors from '../constants/Colors';
-import IngredientItem from '../components/IngredientItem';
-import Ingredient from '../model/Ingredient';
-import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
+import IngredientItem from '../components/IngredientItem';
+import Colors from '../constants/Colors';
+import LanguageContext from '../context/LanguageProvider';
+import Ingredient from '../model/Ingredient';
+import { addIngredientsToShoppingList, getCurrentUser, updateIngredientFromShoppingList } from '../repository/FirebaseUser';
 import { translateText } from '../services/TransaltionService';
+import ToastUtil from '../utils/ToastUtil';
 
 const windowWidth = Dimensions.get('window').width;
 const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 20;
@@ -18,7 +18,7 @@ const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 20;
 const ShoppingList = ({ navigation }) => {
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [shoppingList, setShopingList] = useState<Ingredient[]>([]);
+  const [shoppingList, setShoppingList] = useState<Ingredient[]>([]);
   const [ingredientName, setIngredientName] = useState<string>();
 
   const Strings = useContext(LanguageContext);
@@ -28,7 +28,7 @@ const ShoppingList = ({ navigation }) => {
     const getShoppingList = async () => {
       setLoading(true);
       const user = await getCurrentUser();
-      setShopingList(user!!.shoppingList);
+      setShoppingList(user!!.shoppingList);
     };
     
     getShoppingList();
@@ -40,7 +40,7 @@ const ShoppingList = ({ navigation }) => {
     const updatedIngredients = [...shoppingList];
     updatedIngredients.splice(index, 1);
     if (await(updateIngredientFromShoppingList(updatedIngredients))) {
-      setShopingList(updatedIngredients);
+      setShoppingList(updatedIngredients);
     }
     else {
       ToastUtil.showToast(Strings.translate('generalError'), Toast.durations.SHORT);
@@ -64,8 +64,12 @@ const ShoppingList = ({ navigation }) => {
       const result = await addIngredientsToShoppingList([newIngredient]);
       
       if (result) {
-        result.length == shoppingList.length ? 
-        ToastUtil.showToast(Strings.translate('ingredientAlreadyInShoppingList'), Toast.durations.SHORT) : setShopingList(result);
+        if (result.length == shoppingList.length) {
+          ToastUtil.showToast(Strings.translate('ingredientAlreadyInShoppingList'), Toast.durations.SHORT);
+        } else {
+          setShoppingList(result);
+        }
+        
       }
     }
 
@@ -132,13 +136,14 @@ const styles = StyleSheet.create({
 
   input: {
     width: '100%',
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderColor: Colors.primary,
     borderWidth: 2,
     borderRadius: 10,
     alignSelf: 'center',
     marginBottom: 20,
     paddingHorizontal: 10,
+    textAlignVertical: 'center',
   },
 
   loadingContainer: {

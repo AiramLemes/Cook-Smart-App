@@ -1,5 +1,5 @@
 import * as React from "react";
-import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import Svg, { Defs, LinearGradient, Path, Stop } from "react-native-svg";
 const LogoSVG = (props: any) => (
   <Svg
     width={121}

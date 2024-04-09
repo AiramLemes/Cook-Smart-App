@@ -1,5 +1,4 @@
 import { useIsFocused } from '@react-navigation/native';
-import LottieView from 'lottie-react-native';
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";

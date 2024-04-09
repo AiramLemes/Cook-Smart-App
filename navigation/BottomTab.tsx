@@ -5,11 +5,11 @@ import { Dimensions, KeyboardAvoidingView, Platform } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
-import IAScreen from "../screens/IAScreen";
 import PantryScreen from "../screens/PantryScreen";
 import ScanScreen from "../screens/ScanScreen";
 import SearchScreen from "../screens/SearchScreen";
 import HomeTopTab from "./HomeTopTab";
+import AIScreen from '../screens/AIScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -30,7 +30,7 @@ const BottomTab = () => {
       screenOptions={{
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
-        tabBarStyle: { backgroundColor: Colors.secondary, height: imageDimensions }
+        tabBarStyle: { backgroundColor: Colors.secondary}
       }}
     >
       <Tab.Screen
@@ -85,7 +85,7 @@ const BottomTab = () => {
 
       <Tab.Screen
         name={Strings.t('ai')}
-        component={IAScreen}
+        component={AIScreen}
         options={{ 
           headerShown: false,
           tabBarIcon: ({ color, size }) => (

@@ -1,4 +1,3 @@
-import { useIsFocused } from "@react-navigation/native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, PixelRatio, ScrollView, StyleSheet, Text, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
@@ -12,13 +11,12 @@ import { getBestRecipes, getNewestRecipes } from "../../repository/FirebaseRecip
 const normalFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 26;
 const titleFontSize = PixelRatio.getFontScale() * Dimensions.get('window').width / 20;
 
+//@ts-ignore
 const DiscoverRecipesScreen = ({ navigation }) => {
 
   const bestRecipesList = useRef();
   const newestRecipesList = useRef();
-  const onFocus = useIsFocused();
   const numberOfRecipes = 7;
-  const initialIndex = 3;
   
   const Strings = useContext(LanguageContext);
 
@@ -32,8 +30,6 @@ const DiscoverRecipesScreen = ({ navigation }) => {
       setBestRecipes(await getBestRecipes(numberOfRecipes));
       setNewestRecipes(await getNewestRecipes(numberOfRecipes));
       
-      // bestRecipesList.current!!.scrollToIndex({ animated: false, index: initialIndex });
-      // newestRecipesList.current!!.scrollToIndex({ animated: false, index: initialIndex });
       setLoading(false);
     };
 
@@ -41,15 +37,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
   }, []);
 
 
-  // const getItemLayout = (_: any, index: number) => {
-  //   const screenWidth = Dimensions.get('window').width;
-  //   const recipeWidth = 145;
-  //   return {
-  //     length: screenWidth,
-  //     offset: recipeWidth/screenWidth * index,
-  //     index,
-  //   };
-  // };
+
 
   const {width: screenWidth} = Dimensions.get('window');
   const carouselRef = useRef(null);
@@ -76,7 +64,7 @@ const DiscoverRecipesScreen = ({ navigation }) => {
 
 
 
-  const renderItem = ({item, index}: any, parallaxProps: any) => {
+  const renderItem = ({item}: any, parallaxProps: any) => {
     return (
       <View>
         <ParallaxImage
@@ -120,7 +108,6 @@ const DiscoverRecipesScreen = ({ navigation }) => {
           horizontal
           renderItem={({ item }) => <View style={{ padding: 20 }}><RecipeItem recipe={item} userId={''} /></View>}
           keyExtractor={(item) => item.id} />
-          {/* // getItemLayout={getItemLayout}  */}
       </View>
       
       <View style={styles.listContainer}>
@@ -131,7 +118,6 @@ const DiscoverRecipesScreen = ({ navigation }) => {
             horizontal
             renderItem={({ item }) => <View style={{ padding: 20 }}><RecipeItem recipe={item} userId={''} /></View>}
             keyExtractor={(item) => item.id} />
-            {/* // getItemLayout={getItemLayout}  */}
       </View>
 
     {loading && (

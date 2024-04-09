@@ -13,6 +13,7 @@ import Ingredient from "../model/Ingredient";
 import Pantry from "../model/Pantry";
 import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
 
+//@ts-ignore
 const PantryScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -22,7 +23,7 @@ const PantryScreen = ({ navigation }) => {
   const [pantry, setPantry] = useState<Pantry>({ products: [] });
   const [currentPantry, setCurrentPantry] = useState<Pantry>({ products: [] });
   const [diaologVisibility, setDialogVisibility] = useState<boolean>(false);
-  const [confirmDialogVisible, setconfirmDialogVisible] = useState<boolean>(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState<boolean>(false);
   const [removeIngredientIndex, setRemoveIngredientIndex] = useState<number | undefined>();
 
   const Strings = useContext(LanguageContext);
@@ -42,14 +43,14 @@ const PantryScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const removeIngredient = (index: number) => {
-    setconfirmDialogVisible(true);
+    setConfirmDialogVisible(true);
     setRemoveIngredientIndex(index);
   };
 
   const handleConfirmDialog = (accepted: boolean) => {
     if (accepted && removeIngredientIndex !== undefined) {
       removeIngredientFromPantry(removeIngredientIndex);
-      let updatedPantry = { ...pantry! };
+      let updatedPantry = { ...pantry };
       updatedPantry.products.splice(removeIngredientIndex, 1);
       setPantry(updatedPantry);
       setCurrentPantry(updatedPantry);
@@ -58,7 +59,7 @@ const PantryScreen = ({ navigation }) => {
       setRemoveIngredientIndex(undefined);
     }
 
-    setconfirmDialogVisible(false);
+    setConfirmDialogVisible(false);
   };
 
   const handleSearch = (text: string) => {
@@ -82,7 +83,7 @@ const PantryScreen = ({ navigation }) => {
       setCurrentPantry(pantry);
     } else {
       const filteredPantry = {
-        products: pantry!.products.filter((ingredient) =>
+        products: pantry.products.filter((ingredient) =>
           ingredient.name.toLocaleLowerCase().includes(lowerCaseSearch)
         ),
       };
@@ -113,7 +114,7 @@ const PantryScreen = ({ navigation }) => {
 
         <FlatList
         style={styles.pantryContainer}
-        data={currentPantry!.products}
+        data={currentPantry.products}
         renderItem={({ item, index }) => (
           <IngredientItem
             ingredient={item}
@@ -121,7 +122,7 @@ const PantryScreen = ({ navigation }) => {
             pantryIngredient={true}
             index={index}
             onRemove={() => {
-              setconfirmDialogVisible(true);
+              setConfirmDialogVisible(true);
               removeIngredient(index);
             }}
           />
@@ -133,18 +134,21 @@ const PantryScreen = ({ navigation }) => {
       </>
     )}
 
-     
-      <TouchableOpacity style={styles.bottomButton} onPress={() => {setDialogVisibility(true)}}>
+    <View style={styles.bottomButtons}>
+
+      <TouchableOpacity onPress={() => {navigation.navigate('ShoppingList')}}>
+        <Shadow style={{ borderRadius: 30 }} distance={3}>
+          <Iconify icon="material-symbols:playlist-add-check-circle-outline-rounded" size={40} color={Colors.primary} />
+        </Shadow>
+      </TouchableOpacity>
+      
+      <TouchableOpacity onPress={() => {setDialogVisibility(true)}}>
         <Shadow style={{ borderRadius: 30 }} distance={3}>
           <Iconify icon="tdesign:add-circle" size={40} color={Colors.primary} />
         </Shadow>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{...styles.bottomButton, right: 0, left: 20}} onPress={() => {navigation.navigate('ShoppingList')}}>
-        <Shadow style={{ borderRadius: 30 }} distance={3}>
-          <Iconify icon="material-symbols:playlist-add-check-circle-outline-rounded" size={40} color={Colors.primary} />
-        </Shadow>
-      </TouchableOpacity>
+    </View>
 
       <IngredientDialog onClose={() => {setDialogVisibility(false)}} isVisible={diaologVisibility}
         onAddProduct={(ingredient: Ingredient) => {addIngredient(ingredient)}}/>
@@ -172,10 +176,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     width: "100%",
     height: '100%',
+    paddingHorizontal: 10
   },
 
   searchBarContainer: {
-    width: "95%",
+    width: "100%",
     height: 40,
     alignSelf: "center",
     margin: 20,
@@ -199,10 +204,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 
-  bottomButton: {
+  bottomButtons: {
     position: "absolute",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     bottom: 20,
-    right: 20,
     elevation: 3,
   },
 

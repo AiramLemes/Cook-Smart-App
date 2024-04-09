@@ -22,7 +22,7 @@ const RecipeItem = (props: { recipe: Recipe; userId: string; onDelete?: (value: 
 
   return (
     <View style={styles.container}>
-      {userId && userId === recipe.userId && (
+      {userId === recipe.userId && (
       <TouchableOpacity style={styles.edit} onPress={handleDelete}>
         <Iconify icon="mdi:delete-outline" size={25} color={Colors.black} />
       </TouchableOpacity>

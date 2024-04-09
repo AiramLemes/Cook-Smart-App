@@ -72,7 +72,7 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   
   const getTimeSelectorIndex = (unit: string) => {
     
-    let index = 0;
+    let index;
     
     switch (unit) {
       case Strings.translate('minutes'):
@@ -116,34 +116,8 @@ const AddRecipeForm2 = ({ navigation, route }) => {
 
       recipe.category = category;
 
+      await saveRecipe();
 
-      if (!editable) {
-        setCreatingRecipe(true);
-        const recipeId = await addRecipe(recipe);
-        if (!recipeId) {
-          ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
-        }
-        else {
-          if (await assignRecipeToUser(recipeId)) {
-            setCreatingRecipe(false);
-            navigation.navigate('Home');
-            ToastUtil.showToast(Strings.translate('createRecipe'), Toast.durations.SHORT);
-          }
-          else {
-            setCreatingRecipe(false);
-            ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
-          }
-        }
-
-        setCreatingRecipe(false);
-      }
-
-      else {
-        if (await updateRecipe(recipe)) {
-          navigation.navigate('Home');
-          ToastUtil.showToast(Strings.translate('updateRecipe'), Toast.durations.SHORT);
-        }
-      }
     }
 
     else {
@@ -151,6 +125,35 @@ const AddRecipeForm2 = ({ navigation, route }) => {
     }
 
   };
+
+
+  const saveRecipe = async () => {
+    if (!editable) {
+      setCreatingRecipe(true);
+      const recipeId = await addRecipe(recipe);
+  
+      if (!recipeId) {
+        ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
+      } else {
+        if (await assignRecipeToUser(recipeId)) {
+          navigation.navigate('Home');
+          ToastUtil.showToast(Strings.translate('createRecipe'), Toast.durations.SHORT);
+        } else {
+          ToastUtil.showToast(Strings.translate('recipeForm2AssignError'), Toast.durations.SHORT);
+        }
+      }
+  
+      setCreatingRecipe(false);
+    } else {
+      if (await updateRecipe(recipe)) {
+        navigation.navigate('Home');
+        ToastUtil.showToast(Strings.translate('updateRecipe'), Toast.durations.SHORT);
+      } else {
+        ToastUtil.showToast(Strings.translate('updateRecipeError'), Toast.durations.SHORT);
+      }
+    }
+  };
+  
 
 
 
@@ -444,7 +447,7 @@ const styles = StyleSheet.create({
   preparationItemDuration: {
     fontSize: 15,
     position: 'absolute',
-    right: '17%',
+    right: '25%',
     marginRight: 20,
     alignSelf: 'center'
   },
@@ -481,10 +484,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -20,
     borderRadius: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: adjustedFontSize
   },
 
 
 });
 
 export default AddRecipeForm2;
+

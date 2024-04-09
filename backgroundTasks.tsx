@@ -11,20 +11,20 @@ TaskManager.defineTask(PANTRY_CHECK_TASK, async ({ data, error }) => {
 
   if (error) {
     console.error(error);
-    return
+    return;
   }
 
   if (data) {
 
     const pantry = await getPantry();
-    
+
     const lowStockIngredients = pantry.products.filter(ingredient => ingredient.amount < 20);
-    
+
     if (lowStockIngredients.length > 0) {
       const ingredientsNames = lowStockIngredients.map(ingredient => ingredient.name).join(', ');
       sendNotificationWithType('pantry', ingredientsNames);
     }
-    
+
     return BackgroundFetch.BackgroundFetchResult.NewData;
   }
 });
@@ -38,4 +38,13 @@ const configureBackgroundFetch = async () => {
   });
 };
 
-configureBackgroundFetch();
+const initBackgroundFetch = async () => {
+  try {
+    await configureBackgroundFetch();
+    console.log('Background fetch configured successfully');
+  } catch (error) {
+    console.error('Error configuring background fetch:', error);
+  }
+};
+
+initBackgroundFetch();

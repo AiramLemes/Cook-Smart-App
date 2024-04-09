@@ -1,9 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import ModalSelector from "react-native-modal-selector";
 import { changeLanguage } from "../constants/Strings";
 import LanguageContext from "../context/LanguageProvider";
+
+const windowWidth = Dimensions.get('window').width;
+const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 const LanguagePicker = () => {
   
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 16,
+    fontSize: adjustedFontSize,
     letterSpacing: 0.25,
     fontWeight: "normal",
     color: "black",

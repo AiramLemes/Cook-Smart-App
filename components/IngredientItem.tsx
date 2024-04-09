@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Colors from '../constants/Colors';
@@ -9,9 +9,7 @@ const IngredientItem = (props: {
   onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number, shoppingList?: boolean 
 }) => {
   const {size, index} = props;
-  const pantryIngredient: boolean =  props.pantryIngredient === undefined ? false : true;
   const [ingredient, setIngredient] = useState<Ingredient>(props.ingredient);
-
 
   const handleAmountChange = (op: string) => {
 
@@ -25,7 +23,13 @@ const IngredientItem = (props: {
         setIngredient({...ingredient, amount: amount});
       }
       else {
-        amount - 1 < 0 ? amount = 0 : amount--;
+        if (amount - 1 < 0 ) {
+          amount = 0;
+        } 
+        else {
+          amount--;
+        }  
+
         ingredient.amount = amount;
         updatePantryIngredient(amount, index!);
         setIngredient({...ingredient, amount: amount});
@@ -38,25 +42,25 @@ const IngredientItem = (props: {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
-  return !pantryIngredient ? (
+  return !props.pantryIngredient ? (
     <View>
       <View style={styles.ingredientContainer}>
         <View style={styles.ingredientIcon}>
-          {getIngredientIcon(ingredient!!.englishVersion, size)}
+          {getIngredientIcon(ingredient.englishVersion, size)}
         </View>
         
-        <Text style={styles.ingredientName}>{capitalizeFirstLetter(ingredient!!.name)}</Text>
+        <Text style={styles.ingredientName}>{capitalizeFirstLetter(ingredient.name)}</Text>
 
-        <Text style={styles.ingredientAmount}>{ingredient!!.amount + ' ' + ingredient.unit}</Text>
+        <Text style={styles.ingredientAmount}>{ingredient.amount + ' ' + ingredient.unit}</Text>
       </View>
     </View>
   ) : (
     <View>
       <View style={{...styles.ingredientContainer, justifyContent: 'space-between'}}>
         <View style={styles.ingredientIcon}>
-          {getIngredientIcon(ingredient!!.englishVersion, size)}
+          {getIngredientIcon(ingredient.englishVersion, size)}
         </View>
-        <Text style={styles.ingredientName}>{ingredient!!.name}</Text>
+        <Text style={styles.ingredientName}>{ingredient.name}</Text>
         {!props.shoppingList && (
         <>
           <View style={styles.counter}>
@@ -64,13 +68,14 @@ const IngredientItem = (props: {
               <Iconify icon="ic:baseline-plus" size={25} color={Colors.black} />
             </TouchableOpacity>
 
-            <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient!!.amount}</Text>
+            <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient.amount}</Text>
 
             <TouchableOpacity  onLongPress={() => {handleAmountChange('minus')}} onPress={() => {handleAmountChange('minus')}}>
               <Iconify icon="ic:baseline-minus" size={25} color={Colors.black} />
             </TouchableOpacity>
           </View>
-          <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient!!.unit}</Text>
+          <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient.unit}</Text>
+
           </>
         )}
 
@@ -243,6 +248,8 @@ const getIngredientIcon = (ingredientName: string, size: number) => {
         return <Iconify icon="mdi:spoon-sugar" style={styles.icon} size={size} color="black" />;
       case lowerCaseIngredient.includes('pepper'):
         return <Iconify icon="noto:bell-pepper" style={styles.icon} size={size} color="black" />;
+      case lowerCaseIngredient.includes('eggplant'):
+        return <Iconify icon="noto:eggplant" style={styles.icon} size={size} color="purple" />;
       case lowerCaseIngredient.includes('wine'):
         return <Iconify icon="mdi:bottle-wine-outline" style={styles.icon} size={size} color="black" />;
       case lowerCaseIngredient.includes('vinegar'):
@@ -267,8 +274,6 @@ const getIngredientIcon = (ingredientName: string, size: number) => {
         return <Iconify icon="noto:broccoli" style={styles.icon} size={size} color="green" />;
       case lowerCaseIngredient.includes('greenbean'):
         return <Iconify icon="game-icons:jelly-beans" style={styles.icon} size={size} color="green" />;
-      case lowerCaseIngredient.includes('eggplant'):
-        return <Iconify icon="noto:eggplant" style={styles.icon} size={size} color="purple" />;
       case lowerCaseIngredient.includes('mushroom'):
         return <Iconify icon="noto:brown-mushroom" style={styles.icon} size={size} color="brown" />;
       case lowerCaseIngredient.includes('pepperoni'):

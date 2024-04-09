@@ -18,7 +18,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
   const [search, setSearch] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [lastVisible, setLastVisible] = useState<Recipe | null>(null);
-  const [searchTimeout, setSearchTimeout] = useState<any | null>(null);
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const [loading, setLoading] = useState(false);
   const [previousSearch, setPreviousSearch] = useState<string>('');
   const [isRecipesIdsNotEmpty, setIsRecipesIdsNotEmpty] = useState<boolean>(false);
@@ -53,13 +53,10 @@ const SearchScreen = (props: {userId: string| undefined}) => {
       const recipesData = props.userId ? await getRecipesByUserWithSearch(props.userId, pageSize, lastVisibleRef, query) : await getAllRecipes(pageSize, lastVisibleRef, query);
       
       if (query !== previousSearch) {
-        // Si la búsqueda cambió, resetea lastVisible y recetas
         setLastVisible(null);
         setRecipes(recipesData.recipes);
       } else {
-        // Si la búsqueda no cambió, concatena los resultados
         setRecipes((prevRecipes) => {
-          // Filtramos los duplicados antes de concatenar
           const uniqueRecipes = recipesData.recipes.filter((newRecipe) => !prevRecipes.some((prevRecipe) => prevRecipe.id === newRecipe.id));
           return [...prevRecipes, ...uniqueRecipes];
         });
@@ -147,7 +144,7 @@ const SearchScreen = (props: {userId: string| undefined}) => {
         <FlatList
         style={styles.recipesContainer}
         data={recipes}
-        renderItem={({ item }) => <RecipeItem recipe={item} userId={userId} onDelete={(recipeId: string) => {setDeletedItemId(recipeId), setDeleteRecipeDialog(true)}} />}
+        renderItem={({ item }) => <RecipeItem recipe={item} userId={userId} onDelete={(recipeId: string) => {setDeletedItemId(recipeId); setDeleteRecipeDialog(true);}} />}
         keyExtractor={(item) => item.id}
         numColumns={2}
         contentContainerStyle={styles.recipesContainer}

@@ -21,14 +21,12 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
-  const [Strings, setStrings] = useState(new I18n);
+  const [strings, setStrings] = useState(new I18n);
 
   useEffect(() => {
-
     const translations = async () => {
-      await loadLanguagePreference(Strings);
-      await loadTranslations(Strings, Strings.locale);
-      setStrings(Strings);  
+      await loadLanguagePreference(strings);
+      await loadTranslations(strings, strings.locale);
     }
     
     const setNotifications = async () => {
@@ -48,7 +46,7 @@ function App() {
     setNotifications();
     
     return () => unsubscribe();
-  }, [Strings.onChange]);
+  }, [strings.onChange]);
 
   function isSignedIn(): boolean {
     return user !== null;
@@ -56,7 +54,7 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <LanguageContext.Provider value={Strings}>
+      <LanguageContext.Provider value={strings}>
         <RootSiblingParent>
           <NavigationContainer>
             {isSignedIn() ? (
@@ -65,25 +63,23 @@ function App() {
                 <StackNav navigation={undefined}/>
               </>
             ) : (
-              <>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name='Index'
-                    component={IndexScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name='Login'
-                    component={LoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name='Register'
-                    component={RegisterScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-              </>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name='Index'
+                  component={IndexScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='Login'
+                  component={LoginScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='Register'
+                  component={RegisterScreen}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
             )}
           </NavigationContainer>
         </RootSiblingParent>

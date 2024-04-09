@@ -173,13 +173,9 @@ async function updateRecipe(recipe: Recipe) {
     await deleteRecipeImages(deletedImages);
 
     let remainingImages = existingRecipe.images.filter(existingImage => !deletedImages.includes(existingImage));
-    // console.log('imagenes restantes -->', remainingImages);
     const newImages = recipe.images.filter(newImage => !existingRecipe.images.includes(newImage));
-    // console.log('nuevas imagenes -->', newImages);
     const images = await uploadRecipeImages(recipe.id, newImages);
-    // console.log('imagenes subidas -->', images);
     remainingImages = [...remainingImages, ...images];
-    // console.log('imagenes subidas concatenadas a las que ya estaban -->', images);
 
     recipe.images = remainingImages;
     recipe.mainImage = remainingImages[0];
@@ -201,7 +197,6 @@ async function deleteRecipeImages(images: string[]) {
       const path = getPathStorageFromUrl(imageURL);
       const imageRef = ref(getStorage(), path);
 
-      // Delete the image in Firebase Storage
       await deleteObject(imageRef);
 
       console.log(`Deleted image at path: ${path}`);
@@ -216,7 +211,8 @@ async function deleteRecipeImages(images: string[]) {
 
 // Function to extract path from the image URL
 function getPathStorageFromUrl(imageURL: string) {
-  const regexResult = imageURL.match(/\/o\/(.+)\?alt=media&token=/);
+  const regex = /\/o\/(.+)\?alt=media&token=/;
+  const regexResult = regex.exec(imageURL);
   return regexResult ? decodeURIComponent(regexResult[1]) : undefined;
 }
 

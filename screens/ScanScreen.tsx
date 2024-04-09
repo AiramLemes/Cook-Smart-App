@@ -54,6 +54,61 @@ const ScanScreen = ({ navigation }) => {
     navigation.navigate('Product', scannedProduct);
   };
 
+  function renderBarcodeSection() {
+    if (hasPermission === null) {
+      return (
+        <View style={styles.centeredMessageContainer}>
+          <Text>{Strings.translate('scanPermissionMessage')}</Text>
+        </View>
+      );
+    } else if (hasPermission === false) {
+      return (
+        <View style={styles.centeredMessageContainer}>
+          <Text style={{ textAlign: 'center', fontSize: adjustedFontSize }}>
+            {Strings.translate('scanNoPermission')}
+          </Text>
+          <TouchableOpacity onPress={() => Linking.openSettings()}>
+            <Text style={styles.permissionText}>{Strings.translate('giveCameraPermissions')}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <Camera
+          style={StyleSheet.absoluteFill}
+          ratio='16:9'
+          onBarCodeScanned={handleBarCodeScanned}
+        />
+      );
+    }
+  }
+  
+  function renderProductCard() {
+    return (
+      <View style={styles.productCard}>
+        <View style={styles.column}>
+          <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
+        </View>
+        <View style={{ ...styles.column, flex: 3, left: 10 }}>
+          <Text style={{ fontSize: adjustedFontSize }}>{scannedProduct!!.name}</Text>
+          <Text>{scannedProduct!!.brand}</Text>
+          <View style={styles.rating}>
+            <FaceColor rate={scannedProduct!!.rate} size={20} />
+            <Text>  {scannedProduct!!.rate}/100</Text>
+          </View>
+        </View>
+        <View style={styles.column}>
+          <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
+            <Iconify icon="material-symbols:close" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
+            <Iconify icon="carbon:next-filled" size={33} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
 
   return (
     <SafeAreaView
@@ -64,58 +119,11 @@ const ScanScreen = ({ navigation }) => {
         paddingRight: insets.right,
       }}
     >
-      {isFocused && (
-        <View style={styles.barcode}>
-          {hasPermission === null ? (
-            <View style={styles.centeredMessageContainer}>
-              <Text>{Strings.translate('scanPermissionMessage')}</Text>
-            </View>
-          ) : hasPermission === false ? (
-            <View style={styles.centeredMessageContainer}>
-              <Text style={{ textAlign: 'center', fontSize: adjustedFontSize}}>{Strings.translate('scanNoPermission')}</Text>
-              <TouchableOpacity  onPress={() => {Linking.openSettings()}}>
-                <Text style={styles.permissionText}>{Strings.translate('giveCameraPermissions')}</Text>
-              </TouchableOpacity>
-              
-            </View>
-            
-          ) : (
-            <Camera
-              style={StyleSheet.absoluteFill}
-              ratio='16:9'
-              onBarCodeScanned={handleBarCodeScanned}
-            />
-          )}
-        </View>
-      )}
-  
-      {/* productExists */}
-      {productExists && !isHidden && (
-        <View style={styles.productCard}>
-          <View style={styles.column}>
-            <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
-          </View>
-          <View style={{ ...styles.column, flex: 3, left: 10}}>
-            <Text style={{fontSize: adjustedFontSize}} >{scannedProduct!!.name}</Text>
-            <Text>{scannedProduct!!.brand}</Text>
-            <View style={styles.rating}>
-              <FaceColor rate={scannedProduct!!.rate} size={20}/>
-              <Text>  {scannedProduct!!.rate}/100</Text>
-            </View>
-          </View>
-          <View style={styles.column}>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setIsHidden(true)}>
-              <Iconify icon="material-symbols:close" size={24} color="black" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.goButton} onPress={handleGoButtonPress}>
-              <Iconify icon="carbon:next-filled" size={33} color="black" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+      {isFocused && renderBarcodeSection()}
+      {productExists && !isHidden && renderProductCard()}
     </SafeAreaView>
   );
+  
 }
 const styles = StyleSheet.create({
   container: {

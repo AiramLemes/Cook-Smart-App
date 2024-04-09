@@ -1,12 +1,12 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { auth, firestore } from "../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import Toast from "react-native-root-toast";
+import { auth, firestore } from "../firebaseConfig";
+import Ingredient from "../model/Ingredient";
 import User from "../model/User";
 import ToastUtil from "../utils/ToastUtil";
 import { createPantry } from "./FirebasePantry";
-import Ingredient from "../model/Ingredient";
 
 let unsubscribeImageSnapshot: (() => void) | null = null;
 
@@ -113,7 +113,7 @@ async function upadteUserImage(image: string) {
 
 async function uploadImageAsync(uri: string) {
   
-  const blob: Blob = await new Promise((resolve, reject) => {
+  await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
       resolve(xhr.response);
@@ -131,7 +131,6 @@ async function uploadImageAsync(uri: string) {
   const date = new Date();
   const fileName = `users/${auth.currentUser?.uid}/` + date.getFullYear() + date.getTime();
   const fileRef = ref(storageRef, fileName);
-  const result = await uploadBytes(fileRef, blob);
 
   const imageUrl: string = await getDownloadURL(fileRef);
   return await upadteUserImage(imageUrl);
@@ -168,7 +167,7 @@ async function logIn(email: string, password: string): Promise<boolean> {
 }
 
 function checkPassword(password: string): boolean {
-  const isValid = password!!.length >= 6;
+  const isValid = password.length >= 6;
   return isValid;
 }
 
@@ -378,6 +377,6 @@ async function updateIngredientFromShoppingList(updatedIngredients: Ingredient[]
 
 export {
   addIngredientsToShoppingList, addOrRemoveLikedRecipe, assignRecipeToUser, checkEmail, checkEmailPattern, checkPassword, checkUserName, createUser, deleteUserRecipe, getCurrentUser,
-  getUserImage, getUserNameById, logIn, updateUser, uploadImageAsync, updateIngredientFromShoppingList
+  getUserImage, getUserNameById, logIn, updateIngredientFromShoppingList, updateUser, uploadImageAsync
 };
 

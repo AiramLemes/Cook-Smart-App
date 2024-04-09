@@ -31,7 +31,6 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const [liked, setLiked] = useState<boolean>(false);
   const [userName, setUserName] = useState<string | undefined>();
-  const [userLikedRecipe, setUserLikedRecipes] = useState<string[]>([]);
 
   const [isAiRecipe, setIsAiRecipe] = useState<boolean>(false);
 
@@ -65,7 +64,6 @@ const RecipeScreen = ({ navigation, route }) => {
 
     const getUserLikedRecipes = async () => {
       const user = await getCurrentUser();
-      setUserLikedRecipes(user!!.likedRecipes);
 
       user?.likedRecipes.find((recipeId) => recipeId === recipe.id ? setLiked(true) : '');
 
@@ -89,10 +87,8 @@ const RecipeScreen = ({ navigation, route }) => {
   }
 
   const handleLike = async () => {
-
     setLiked(!liked);
-    const likedUsersId = await addOrRemoveLikedRecipe(recipe.id);
-
+    await addOrRemoveLikedRecipe(recipe.id);
   };
 
 

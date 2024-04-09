@@ -9,14 +9,13 @@ const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 28;
 
 
 const Servings = (props: {initialValue?: number; onChange: any}) => {
-  const [servingsCount, setServinsCount] = useState(1);
-  // props.onChange(1);
+  const [servingsCount, setServingsCount] = useState(1);
   const Strings = useContext(LanguageContext);
   const initialValue = props.initialValue;
 
   useEffect(() => {
     if (initialValue) {
-      setServinsCount(initialValue);
+      setServingsCount(initialValue);
       props.onChange(initialValue);
     }
   });
@@ -32,7 +31,7 @@ const Servings = (props: {initialValue?: number; onChange: any}) => {
     }
 
     props.onChange(count);
-    setServinsCount(count);
+    setServingsCount(count);
   };
 
   return (
