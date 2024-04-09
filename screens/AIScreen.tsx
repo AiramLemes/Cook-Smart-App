@@ -1,6 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, FlatList, Image, PixelRatio, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import Toast from "react-native-root-toast";
@@ -8,13 +8,12 @@ import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
 import { generateRecipe } from "../services/Openai";
 import ToastUtil from "../utils/ToastUtil";
-import { sendNotificationWithType } from "../utils/NotificationsHandler";
 
 const windowWidth = Dimensions.get('window').width;
 const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 
 // @ts-ignore
-const IAScreen = ({navigation}) => {
+const AIScreen = ({navigation}) => {
 
   const isFocused = useIsFocused();
 
@@ -133,7 +132,7 @@ const IAScreen = ({navigation}) => {
 
 }
 
-export default IAScreen;
+export default AIScreen;
 
 
 const styles = StyleSheet.create({

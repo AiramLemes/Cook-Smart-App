@@ -133,18 +133,21 @@ const PantryScreen = ({ navigation }) => {
       </>
     )}
 
-     
-      <TouchableOpacity style={styles.bottomButton} onPress={() => {setDialogVisibility(true)}}>
+    <View style={styles.bottomButtons}>
+
+      <TouchableOpacity onPress={() => {navigation.navigate('ShoppingList')}}>
+        <Shadow style={{ borderRadius: 30 }} distance={3}>
+          <Iconify icon="material-symbols:playlist-add-check-circle-outline-rounded" size={40} color={Colors.primary} />
+        </Shadow>
+      </TouchableOpacity>
+      
+      <TouchableOpacity onPress={() => {setDialogVisibility(true)}}>
         <Shadow style={{ borderRadius: 30 }} distance={3}>
           <Iconify icon="tdesign:add-circle" size={40} color={Colors.primary} />
         </Shadow>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{...styles.bottomButton, right: 0, left: 20}} onPress={() => {navigation.navigate('ShoppingList')}}>
-        <Shadow style={{ borderRadius: 30 }} distance={3}>
-          <Iconify icon="material-symbols:playlist-add-check-circle-outline-rounded" size={40} color={Colors.primary} />
-        </Shadow>
-      </TouchableOpacity>
+    </View>
 
       <IngredientDialog onClose={() => {setDialogVisibility(false)}} isVisible={diaologVisibility}
         onAddProduct={(ingredient: Ingredient) => {addIngredient(ingredient)}}/>
@@ -172,10 +175,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     width: "100%",
     height: '100%',
+    paddingHorizontal: 10
   },
 
   searchBarContainer: {
-    width: "95%",
+    width: "100%",
     height: 40,
     alignSelf: "center",
     margin: 20,
@@ -199,10 +203,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 
-  bottomButton: {
+  bottomButtons: {
     position: "absolute",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     bottom: 20,
-    right: 20,
     elevation: 3,
   },
 

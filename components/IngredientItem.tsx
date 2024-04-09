@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Iconify } from 'react-native-iconify';
 import Colors from '../constants/Colors';
 import Ingredient from '../model/Ingredient';
 import { updatePantryIngredient } from '../repository/FirebasePantry';
+import {Picker} from '@react-native-picker/picker';
 
 const IngredientItem = (props: {
   onRemove?: any; ingredient: Ingredient, size: number, pantryIngredient?: boolean, index? : number, shoppingList?: boolean 
@@ -11,7 +12,7 @@ const IngredientItem = (props: {
   const {size, index} = props;
   const pantryIngredient: boolean =  props.pantryIngredient === undefined ? false : true;
   const [ingredient, setIngredient] = useState<Ingredient>(props.ingredient);
-
+  const [selectedLanguage, setSelectedLanguage] = useState(props.ingredient.amount.toString());
 
   const handleAmountChange = (op: string) => {
 
@@ -71,6 +72,7 @@ const IngredientItem = (props: {
             </TouchableOpacity>
           </View>
           <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>{ingredient!!.unit}</Text>
+
           </>
         )}
 

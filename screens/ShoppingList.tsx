@@ -132,13 +132,14 @@ const styles = StyleSheet.create({
 
   input: {
     width: '100%',
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderColor: Colors.primary,
     borderWidth: 2,
     borderRadius: 10,
     alignSelf: 'center',
     marginBottom: 20,
     paddingHorizontal: 10,
+    textAlignVertical: 'center',
   },
 
   loadingContainer: {

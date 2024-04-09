@@ -18,7 +18,6 @@ const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;
 // @ts-ignore
 const SettingsScreen = ({navigation}) => {
 
-  const insets = useSafeAreaInsets();
   const [user, setUser] = useState<User | null>(null);
 
   const Strings = useContext(LanguageContext);
@@ -54,6 +53,7 @@ const SettingsScreen = ({navigation}) => {
       <View>
 
         <LanguagePicker/>
+
         <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {Linking.openURL('mailto:support@cooksmartapp.com')}}>
           <Text style={styles.buttonText}>{Strings.t('contactUs')}</Text>
           <Iconify icon="game-icons:talk" size={24} color="black"/>
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     top: 5,
     left: 10,
     padding: 10,
+    zIndex: 1
   },
 
   userImage: {

@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
   preparationItemDuration: {
     fontSize: 15,
     position: 'absolute',
-    right: '17%',
+    right: '25%',
     marginRight: 20,
     alignSelf: 'center'
   },
@@ -481,7 +481,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -20,
     borderRadius: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: adjustedFontSize
   },
 
 
