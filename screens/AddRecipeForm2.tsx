@@ -127,42 +127,33 @@ const AddRecipeForm2 = ({ navigation, route }) => {
   };
 
 
-  const saveRecipe= async () => {
-
+  const saveRecipe = async () => {
     if (!editable) {
-        
       setCreatingRecipe(true);
       const recipeId = await addRecipe(recipe);
-
+  
       if (!recipeId) {
         ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
-      }
-      else {
+      } else {
         if (await assignRecipeToUser(recipeId)) {
-          setCreatingRecipe(false);
           navigation.navigate('Home');
           ToastUtil.showToast(Strings.translate('createRecipe'), Toast.durations.SHORT);
-        }
-        else {
-          setCreatingRecipe(false);
-          ToastUtil.showToast(Strings.translate('recipeForm2CreateError'), Toast.durations.SHORT);
+        } else {
+          ToastUtil.showToast(Strings.translate('recipeForm2AssignError'), Toast.durations.SHORT);
         }
       }
-
+  
       setCreatingRecipe(false);
-    }
-
-    else {
+    } else {
       if (await updateRecipe(recipe)) {
         navigation.navigate('Home');
         ToastUtil.showToast(Strings.translate('updateRecipe'), Toast.durations.SHORT);
-      }
-
-      else {
-        ToastUtil.showToast(Strings.translate('generalError'), Toast.durations.SHORT);
+      } else {
+        ToastUtil.showToast(Strings.translate('updateRecipeError'), Toast.durations.SHORT);
       }
     }
-  }
+  };
+  
 
 
 

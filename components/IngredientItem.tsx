@@ -68,7 +68,7 @@ const IngredientItem = (props: {
               <Iconify icon="ic:baseline-plus" size={25} color={Colors.black} />
             </TouchableOpacity>
 
-            <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient!!.amount}</Text>
+            <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 17}}>{ingredient.amount}</Text>
 
             <TouchableOpacity  onLongPress={() => {handleAmountChange('minus')}} onPress={() => {handleAmountChange('minus')}}>
               <Iconify icon="ic:baseline-minus" size={25} color={Colors.black} />

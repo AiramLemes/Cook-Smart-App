@@ -24,7 +24,6 @@ function App() {
   const [strings, setStrings] = useState(new I18n);
 
   useEffect(() => {
-
     const translations = async () => {
       await loadLanguagePreference(strings);
       await loadTranslations(strings, strings.locale);

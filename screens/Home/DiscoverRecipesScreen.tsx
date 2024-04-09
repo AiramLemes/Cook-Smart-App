@@ -1,4 +1,3 @@
-import { useIsFocused } from "@react-navigation/native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, PixelRatio, ScrollView, StyleSheet, Text, View } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
