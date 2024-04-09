@@ -15,14 +15,14 @@ const sendNotificationWithType = (type: string, text? : string) => {
       };
       break;
 
-  default:
-    notificationConfig = {
-      content: {
-        title: 'CookSmart',
-        body: 'Texto predefinido para otros tipos de notificaciones',
-      },
-      trigger: null,
-    };
+    default:
+      notificationConfig = {
+        content: {
+          title: 'CookSmart',
+          body: 'Texto predefinido para otros tipos de notificaciones',
+        },
+        trigger: null,
+      };
   }
 
   Notifications.scheduleNotificationAsync(notificationConfig);

@@ -131,7 +131,6 @@ async function uploadImageAsync(uri: string) {
   const date = new Date();
   const fileName = `users/${auth.currentUser?.uid}/` + date.getFullYear() + date.getTime();
   const fileRef = ref(storageRef, fileName);
-  const result = await uploadBytes(fileRef, blob);
 
   const imageUrl: string = await getDownloadURL(fileRef);
   return await upadteUserImage(imageUrl);
@@ -168,7 +167,7 @@ async function logIn(email: string, password: string): Promise<boolean> {
 }
 
 function checkPassword(password: string): boolean {
-  const isValid = password!!.length >= 6;
+  const isValid = password.length >= 6;
   return isValid;
 }
 

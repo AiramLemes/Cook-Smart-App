@@ -75,33 +75,31 @@ async function addIngredientToPantry(ingredient: Ingredient) {
     const userId = auth.currentUser!!.uid;
     const pantryDocRef = doc(firestore, 'pantries', userId);
     const pantryDocSnapshot = await getDoc(pantryDocRef);
-    
+
     if (pantryDocSnapshot.exists()) {
       const pantry = pantryDocSnapshot.data() as Pantry;
-      
-      let isIngredientInPantry = false;
-      pantry.products.forEach(product => {
-        if (product.name.toLocaleLowerCase() === ingredient.name.toLocaleLowerCase()) {
-          isIngredientInPantry = true;
-        }
-      });
-      
+
+      const isIngredientInPantry = pantry.products.some(product => 
+        product.name.toLocaleLowerCase() === ingredient.name.toLocaleLowerCase()
+      );
 
       if (!isIngredientInPantry) {
         pantry.products.push(ingredient);
-        pantry.products.sort((a: Ingredient, b:Ingredient) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        setDoc(pantryDocRef, pantry);
+        pantry.products.sort((a: Ingredient, b: Ingredient) => a.name.localeCompare(b.name));
+        await setDoc(pantryDocRef, pantry);
         return true;
       }
-        
+
       return false;
     }
 
-  } catch (e) {
     return false;
-  } 
-  
+  } catch (error) {
+    console.error("Error adding ingredient to pantry:", error);
+    return false;
+  }
 }
+
 
 
 
@@ -118,32 +116,6 @@ async function createPantry(userId: string): Promise<boolean> {
 }
 
 
-
-// async function getBetterProducts(name: string, rate: number): Promise<Array<Product>> {
-//   try {
-//     const productsQuery = query(
-//       collection(firestore, 'products'),
-//       where('name', '==', name),
-//       where('rate', '>', rate),
-//       orderBy('rate', 'desc'),
-//       limit(3)
-//     )
-
-//     const productsSnapshot = await getDocs(productsQuery);
-
-//     const products: Product[] = [];
-    
-//     productsSnapshot.forEach((doc) => {
-//       const productData = doc.data() as Product;
-//       products.push(productData);
-//     });
-
-//     return products;
-//   } catch (error) {
-//     console.error('Error al obtener productos:', error);
-//     throw error;
-//   }
-// }
 
 async function consumeIngredients(recipeIngredients: Ingredient[]) {
   try {
@@ -164,7 +136,6 @@ async function consumeIngredients(recipeIngredients: Ingredient[]) {
         
         const convertedAmount = await convertUnit(recipeIngredient.unit.toLowerCase(), recipeIngredient.amount, pantryIngredient.unit.toLowerCase());
 
-        // console.log('Producto:', pantryIngredient.englishVersion)
 
         let remainingAmount = pantryIngredient.amount - convertedAmount;
 
@@ -173,7 +144,6 @@ async function consumeIngredients(recipeIngredients: Ingredient[]) {
           exhaustedIngredients.push(pantryIngredient);
         } 
         
-        // console.log('En la despensa:', pantryIngredient.amount + pantryIngredient.unit + ' Si le quito ' + recipeIngredient.amount + ' ' + recipeIngredient.unit +'  . Lo que queda:  ' + remainingAmount)
         await updatePantryIngredient(remainingAmount , i);
       } else {
 
@@ -181,8 +151,6 @@ async function consumeIngredients(recipeIngredients: Ingredient[]) {
       }
     }
     
-    // console.log('Ingredientes agotados:', exhaustedIngredients);
-    // console.log('Ingredientes faltantes:', missingIngredients);
     return {
       exhaustedIngredients: exhaustedIngredients,
       missingIngredients: missingIngredients

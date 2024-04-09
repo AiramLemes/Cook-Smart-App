@@ -99,8 +99,15 @@ const UserProfileScreen = ({ navigation }) => {
         let message;
 
         const result = await updateUser({userName: userName});
-        result ? message = Strings.t('changeUserNameMsg') : message = Strings.t('errorChangingUserName');
-          ToastUtil.showToast(message, Toast.durations.SHORT);
+
+        if (result) {
+          message = Strings.t('changeUserNameMsg')
+        } 
+        else {
+          message = Strings.t('errorChangingUserName');
+        }  
+
+        ToastUtil.showToast(message, Toast.durations.SHORT);
         
         if (result) {
           const updatadedUser = {

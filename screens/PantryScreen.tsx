@@ -13,6 +13,7 @@ import Ingredient from "../model/Ingredient";
 import Pantry from "../model/Pantry";
 import { getPantry, removeIngredientFromPantry } from "../repository/FirebasePantry";
 
+//@ts-ignore
 const PantryScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -22,7 +23,7 @@ const PantryScreen = ({ navigation }) => {
   const [pantry, setPantry] = useState<Pantry>({ products: [] });
   const [currentPantry, setCurrentPantry] = useState<Pantry>({ products: [] });
   const [diaologVisibility, setDialogVisibility] = useState<boolean>(false);
-  const [confirmDialogVisible, setconfirmDialogVisible] = useState<boolean>(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState<boolean>(false);
   const [removeIngredientIndex, setRemoveIngredientIndex] = useState<number | undefined>();
 
   const Strings = useContext(LanguageContext);
@@ -42,14 +43,14 @@ const PantryScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const removeIngredient = (index: number) => {
-    setconfirmDialogVisible(true);
+    setConfirmDialogVisible(true);
     setRemoveIngredientIndex(index);
   };
 
   const handleConfirmDialog = (accepted: boolean) => {
     if (accepted && removeIngredientIndex !== undefined) {
       removeIngredientFromPantry(removeIngredientIndex);
-      let updatedPantry = { ...pantry! };
+      let updatedPantry = { ...pantry };
       updatedPantry.products.splice(removeIngredientIndex, 1);
       setPantry(updatedPantry);
       setCurrentPantry(updatedPantry);
@@ -58,7 +59,7 @@ const PantryScreen = ({ navigation }) => {
       setRemoveIngredientIndex(undefined);
     }
 
-    setconfirmDialogVisible(false);
+    setConfirmDialogVisible(false);
   };
 
   const handleSearch = (text: string) => {
@@ -82,7 +83,7 @@ const PantryScreen = ({ navigation }) => {
       setCurrentPantry(pantry);
     } else {
       const filteredPantry = {
-        products: pantry!.products.filter((ingredient) =>
+        products: pantry.products.filter((ingredient) =>
           ingredient.name.toLocaleLowerCase().includes(lowerCaseSearch)
         ),
       };
@@ -113,7 +114,7 @@ const PantryScreen = ({ navigation }) => {
 
         <FlatList
         style={styles.pantryContainer}
-        data={currentPantry!.products}
+        data={currentPantry.products}
         renderItem={({ item, index }) => (
           <IngredientItem
             ingredient={item}
@@ -121,7 +122,7 @@ const PantryScreen = ({ navigation }) => {
             pantryIngredient={true}
             index={index}
             onRemove={() => {
-              setconfirmDialogVisible(true);
+              setConfirmDialogVisible(true);
               removeIngredient(index);
             }}
           />

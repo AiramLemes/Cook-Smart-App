@@ -1,5 +1,5 @@
 import * as React from "react";
-import Svg, { Path, Defs, Pattern, Use, Image } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 const PoweredSVG = (props: any) => (
   <Svg
     width={40}

@@ -28,8 +28,6 @@ const AIScreen = ({navigation}) => {
   useEffect(() => {
 
 
-  // navigation.navigate('Recipe',recipe2)
-  // console.log(recipe2);
   }, [isFocused]);
 
   const handleSearch = (text: string) => {
@@ -110,7 +108,6 @@ const AIScreen = ({navigation}) => {
           style={styles.ingredientListContainer}
         />
 
-        {/* <TouchableOpacity style={styles.createRecipeButton} > */}
         <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
 
           <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>

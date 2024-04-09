@@ -3,7 +3,6 @@ import { signOut } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, Image, PixelRatio, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Iconify } from 'react-native-iconify';
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LanguagePicker from "../../components/LanguagePicker";
 import Colors from "../../constants/Colors";
 import LanguageContext from "../../context/LanguageProvider";

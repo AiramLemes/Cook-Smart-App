@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Iconify } from "react-native-iconify";
 import { Dialog, TextInput } from "react-native-paper";
@@ -10,16 +10,25 @@ import { addIngredientToPantry } from "../repository/FirebasePantry";
 import { translateIngredientToEnglish } from "../services/TransaltionService";
 import ToastUtil from "../utils/ToastUtil";
 import IngredientUnitSelector from "./IngredientUnitSelector";
+import { useIsFocused } from "@react-navigation/native";
 
 const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boolean }) => {
 
   const [name, setName] = useState<string>('');  
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<string>('');
   const [unit, setUnit] = useState<string>('');
 
   const [nameError, setNameError] = useState<boolean>(false);  
   const [amountError, setAmountError] = useState<boolean>(false);
   const [unitError, setUnitError] = useState<boolean>(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setNameError(false);
+    setAmountError(false);
+    setUnitError(false);
+  }, [isFocused]);
 
   const Strings = useContext(LanguageContext);
   
@@ -28,44 +37,32 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
   }
 
   const checkAllFields = () => {
-    let result = true;
-
-    if (isEmpty(name)) {
-      result = result && false; 
-      setNameError(true);
-    }
-    else {
-      result = result && true;
-      setNameError(false);
-    }
-
-
-    if (amount === undefined || amount <= 0 ) {
-      result = result && false;
-      setAmountError(true);
-    }
-    else {
-      result = result && true;
-      setAmountError(false);
-    }
-
-
-    if (isEmpty(unit)) {
-      result = result && false; 
-      setUnitError(true);
-    }
-    else {
-      result = result && true;
-      setUnitError(false);
-    }
-
-
-    return result;
+    let isValid = true;
+  
+    const isNameValid = !isEmpty(name);
+    setNameError(!isNameValid);
+    isValid = isValid && isNameValid;
+    console.log(`Nombre válido: ${isNameValid}`);
+  
+    const isAmountValid = !isEmpty(amount) && parseInt(amount, 10) >= 0; 
+    setAmountError(!isAmountValid);
+    isValid = isValid && isAmountValid;
+    console.log(`Cantidad válida: ${isAmountValid}`);
+  
+    const isUnitValid = !isEmpty(unit);
+    setUnitError(!isUnitValid);
+    isValid = isValid && isUnitValid;
+    console.log(`Unidad válida: ${isUnitValid}`);
+  
+    console.log(`Todos los campos son válidos: ${isValid}`);
+    return isValid;
   };
+  
+  
 
   const clearForm = () => {
     setName('');
-    setAmount(0);
+    setAmount('');
     setUnit('');
   };
 
@@ -79,7 +76,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
       const newIngredient: Ingredient = {
         name: name,
         unit: unit,
-        amount: amount!,
+        amount: parseInt(amount, 10),
         englishVersion: ingredientEnglishVersion
       }
       if (await addIngredientToPantry(newIngredient)) {
@@ -119,7 +116,7 @@ const IngredientDialog = (props: { [x: string]: any;onClose: any; isVisible: boo
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => {setAmount(parseInt(text))}}
+            onChangeText={setAmount}
             value={amount?.toString()}
             keyboardType="numeric"
             placeholder={Strings.translate('ingredientAmountInput')}

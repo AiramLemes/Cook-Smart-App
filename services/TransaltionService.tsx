@@ -48,8 +48,6 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
 
   const url = 'https://api-free.deepl.com/v2/translate';
   const authKey = deepLAuthKey
-  // console.log('Locale: ', Strings.locale)
-  // console.log('Mapping: ', language_mapping[Strings.locale])
   const targetLang = forceEnglish ? 'EN-US' : language_mapping[currentLanguage];
   let sourceLang = language_mapping[textLang];
 
@@ -78,10 +76,7 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
     }
 
     const translation = response.data.translations[0].text;
-    const detectedSourceLanguage = response.data.translations[0].detected_source_language;
-
-    // console.log(`Translation: ${translation}`);
-    // console.log(`Detected Source Language: ${detectedSourceLanguage}`);
+  
 
     return translation;
   } catch (error) {
@@ -90,7 +85,6 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
   }
 };
 
-// Ejemplo de uso
 const translateRecipe = async (textLang: string, recipe: Recipe) => {
   try {
     const translatedIngredients: Ingredient[] = await Promise.all(
@@ -134,7 +128,6 @@ const translateRecipe = async (textLang: string, recipe: Recipe) => {
       }
     };
 
-    // console.log('Translated Recipe:', translatedRecipe);
     return translatedRecipe;
   } catch (error) {
     console.error('Error translating recipe:', error);
