@@ -3,6 +3,7 @@ import { deleteObject, getDownloadURL, getStorage, list, ref, uploadBytes } from
 import { auth, firestore, storage } from "../firebaseConfig";
 import Recipe from "../model/Recipe";
 import { deleteUserRecipe } from "./FirebaseUser";
+import User from "../model/User";
 
 async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, queryText: string): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
   const recipesCollection = collection(firestore, 'recipes');
@@ -49,24 +50,22 @@ async function getRecipesByUserWithSearch(
   queryText: string
 ): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
 
-  const isRecipesIdsNotEmpty = await isUserRecipesIdsNotEmpty(userId);
-
-  if (!isRecipesIdsNotEmpty) {
-    return { recipes: [], lastVisible: null };
-  }
-
-  const recipesCollection = collection(firestore, 'recipes');
-  let recipesQuery;
   const userDoc = (await getDoc(doc(firestore, 'users', userId))).data() as User;
   const userRecipeIds: string[] = userDoc.recipesIds;
+
 
   if (userRecipeIds.length <= 0) {
     return { recipes: [], lastVisible: null };
   }
 
-  const matchingRecipeIds = await getMatchingRecipeIds(queryText);
-  const filteredUserRecipeIds = userRecipeIds.filter((id) => matchingRecipeIds.includes(id));
+  const recipesCollection = collection(firestore, 'recipes');
+  let recipesQuery;
 
+  
+  const matchingRecipeIds = await getMatchingRecipeIds(queryText);
+
+  const filteredUserRecipeIds = userRecipeIds.filter((id) => matchingRecipeIds.includes(id));
+  
   if (filteredUserRecipeIds.length <= 0) {
     return { recipes: [], lastVisible: null };
   }
@@ -88,12 +87,18 @@ async function getRecipesByUserWithSearch(
   const recipes: Recipe[] = [];
 
   querySnapshot.forEach((doc) => recipes.push(doc.data() as Recipe));
-
+  console.log(recipes)
   const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
   const newLastVisible = lastDoc ? (lastDoc.data() as Recipe) : null;
 
   return { recipes, lastVisible: newLastVisible };
 }
+
+
+
+
+
+
 
 async function isUserRecipesIdsNotEmpty(userId: string): Promise<boolean> {
   try {
@@ -108,16 +113,15 @@ async function isUserRecipesIdsNotEmpty(userId: string): Promise<boolean> {
 
 async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
   const recipesCollection = collection(firestore, 'recipes');
-
+  
   const querySnapshot = await getDocs(recipesCollection);
-
+  
   const matchingRecipeIds: string[] = [];
-
+  
   querySnapshot.forEach((doc) => {
     const recipe = (doc.data() as Recipe)
     const title = recipe.title.toLowerCase();
     const category = recipe.category.toLowerCase();
-
     if (title.includes(recipeTitle.toLowerCase())) {
       matchingRecipeIds.push(doc.id);
     }
@@ -127,7 +131,6 @@ async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
       }
     }
   });
-
   return matchingRecipeIds;
 }
 
