@@ -58,11 +58,7 @@ const SettingsScreen = ({navigation}) => {
           <Iconify icon="game-icons:talk" size={24} color="black"/>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonWithIcon}>
-          <Text style={styles.buttonText}>{Strings.t('theme')}</Text>
-          <Iconify icon="fluent:dark-theme-24-regular" size={24} color="black"/>
-        </TouchableOpacity>
-
+        
         <TouchableOpacity style={styles.buttonWithIcon} onPress={() => {Linking.openURL('https://airam28074.wixsite.com/cooksmart-app')}}>
           <Text style={styles.buttonText}>{Strings.t('aboutApp')}</Text>
           <Iconify icon="material-symbols:info-outline" size={24} color="black"/>
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 200,
     borderWidth: 1,
     borderColor: Colors.imageBorder,
-    marginBottom: 20,
+    marginBottom: 50,
     marginTop: 50,
     alignSelf: 'center'
   },

@@ -266,7 +266,8 @@ async function createUser(email: string, password: string, userName: string) {
       image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
       recipesIds: [],
       likedRecipes: [],
-      assessments: {}
+      assessments: {},
+      shoppingList: []
     };
     
     const usersDocRef = doc(collection(firestore, 'users'), userId);
