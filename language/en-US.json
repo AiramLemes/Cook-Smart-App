@@ -133,10 +133,11 @@
   "addOutOfStockIngredients": "Want to add out-of-stock ingredients to your shopping list?",
   "addMissingIngredients": "You don't have some ingredients, do you want to add them to the shopping list?",
   "addIngredientsSuccessfulMessage": "Ingredients were added correctly",
-  "prepareRecipe": "Prepare recipe",
+  "prepareRecipe": "Prepare",
   "favouriteRecipes": "Favorite recipes",
   "ingredientAlreadyInShoppingList": "The ingredient is already on the list !",
   "shoppingList": "Shopping List",
-  "emptyShoppingList": "Shopping list is empty"
+  "emptyShoppingList": "Shopping list is empty",
+  "modify": "Modify"
     
 }

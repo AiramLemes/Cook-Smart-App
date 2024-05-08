@@ -11,10 +11,13 @@ import Recipe from '../model/Recipe';
 import { addIngredientsToShoppingList, addOrRemoveLikedRecipe, getCurrentUser, getUserNameById } from '../repository/FirebaseUser';
 import { translateRecipe } from '../services/TransaltionService';
 import { consumeIngredients } from '../repository/FirebasePantry';
-import ConfirmationDialog from '../components/ConfirmationDialog';
+import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import Ingredient from '../model/Ingredient';
+import TextInputDialog from '../components/Dialogs/TextInputDialog';
+import { modifyRecipe } from '../services/Openai';
+import LottieView from 'lottie-react-native';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -40,6 +43,8 @@ const RecipeScreen = ({ navigation, route }) => {
 
   const [missingIngredientsDialogVisibility, setMissingIngredientsDialogVisibility] = useState<boolean>(false);
   const [outOfStockIngredientsDialogVisibility, setOutOfStockIngredientsDialogVisibility] = useState<boolean>(false);
+  const [modifyRecipeDialogVisibility, setModifyRecipeDialogVisibility] = useState<boolean>(false);
+  const [modifyingRecipe, setModifyingRecipe] = useState<boolean>(false);
 
 
   const Strings = useContext(LanguageContext);
@@ -135,6 +140,24 @@ const RecipeScreen = ({ navigation, route }) => {
     }
   };
 
+
+  const handleModifyRecipe = async (result: boolean, text?: string) => {
+    if (result) {
+      if (text) {
+        setModifyingRecipe(true);
+        const modifiedRecipe = await modifyRecipe(renderRecipe, text);
+        if (modifiedRecipe) {
+          navigation.push('Recipe', modifiedRecipe);
+        }
+        else {
+          ToastUtil.showToast(Strings.t('iaRecipeError'), Toast.durations.SHORT);
+        }
+        setModifyingRecipe(false);
+      }
+    }
+    setModifyRecipeDialogVisibility(false);
+  }
+
   const renderItem = ({ item }) => {
     switch (item.type) {
       case 'recipeTitle':
@@ -165,32 +188,44 @@ const RecipeScreen = ({ navigation, route }) => {
       case 'imagesList':
         return (
           <>
-          {!isAiRecipe && (
-          <>
-            <FlatList
-              horizontal
-              style={styles.imagesList}
-              data={renderRecipe.images}
-              renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
-              keyExtractor={(image) => image}
-            />
+            {!isAiRecipe && (
+              <>
+                <FlatList
+                  horizontal
+                  style={styles.imagesList}
+                  data={renderRecipe.images}
+                  renderItem={({ item: image }) => <Image source={{ uri: image }} style={styles.images} />}
+                  keyExtractor={(image) => image}
+                />
 
-            <StarsPicker recipe={recipe}></StarsPicker>
+                <StarsPicker recipe={recipe}></StarsPicker>
 
+              </>
+            )}
+
+            {isAiRecipe && (
+              <Image src={renderRecipe.mainImage} style={styles.aiImage}/>
+            )}
+
+            <View style={styles.recipeOptions}>
+
+              <TouchableOpacity style={styles.recipeButton} onPress={handleConsumeIngredients}>
+                <Text style={styles.recipeButtonText}>{Strings.translate('prepareRecipe')}</Text>
+                <View style={{alignSelf: 'center'}}>
+                  <Iconify icon="lucide:cooking-pot" size={20} color="black" />
+                </View>
+              </TouchableOpacity>
+              
+          
+              <TouchableOpacity style={styles.recipeButton} onPress={() => {setModifyRecipeDialogVisibility(true)}}>
+                <Text style={styles.recipeButtonText}>{Strings.t('modify')}</Text>
+                <View style={{alignSelf: 'center'}}>
+                  <Iconify icon="ci:edit-pencil-line-01" size={20} color="black" />
+                </View>
+              </TouchableOpacity>
+            
+            </View>
           </>
-          )}
-
-          {isAiRecipe && (
-            <Image src={renderRecipe.mainImage} style={styles.aiImage}/>
-           )}
-
-            <TouchableOpacity style={styles.consumeButton} onPress={handleConsumeIngredients}>
-              <Text style={styles.consumeButtonText}>{Strings.translate('prepareRecipe')}</Text>
-              <View style={{alignSelf: 'center'}}>
-                <Iconify icon="lucide:cooking-pot" size={20} color="black" />
-              </View>
-            </TouchableOpacity>
-           </>
         );
       case 'preparation':
         return (
@@ -281,15 +316,36 @@ const RecipeScreen = ({ navigation, route }) => {
     );
   }
 
-  return <>
-    <FlatList data={sections} renderItem={renderItem} keyExtractor={(item) => item.key} contentContainerStyle={styles.container}/>
 
-    <ConfirmationDialog text={Strings.t('addOutOfStockIngredients')}
-      isVisible={outOfStockIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 0)}}/>
-              
-    <ConfirmationDialog text={Strings.t('addMissingIngredients')}
-      isVisible={missingIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 1)}}/>
+
+  return (
+    <>
+    {!modifyingRecipe && (
+
+      <>
+        <FlatList data={sections} renderItem={renderItem} keyExtractor={(item) => item.key} contentContainerStyle={styles.container}/>
+  
+        <ConfirmationDialog text={Strings.t('addOutOfStockIngredients')}
+          isVisible={outOfStockIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 0)}}/>
+                  
+        <ConfirmationDialog text={Strings.t('addMissingIngredients')}
+          isVisible={missingIngredientsDialogVisibility} onClose={(result: boolean) => {handleCloseDialog(result, 1)}}/>
+  
+        <TextInputDialog text={"Hola! Soy ChefGPT, si quieres modificar algo de la receta solo tienes que decirmelo! "} 
+          isVisible={modifyRecipeDialogVisibility} onClose={(result: boolean, text: string) => {handleModifyRecipe(result, text)}}/> 
+      </>
+    )}
+  
+    {modifyingRecipe && (
+      <View style={{width: '100%', height: '100%', justifyContent: 'center', backgroundColor: Colors.background}}>
+        <LottieView source={require('../assets/Cooking Animation.json')}
+        style={{height: '30%', width: '100%'}}
+        autoPlay/>
+        <Text style={styles.modifyingRecipeText}>{Strings.translate('iaAnimationText')}</Text>
+      </View>
+    )}
   </>
+  )
 };
 
 
@@ -297,6 +353,7 @@ const RecipeScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
+    paddingHorizontal: 10
   },
 
   scrollViewContent: {
@@ -441,7 +498,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 
-  consumeButtonText: {
+  recipeOptions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+    justifyContent: 'space-between'
+  },
+
+  recipeButtonText: {
     fontSize: adjustedFontSize,
     textAlign: 'center',
     alignSelf: 'center',
@@ -449,17 +513,23 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
 
-  consumeButton: {
-    width: '60%',
+  recipeButton: {
+    width: 150,
+    paddingHorizontal: 20, 
     height: 30,
     borderColor: Colors.black,
-    alignSelf: 'center',
     borderWidth: 1,
     borderRadius: 10,
     marginTop: 20,
     justifyContent: 'center',
     backgroundColor: Colors.secondary,
     flexDirection: 'row',
+  },
+  
+  modifyingRecipeText: {
+    textAlign: 'center',
+    marginTop: 30,
+    fontSize: adjustedFontSize
   }
 
 
