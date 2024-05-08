@@ -134,11 +134,12 @@
   "addOutOfStockIngredients": "Sie möchten nicht vorrätige Zutaten auf Ihre Einkaufsliste setzen?",
   "addMissingIngredients": "Sie haben einige Zutaten nicht, wollen Sie sie auf Ihre Einkaufsliste setzen?",
   "addIngredientsSuccessfulMessage": "Die Zutaten wurden korrekt hinzugefügt",
-  "prepareRecipe": "Rezept vorbereiten",
+  "prepareRecipe": "Vorbereiten",
   "favouriteRecipes": "Bevorzugte Rezepte",
   "ingredientAlreadyInShoppingList": "Die Zutat steht bereits auf der Liste!",
   "shoppingList": "Einkaufsliste",
-  "emptyShoppingList": "Einkaufsliste ist leer"
+  "emptyShoppingList": "Einkaufsliste ist leer",
+  "modify": "Ändern Sie"
     
 }
   

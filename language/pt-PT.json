@@ -133,10 +133,11 @@
   "addOutOfStockIngredients": "Quer acrescentar ingredientes que não estão em stock à sua lista de compras?",
   "addMissingIngredients": "Não tem alguns ingredientes, quer adicioná-los à sua lista de compras?",
   "addIngredientsSuccessfulMessage": "Os ingredientes foram adicionados corretamente",
-  "prepareRecipe": "Preparar a receita",
+  "prepareRecipe": "Preparar",
   "favouriteRecipes": "Receitas favoritas",
   "ingredientAlreadyInShoppingList": "O ingrediente já está na lista!",
   "shoppingList": "Lista de compras",
-  "emptyShoppingList": "A lista de compras está vazia"
+  "emptyShoppingList": "A lista de compras está vazia",
+  "modify": "Modificar"
 }
   

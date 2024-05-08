@@ -61,7 +61,8 @@ async function generateRecipe(ingredients: string[]) {
 
     if (recipeResponse) {
       const recipe: Recipe = JSON.parse(recipeResponse);
-      recipe.userId = 'chat-gpt'
+      recipe.userId = 'chat-gpt;'
+      recipe.lang = 'en-US';
       const requiredFields = ['userId', 'title', 'mainImage', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
       const isValidRecipe = requiredFields.every(field => field in recipe);
 
@@ -78,10 +79,66 @@ async function generateRecipe(ingredients: string[]) {
       return null;
     }
   } catch (error) {
-    console.error('Error al obtener la respuesta del modelo:', error.message);
+    console.error('Error obtaining model response:', error.message);
     return null
   }
 }
 
+async function modifyRecipe(recipe: Recipe, modifications: string) {
+  try {
+    console.log('Modifying the recipe..., please wait');
 
-export { generateRecipe };
+    // Construye el mensaje del usuario incluyendo la receta y las modificaciones
+    const userMessage = `modify this recipe: ${JSON.stringify(recipe)} with these modifications: ${modifications}`;
+
+    const modelMessage = `Please modify the recipe provided by the user to meet the following preferences:
+    - Ingredients: [list of ingredient modifications or additions]
+    - Preparation time: [modifications in preparation time]
+    - Serving size: [modifications in serving size]
+    - Other desired changes: [any other relevant details]
+    
+    GIVE ALL THE RESPONSE IN ${recipe.lang} except the ingredients.englishVersion that must be in english, send it to use Json.parse()`;
+
+
+    const chatCompletion = await openai.chat.completions.create({
+      messages: [
+        { role: 'user', content: userMessage },
+        { role: 'assistant', content: modelMessage},
+      ],
+      model: 'gpt-3.5-turbo-1106',
+    });
+
+    // Obtiene la respuesta del modelo
+    const recipeResponse = chatCompletion.choices[0]?.message?.content;
+
+    if (recipeResponse) {
+      // Analiza la respuesta del modelo para obtener la receta modificada
+      const modifiedRecipe: Recipe = JSON.parse(recipeResponse);
+
+      console.log(modifiedRecipe)
+
+      // Verifica si la receta modificada tiene todos los campos requeridos
+      const requiredFields = ['userId', 'title', 'mainImage', 'images', 'ingredients', 'steps', 'lang', 'preparation', 'cooking', 'rest', 'servings', 'difficulty', 'category'];
+      const isValidRecipe = requiredFields.every(field => field in modifiedRecipe);
+
+      if (isValidRecipe) {
+        // Asigna el ID del usuario y retorna la receta modificada
+        console.log('Modified Recipe:', modifiedRecipe);
+        return modifiedRecipe;
+      } else {
+        console.log('The model response does not contain all the required fields for a recipe.');
+        return null;
+      }
+    } else {
+      console.log('No model response was obtained.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error obtaining model response:', error.message);
+    return null;
+  }
+}
+
+
+
+export { generateRecipe, modifyRecipe };

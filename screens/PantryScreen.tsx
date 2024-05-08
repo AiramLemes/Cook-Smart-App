@@ -4,7 +4,7 @@ import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react
 import { Iconify } from "react-native-iconify";
 import { Searchbar } from "react-native-paper";
 import { Shadow } from "react-native-shadow-2";
-import ConfirmationDialog from "../components/ConfirmationDialog";
+import ConfirmationDialog from "../components/Dialogs/ConfirmationDialog";
 import IngredientDialog from "../components/IngredientDialog";
 import IngredientItem from "../components/IngredientItem";
 import Colors from "../constants/Colors";

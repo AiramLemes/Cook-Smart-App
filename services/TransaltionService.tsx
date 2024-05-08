@@ -67,7 +67,7 @@ const translateText = async (textLang: string, text: string, forceEnglish: boole
   data.append('source_lang', sourceLang);
 
 
-
+  console
   try {
     const response = await axios.post(url, data.toString(), { headers });
 
