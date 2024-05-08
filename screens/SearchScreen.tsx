@@ -7,7 +7,7 @@ import RecipeItem from "../components/Recipe";
 import Recipe from "../model/Recipe";
 import { Iconify } from "react-native-iconify";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import ConfirmationDialog from "../components/ConfirmationDialog";
+import ConfirmationDialog from "../components/Dialogs/ConfirmationDialog";
 import ToastUtil from "../utils/ToastUtil";
 import Toast from "react-native-root-toast";
 import LanguageContext from "../context/LanguageProvider";

@@ -1,5 +1,4 @@
 interface Product {
-  product: any;
   brand: string;
   image: string;
   name: string;

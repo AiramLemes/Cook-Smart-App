@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Dialog } from "react-native-paper";
-import Colors from "../constants/Colors";
-import LanguageContext from "../context/LanguageProvider";
+import Colors from "../../constants/Colors";
+import LanguageContext from "../../context/LanguageProvider";
 
 const ConfirmationDialog = (props: {text: string, isVisible: boolean, onClose: any}) => {
 
