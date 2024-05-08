@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import Toast from "react-native-root-toast";
 import { auth, firestore } from "../firebaseConfig";
 import Ingredient from "../model/Ingredient";
@@ -50,7 +50,7 @@ async function getUserImage(callback: (imageURL: string) => void) {
     }
   } catch (error) {
     // En caso de error, devolver la URL predeterminada
-    callback('https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0');
+    callback('https://firebasestorage.googleapis.com/v0/b/cook-smart-app-86b0d.appspot.com/o/defaultImageProfile%2Fdefault.png?alt=media&token=d3f5f345-ac30-4bf2-b33e-1d80a8fee304');
   }
 }
 
@@ -111,30 +111,32 @@ async function upadteUserImage(image: string) {
   }
 }
 
-async function uploadImageAsync(uri: string) {
+async function uploadImageAsync(uri: string): Promise<boolean> {
+  const response = await fetch(uri);
+  const blob = await response.blob();
   
-  await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      resolve(xhr.response);
-    };
-    xhr.onerror = function (e) {
-      console.log(e);
-      reject(new TypeError("Network request failed"));
-    };
-    xhr.responseType = "blob";
-    xhr.open("GET", uri, true);
-    xhr.send(null);
-  });
-
   const storageRef = ref(getStorage(), `users/${auth.currentUser?.uid}/`);
   const date = new Date();
-  const fileName = `users/${auth.currentUser?.uid}/` + date.getFullYear() + date.getTime();
+  const fileName =  date.getFullYear().toString() + date.getTime().toString();
   const fileRef = ref(storageRef, fileName);
 
-  const imageUrl: string = await getDownloadURL(fileRef);
-  return await upadteUserImage(imageUrl);
+  const uploadTask = uploadBytesResumable(fileRef, blob);
+
+  return new Promise((resolve, reject) => {
+    uploadTask.on('state_changed', null, reject, async () => {
+      try {
+        const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        await upadteUserImage(imageUrl);
+
+        console.log('Image uploaded correctly and image URL updated.');
+        resolve(true); 
+      } catch (error) {
+        reject(error); 
+      }
+    });
+  });
 }
+
 
 async function checkEmail(email: string): Promise<boolean> {
 
@@ -263,10 +265,11 @@ async function createUser(email: string, password: string, userName: string) {
     const newUser: User = {
       userName: userName,
       email: email,
-      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0',
+      image: 'https://firebasestorage.googleapis.com/v0/b/cook-smart-app-86b0d.appspot.com/o/defaultImageProfile%2Fdefault.png?alt=media&token=d3f5f345-ac30-4bf2-b33e-1d80a8fee304',
       recipesIds: [],
       likedRecipes: [],
-      assessments: {}
+      assessments: {},
+      shoppingList: []
     };
     
     const usersDocRef = doc(collection(firestore, 'users'), userId);

@@ -49,7 +49,6 @@ const UserProfileScreen = ({ navigation }) => {
 
     if (!result.canceled) {
       const uri: string = result.assets[0].uri;
-      console.log(uri)
 
       if (await uploadImageAsync(uri)) {
         setImage(uri);
