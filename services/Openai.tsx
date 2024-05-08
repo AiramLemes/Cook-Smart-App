@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import Recipe from '../model/Recipe';
 
 const openai = new OpenAI({
-  apiKey: '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', 
+  apiKey: process.env.EXPO_PUBLIC_OPEN_AI_API_KEY, 
 });
 
 async function generateRecipe(ingredients: string[]) {

@@ -9,7 +9,7 @@ import { getUserImage } from "../repository/FirebaseUser";
 const Header = () => {
   
   const insets = useSafeAreaInsets();
-  const [imageURL, setImageURL] = useState('https://firebasestorage.googleapis.com/v0/b/cook-smart-app.appspot.com/o/usersImageProfile%2Fdefault.png?alt=media&token=71b49402-5589-4501-88bd-2cc7c56911c0');
+  const [imageURL, setImageURL] = useState('https://firebasestorage.googleapis.com/v0/b/cook-smart-app-86b0d.appspot.com/o/defaultImageProfile%2Fdefault.png?alt=media&token=d3f5f345-ac30-4bf2-b33e-1d80a8fee304');
   const navigation = useNavigation();
 
   useEffect(() => {

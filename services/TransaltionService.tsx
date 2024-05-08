@@ -3,7 +3,7 @@ import { currentLanguage } from "../constants/Strings";
 import Ingredient from "../model/Ingredient";
 import Recipe from "../model/Recipe";
 
-const deepLAuthKey = '4baaa94c-9ff2-876b-19d2-25aaee96c25f:fx';
+const deepLAuthKey = process.env.EXPO_PUBLIC_DEEPL_API_KEY;
 
 const language_mapping: Record<string, string> = {
   'bg-BG': 'BG',
