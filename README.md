@@ -8,44 +8,27 @@ Below are some screenshots of the application:
 More images can be found in the screenshots folder.
 <h2>Screenshots</h2>
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Landing.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Landing Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Login.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Log In Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Register.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Register Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Home - Inspiration.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Home Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Search.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Search Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Recipe 1.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Recipe Screen (1)</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Recipe 2.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Recipe Screen (2)</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Pantry.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Pantry Screen</div>
-    </div>
-    <div style="flex-basis: 30%; margin-bottom: 20px; text-align: center;">
-        <img src="screenshots\Android\Product.png" alt="Splash Screen" style="max-width: 100%; max-height: 70%;">
-        <div style="margin-top: 5px;">Product Screen</div>
-    </div>
-</div>
+<p align="center">
+  <img src="screenshots\Android\Landing.png" alt="Landing Screen" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Login.png" alt="Log In Screen" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Register.png" alt="Register Screen" style="width: 30%;">
+</p>
+
+<p align="center">
+  <img src="screenshots\Android\Home - Inspiration.png" alt="Home Screen" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Search.png" alt="Search Screen" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Recipe 1.png" alt="Recipe Screen (1)" style="width: 30%;">
+</p>
+
+<p align="center">
+  <img src="screenshots\Android\Recipe 2.png" alt="Recipe Screen (2)" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Pantry.png" alt="Pantry Screen" style="width: 30%; margin-right: 10px;">
+  <img src="screenshots\Android\Product.png" alt="Product Screen" style="width: 30%;">
+</p>
+
+
+
+
 
 
 ## Description
@@ -88,6 +71,6 @@ To install and run the application in a local environment, follow these steps:
 
 ## License
 
-This project is licensed under the [MIT License](link-to-license).
+This project is licensed under the [MIT License](/LICENSE).
 
 
