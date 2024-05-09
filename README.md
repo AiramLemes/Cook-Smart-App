@@ -57,14 +57,19 @@ To install and run the application in a local environment, follow these steps:
 
 - **Artificial Intelligence Integration**: Enhance and generate recipes using AI algorithms to provide personalized suggestions and improvements.
 <br>
+
 - **Product Scanning**: Scan products to view their ratings, ingredients, and other recommendations.
 <br>
+
 - **Shopping List**: Create and manage a shopping list for easy grocery shopping.
 <br>
+
 - **Multi-Language Support**: The application is available in multiple languages, allowing users to choose their preferred language.
 <br>
+
 - **Recipe Translation System**: Translate recipes into different languages using an integrated translation system.
 <br>
+
 
 
 
