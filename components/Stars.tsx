@@ -12,37 +12,15 @@ const Stars = (props: { assessment: number, size: number }) => {
     const hasHalfStar = assessment - fullStars >= 0.5;
 
     for (let i = 1; i <= 5; i++) {
+      let star;
       if (i <= fullStars) {
-        stars.push(
-          <Iconify
-            key={i}
-            icon="ic:baseline-star"
-            size={size}
-            color={Colors.primary}
-            style={styles.star}
-          />
-        );
+        star = <Iconify key={i} icon="ic:baseline-star" size={size} color={Colors.primary} style={styles.star} />;
       } else if (hasHalfStar && i === fullStars + 1) {
-        stars.push(
-          <Iconify
-            key={i}
-            icon="ic:baseline-star-half"
-            size={size}
-            color={Colors.primary}
-            style={styles.star}
-          />
-        );
+        star = <Iconify key={i} icon="ic:baseline-star-half" size={size} color={Colors.primary} style={styles.star} />;
       } else {
-        stars.push(
-          <Iconify
-            key={i}
-            icon="ic:baseline-star"
-            size={size}
-            color={Colors.gray}
-            style={styles.star}
-          />
-        );
+        star = <Iconify key={i} icon="ic:baseline-star" size={size} color={Colors.gray} style={styles.star} />;
       }
+      stars.push(star);
     }
     return stars;
   };

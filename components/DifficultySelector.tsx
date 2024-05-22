@@ -11,6 +11,12 @@ const DificultySelector = (props: {initialValue?: number; onChange: any; error: 
   
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
 
+  const difficulties = [
+    { level: 'easy', hats: 1 },
+    { level: 'normal', hats: 2 },
+    { level: 'difficult', hats: 3 },
+  ];
+
   useEffect(() => {
     
     if (initialValue) {
@@ -40,67 +46,32 @@ const DificultySelector = (props: {initialValue?: number; onChange: any; error: 
     
   };
 
-  return (    
+  return (
     <View style={styles.container}>
       <Text style={styles.text}>{Strings.translate('difficulty')}</Text>
-
       <View style={styles.difficultyContainer}>
-        <TouchableOpacity
-          style={[
-            styles.difficulty,
-            selectedDifficulty === 'easy' && styles.selectedDifficulty,
-            props.error && styles.error
-          ]}
-          onPress={() => handleDifficultySelection('easy')}
-        >      
-          <Iconify icon="solar:chef-hat-broken" style={styles.icons} size={size} color="black" />
-          <Text style={styles.difficultyText}>{Strings.t('easy')}</Text>
-          {selectedDifficulty === 'easy' && (
-            <Iconify icon="charm:tick" size={10} color="black" style={styles.selectedIcon} />
-          )}
-        </TouchableOpacity>
-
-        
-
-        <TouchableOpacity
-          style={[
-            styles.difficulty,
-            selectedDifficulty === 'normal' && styles.selectedDifficulty,
-            props.error && styles.error
-          ]}
-          onPress={() => handleDifficultySelection('normal')}
-        >
-          <View style={styles.icons}>
-            <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-            <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-          </View>
-          <Text style={styles.difficultyText}>{Strings.t('normal')}</Text>
-          {selectedDifficulty === 'normal' && (
-            <Iconify icon="charm:tick" size={10} color="black" style={styles.selectedIcon} />
-          )}
-        </TouchableOpacity>
-
-        
-        <TouchableOpacity
-          style={[
-            styles.difficulty,
-            selectedDifficulty === 'difficult' && styles.selectedDifficulty,
-            props.error && styles.error
-          ]}
-          onPress={() => handleDifficultySelection('difficult')}
-        >
-          <View style={styles.icons}>
-            <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-            <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-            <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-          </View>
-          <Text style={styles.difficultyText}>{Strings.t('difficult')}</Text>
-          {selectedDifficulty === 'difficult' && (
-            <Iconify icon="charm:tick" size={10} color="black" style={styles.selectedIcon} />
-          )}
-        </TouchableOpacity>
+        {difficulties.map(({ level, hats }) => (
+          <TouchableOpacity
+            key={level}
+            style={[
+              styles.difficulty,
+              selectedDifficulty === level && styles.selectedDifficulty,
+              props.error && styles.error
+            ]}
+            onPress={() => handleDifficultySelection(level)}
+          >
+            <View style={styles.icons}>
+              {Array.from({ length: hats }, (_, i) => (
+                <Iconify key={i} icon="solar:chef-hat-broken" size={size} color="black" />
+              ))}
+            </View>
+            <Text style={styles.difficultyText}>{Strings.t(level)}</Text>
+            {selectedDifficulty === level && (
+              <Iconify icon="charm:tick" size={10} color="black" style={styles.selectedIcon} />
+            )}
+          </TouchableOpacity>
+        ))}
       </View>
-
     </View>
   );
 }

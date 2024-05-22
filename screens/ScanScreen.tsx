@@ -84,17 +84,24 @@ const ScanScreen = ({ navigation }) => {
   }
   
   function renderProductCard() {
+
+    if (!scannedProduct) {
+      return null;
+    }
+  
+    const { image, name, brand, rate } = scannedProduct;
+
     return (
       <View style={styles.productCard}>
         <View style={styles.column}>
-          <Image source={{ uri: scannedProduct!!.image }} style={styles.productImage} />
+          <Image source={{ uri: image }} style={styles.productImage} />
         </View>
         <View style={{ ...styles.column, flex: 3, left: 10 }}>
-          <Text style={{ fontSize: adjustedFontSize }}>{scannedProduct!!.name}</Text>
-          <Text>{scannedProduct!!.brand}</Text>
+          <Text style={{ fontSize: adjustedFontSize }}>{name}</Text>
+          <Text>{brand}</Text>
           <View style={styles.rating}>
-            <FaceColor rate={scannedProduct!!.rate} size={20} />
-            <Text>  {scannedProduct!!.rate}/100</Text>
+            <FaceColor rate={rate} size={20} />
+            <Text>  {rate}/100</Text>
           </View>
         </View>
         <View style={styles.column}>

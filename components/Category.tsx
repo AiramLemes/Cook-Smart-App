@@ -22,6 +22,33 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
 
   const data = ['Salads', 'Pasta', 'Meat', 'Fish', 'Vegetarian', 'Desserts', 'Soups', 'Drinks', 'Breakfast'];
 
+
+  const categoryImageMapping: { [key: string]: string } = {
+    'Salads': require('../assets/foodCategories/salad.png'),
+    'Pasta': require('../assets/foodCategories/pasta.png'),
+    'Meat': require('../assets/foodCategories/meat.png'),
+    'Fish': require('../assets/foodCategories/fish.png'),
+    'Vegetarian': require('../assets/foodCategories/vegetarian.png'),
+    'Desserts': require('../assets/foodCategories/desserts.png'),
+    'Soups': require('../assets/foodCategories/soup.png'),
+    'Drinks': require('../assets/foodCategories/drinks.png'),
+    'Breakfast': require('../assets/foodCategories/breakfast.png')
+  };
+
+
+  const categoryBackGroundColor: { [key: string]: string } = {
+    'Salads': '#DEFFC0',
+    'Pasta': '#FFE4AE',
+    'Meat': '#C1A79B',
+    'Fish': '#FFE1C2',
+    'Vegetarian': '#FFE5D8',
+    'Desserts': '#FFD0EC',
+    'Soups': '#FFE19B',
+    'Drinks': '#E5FDF1',
+    'Breakfast': '#FFEBE0',
+  };
+
+
   const Category = (props: { category: string, onChange: string; }) => {
     const categoryName = props.category;
 
@@ -31,44 +58,13 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
       props.onChange(newSelectedCategory)
     };
 
-    const getImageSource = (categoryName: string) => {
-      const categoryImageMapping = {
-        'Salads': require('../assets/foodCategories/salad.png'),
-        'Pasta': require('../assets/foodCategories/pasta.png'),
-        'Meat': require('../assets/foodCategories/meat.png'),
-        'Fish': require('../assets/foodCategories/fish.png'),
-        'Vegetarian': require('../assets/foodCategories/vegetarian.png'),
-        'Desserts': require('../assets/foodCategories/desserts.png'),
-        'Soups': require('../assets/foodCategories/soup.png'),
-        'Drinks': require('../assets/foodCategories/drinks.png'),
-        'Breakfast': require('../assets/foodCategories/breakfast.png')
-      };
-      //@ts-ignore
-      return categoryImageMapping[categoryName];
-    };
-
-    const getBackgroundColor = (categoryName: string) => {
-      const categoryBackGroundColor = {
-        'Salads': '#DEFFC0',
-        'Pasta': '#FFE4AE',
-        'Meat': '#C1A79B',
-        'Fish': '#FFE1C2',
-        'Vegetarian': '#FFE5D8',
-        'Desserts': '#FFD0EC',
-        'Soups': '#FFE19B',
-        'Drinks': '#E5FDF1',
-        'Breakfast': '#FFEBE0',
-      };
-
-      //@ts-ignore
-      return categoryBackGroundColor[categoryName];
-    };
+    
 
     return (
       <TouchableOpacity
         style={{
           ...styles.categoryContainer,
-          backgroundColor: getBackgroundColor(categoryName),
+          backgroundColor: categoryBackGroundColor[categoryName],
           borderColor: selectedCategory === categoryName ? Colors.primary : Colors.black,
           borderWidth: selectedCategory === categoryName ? 2 : 1,
         }}
@@ -79,7 +75,7 @@ const CategoryList = (props: { onChange: string; error: boolean, initialValue?: 
             <Iconify icon="charm:tick" size={20} color="black" />
           </View>
         )}
-        <Image source={getImageSource(categoryName)} style={styles.image} />
+        <Image source={categoryImageMapping[categoryName]} style={styles.image} />
         <Text style={styles.text}>{categoryName}</Text>
       </TouchableOpacity>
     );

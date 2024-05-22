@@ -7,31 +7,16 @@ const Dificulty = (props: {dificulty: number, size: number}) => {
 
   const Strings = useContext(LanguageContext);
   
-  const dificulty = props.dificulty;
+  const difficulty = props.dificulty;
   const size = props.size
+
+  const difficultyLevels = ['easy', 'normal', 'difficult'];
   return (
-
-    <View style={styles.dificulty}>
-      {dificulty == 1 && <>
-        <Text style={styles.dificultyText}>{Strings.t('easy')}</Text>
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        </>
-      }
-
-      {dificulty == 2 && <>
-        <Text style={styles.dificultyText}>{Strings.t('normal')}</Text>
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        </>
-      }
-
-      {dificulty == 3 && <>
-        <Text style={styles.dificultyText}>{Strings.t('difficult')}</Text>
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        <Iconify icon="solar:chef-hat-broken" size={size} color="black" />
-        </>
-      }
+    <View style={styles.difficulty}>
+      <Text style={styles.difficultyText}>{Strings.t(difficultyLevels[difficulty - 1])}</Text>
+      {Array.from({ length: difficulty }).map((_, i) => (
+        <Iconify key={i} icon="solar:chef-hat-broken" size={size} color="black" />
+      ))}
     </View>
   );
 }
@@ -39,12 +24,12 @@ const Dificulty = (props: {dificulty: number, size: number}) => {
 export default Dificulty;
 
 const styles = StyleSheet.create({
-  dificulty: {
+  difficulty: {
     flexDirection: 'row',
     alignItems: 'center', 
   },
   
-  dificultyText: {
+  difficultyText: {
     marginRight: 10, 
   },
 });
