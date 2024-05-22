@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: adjustedFontSize,
     letterSpacing: 0.25,
     fontWeight: 'normal',
-    color: 'black',
+    color: Colors.textPrimary,
     textAlign: 'center',
   },
 });

@@ -9,9 +9,40 @@ const Table = (props: { product: Product }) => {
 
   const nutritionalInfo = props.product?.nutritionalInformation || {};
   const Strings = useContext(LanguageContext);
+
+
+  const nutrients = [
+    { name: 'energy', unit: 'kJ/Kcal' },
+    { name: 'fats', unit: 'g' },
+    { name: 'saturated', unit: 'g' },
+    { name: 'carbohydrates', unit: 'g' },
+    { name: 'sugars', unit: 'g' },
+    { name: 'fibre', unit: 'g' },
+    { name: 'protein', unit: 'g' },
+    { name: 'salt', unit: 'g' },
+  ];
+
+
+  const TableRow = (index: number, name: string, unit: string) => (
+    <View style={styles.tableRow} key={name}>
+      <View style={styles.tableCell}>
+        <Text>{Strings.t(name)}</Text>
+      </View>
+      <View style={styles.tableCell}>
+        {index == 0 ? (
+          <Text>{nutritionalInfo[index].split('/')[0]} {unit.split('/')[0]} {nutritionalInfo[index].split('/')[1]} {unit.split('/')[1]}</Text>
+        ) : (
+          <Text>{nutritionalInfo[index]} {unit}</Text>
+        )}
+      </View>
+    </View>
+  );
+
+
   
   return (
     <View style={styles.table}>
+
       <View style={styles.tableRow}>
         <View style={styles.tableCellHeader}>
           <Text style={styles.headerText}>{Strings.t('nutritionalValues')}</Text>
@@ -20,78 +51,10 @@ const Table = (props: { product: Product }) => {
           <Text style={styles.headerText}>{Strings.t('scale')}</Text>
         </View>
       </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('energy')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[0]} kJ/{nutritionalInfo[1]} Kcal</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('fats')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[2]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('saturated')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[3]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('carbohydrates')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[4]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('sugars')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[5]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('fibre')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[6]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('protein')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[7]} g</Text>
-        </View>
-      </View>
-
-      <View style={styles.tableRow}>
-        <View style={styles.tableCell}>
-          <Text>{Strings.t('salt')}</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>{nutritionalInfo[8]} g</Text>
-        </View>
-      </View>
+      
+        {nutrients.map((nutrient, index) => {
+          return TableRow(index, nutrient.name, nutrient.unit);
+        })}
 
     </View>
   );
@@ -125,5 +88,4 @@ const styles = StyleSheet.create({
     aspectRatio: 5,
   },
 });
-
 export default Table;

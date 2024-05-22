@@ -109,7 +109,6 @@ const AIScreen = ({navigation}) => {
         />
 
         <TouchableOpacity style={styles.createRecipeButton} onPress={handleCreateRecipe}>
-
           <Text style={{ fontSize: adjustedFontSize, textAlign: 'center', padding: 5}}>{Strings.translate('iaButton')}</Text>
         </TouchableOpacity>
         </>

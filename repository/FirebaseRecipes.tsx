@@ -5,7 +5,9 @@ import Recipe from "../model/Recipe";
 import { deleteUserRecipe } from "./FirebaseUser";
 import User from "../model/User";
 
-async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, queryText: string): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
+
+
+async function buildRecipesQuery(pageSize: number, lastVisible: Recipe | null, queryText: string, recipeIds?: string[]) {
   const recipesCollection = collection(firestore, 'recipes');
 
   let recipesQuery;
@@ -13,28 +15,76 @@ async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, query
   if (queryText && queryText !== '') {
     const queryRecipes = await getMatchingRecipeIds(queryText);
     if (queryRecipes.length <= 0) {
-      return { recipes: [], lastVisible: null };
+      return null;
     }
 
-    recipesQuery = query(
-      recipesCollection,
-      where('id', 'in', queryRecipes),
-      orderBy('title')
-    );
+    if (recipeIds) {
+      const filteredRecipeIds = queryRecipes.filter(id => recipeIds.includes(id));
+      if (filteredRecipeIds.length <= 0) {
+        return null;
+      }
+      recipesQuery = query(
+        recipesCollection,
+        where('id', 'in', filteredRecipeIds),
+        orderBy('title')
+      );
+    } else {
+      recipesQuery = query(
+        recipesCollection,
+        where('id', 'in', queryRecipes),
+        orderBy('title')
+      );
+    }
   } else {
-    recipesQuery = query(recipesCollection, orderBy('title'));
+    if (recipeIds) {
+      recipesQuery = query(
+        recipesCollection,
+        where('id', 'in', recipeIds),
+        orderBy('title')
+      );
+    } else {
+      recipesQuery = query(recipesCollection, orderBy('title'));
+    }
   }
 
   if (lastVisible) {
     recipesQuery = query(recipesQuery, startAfter(lastVisible.title));
   }
 
-  const paginatedQuery = query(recipesQuery, limit(pageSize));
+  return query(recipesQuery, limit(pageSize));
+}
 
-  const querySnapshot = await getDocs(paginatedQuery);
+
+async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
+  const recipesCollection = collection(firestore, 'recipes');
+  const querySnapshot = await getDocs(recipesCollection);
+  const matchingRecipeIds: string[] = [];
+
+  querySnapshot.forEach((doc) => {
+    const recipe = doc.data() as Recipe;
+    const title = recipe.title.toLowerCase();
+    const category = recipe.category.toLowerCase();
+    if (title.includes(recipeTitle.toLowerCase()) || category.includes(recipeTitle.toLowerCase())) {
+      matchingRecipeIds.push(doc.id);
+    }
+  });
+
+  return matchingRecipeIds;
+}
+
+
+
+
+async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, queryText: string): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
+  const recipesQuery = await buildRecipesQuery(pageSize, lastVisible, queryText);
+
+  if (!recipesQuery) {
+    return { recipes: [], lastVisible: null };
+  }
+
+  const querySnapshot = await getDocs(recipesQuery);
 
   const recipes: Recipe[] = [];
-
   querySnapshot.forEach((doc) => recipes.push(doc.data() as Recipe));
 
   const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -43,6 +93,14 @@ async function getAllRecipes(pageSize: number, lastVisible: Recipe | null, query
   return { recipes, lastVisible: newLastVisible };
 }
 
+
+
+async function getUserRecipes(userId: string): Promise<string[]> {
+  const userDoc = (await getDoc(doc(firestore, 'users', userId))).data() as User;
+  return userDoc.recipesIds;
+}
+
+
 async function getRecipesByUserWithSearch(
   userId: string,
   pageSize: number,
@@ -50,44 +108,24 @@ async function getRecipesByUserWithSearch(
   queryText: string
 ): Promise<{ recipes: Recipe[], lastVisible: Recipe | null }> {
 
-  const userDoc = (await getDoc(doc(firestore, 'users', userId))).data() as User;
-  const userRecipeIds: string[] = userDoc.recipesIds;
-
+  const userRecipeIds = await getUserRecipes(userId);
 
   if (userRecipeIds.length <= 0) {
     return { recipes: [], lastVisible: null };
   }
 
-  const recipesCollection = collection(firestore, 'recipes');
-  let recipesQuery;
+  const recipesQuery = await buildRecipesQuery(pageSize, lastVisible, queryText, userRecipeIds);
 
-  
-  const matchingRecipeIds = await getMatchingRecipeIds(queryText);
-
-  const filteredUserRecipeIds = userRecipeIds.filter((id) => matchingRecipeIds.includes(id));
-  
-  if (filteredUserRecipeIds.length <= 0) {
+  if (!recipesQuery) {
     return { recipes: [], lastVisible: null };
   }
 
-  recipesQuery = query(
-    recipesCollection,
-    where('id', 'in', filteredUserRecipeIds),
-    orderBy('title')
-  );
-
-  if (lastVisible) {
-    recipesQuery = query(recipesQuery, startAfter(lastVisible.title));
-  }
-
-  const paginatedQuery = query(recipesQuery, limit(pageSize));
-
-  const querySnapshot = await getDocs(paginatedQuery);
+  const querySnapshot = await getDocs(recipesQuery);
 
   const recipes: Recipe[] = [];
 
   querySnapshot.forEach((doc) => recipes.push(doc.data() as Recipe));
-  console.log(recipes)
+
   const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
   const newLastVisible = lastDoc ? (lastDoc.data() as Recipe) : null;
 
@@ -111,28 +149,6 @@ async function isUserRecipesIdsNotEmpty(userId: string): Promise<boolean> {
   }
 }
 
-async function getMatchingRecipeIds(recipeTitle: string): Promise<string[]> {
-  const recipesCollection = collection(firestore, 'recipes');
-  
-  const querySnapshot = await getDocs(recipesCollection);
-  
-  const matchingRecipeIds: string[] = [];
-  
-  querySnapshot.forEach((doc) => {
-    const recipe = (doc.data() as Recipe)
-    const title = recipe.title.toLowerCase();
-    const category = recipe.category.toLowerCase();
-    if (title.includes(recipeTitle.toLowerCase())) {
-      matchingRecipeIds.push(doc.id);
-    }
-    else {
-      if (category.includes(recipeTitle.toLowerCase())) {
-        matchingRecipeIds.push(doc.id);
-      }
-    }
-  });
-  return matchingRecipeIds;
-}
 
 async function addRecipe(recipe: Recipe) {
   try {

@@ -36,38 +36,37 @@ const Stars = (props: {recipe: Recipe}) => {
   }, []);
 
 
+  const calculateNewRatings = (assessments: Map<string, number>, recipe: Recipe, assessment: number) => {
+    let newNumberOfRatings = assessments.get(recipe.id) !== undefined ? recipe.numberOfRatings : recipe.numberOfRatings + 1;
+    const newTotalRating = recipe.totalRating + assessment;
+    const newAverageRating = newTotalRating / newNumberOfRatings;
+    const normalizedAssessment = parseFloat(Math.max(0, Math.min(5, newAverageRating)).toFixed(2));
+  
+    return { newNumberOfRatings, newTotalRating, normalizedAssessment };
+  };
+
+
   const handleAssessment = async (assessment: number) => {
     try {
-      
       const currentUser: User | null = await getCurrentUser();
       
       if (currentUser) {
-        let newNumberOfRatings
-
         const assessments: Map<string, number> = currentUser.assessments;
-        
-        newNumberOfRatings = assessments[recipe.id] !== undefined ? recipe.numberOfRatings : recipe.numberOfRatings + 1;
-        
         assessments[recipe.id] = assessment;
-
-        updateUser({assessments: assessments});
-
-        const newTotalRating = recipe.totalRating + assessment;
-        
-        const newAverageRating = newTotalRating / newNumberOfRatings;
-        
-        const normalizedAssessment = parseFloat(Math.max(0, Math.min(5, newAverageRating)).toFixed(2));
   
+        const { newNumberOfRatings, newTotalRating, normalizedAssessment } = calculateNewRatings(assessments, recipe, assessment);
+  
+        updateUser({assessments: assessments});
         updateRecipeAssessment(recipe.id, newNumberOfRatings, newTotalRating, normalizedAssessment);
-
+  
         setAssessmentText(normalizedAssessment);
         setAssessment(assessment);
-
+  
       } else {
         console.error('Unauthenticated user');
       }
     } catch (error) {
-      console.error('Error seting an assessment', error);
+      console.error('Error setting an assessment', error);
     }
   };
   
