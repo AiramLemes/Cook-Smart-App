@@ -4,7 +4,7 @@ Cook Smart App is a mobile application developed in React Native that offers a c
 
 ## Screenshots
 
-Below are some screenshots of the application:
+Below are some screenshots of the application.
 More images can be found in the screenshots folder.
 <h2>Screenshots</h2>
 
