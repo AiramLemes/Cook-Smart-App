@@ -6,8 +6,8 @@ import { Iconify } from "react-native-iconify";
 import Toast from "react-native-root-toast";
 import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
-import { generateRecipe } from "../services/Openai";
 import ToastUtil from "../utils/ToastUtil";
+import { generateRecipe } from "../repository/services/Openai";
 
 const windowWidth = Dimensions.get('window').width;
 const adjustedFontSize = PixelRatio.getFontScale() * windowWidth / 24;

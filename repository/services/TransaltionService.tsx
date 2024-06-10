@@ -1,7 +1,7 @@
 import axios from "axios";
-import { currentLanguage } from "../constants/Strings";
-import Ingredient from "../model/Ingredient";
-import Recipe from "../model/Recipe";
+import { currentLanguage } from "../../constants/Strings";
+import Ingredient from "../../model/Ingredient";
+import Recipe from "../../model/Recipe";
 
 const deepLAuthKey = process.env.EXPO_PUBLIC_DEEPL_API_KEY;
 

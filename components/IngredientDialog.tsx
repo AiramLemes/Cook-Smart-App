@@ -7,7 +7,7 @@ import Colors from "../constants/Colors";
 import LanguageContext from "../context/LanguageProvider";
 import Ingredient from "../model/Ingredient";
 import { addIngredientToPantry } from "../repository/FirebasePantry";
-import { translateIngredientToEnglish } from "../services/TransaltionService";
+import { translateIngredientToEnglish } from "../repository/services/TransaltionService";
 import ToastUtil from "../utils/ToastUtil";
 import IngredientUnitSelector from "./IngredientUnitSelector";
 import { useIsFocused } from "@react-navigation/native";

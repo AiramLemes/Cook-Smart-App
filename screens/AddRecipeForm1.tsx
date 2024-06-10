@@ -11,7 +11,7 @@ import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 import Ingredient from '../model/Ingredient';
 import Recipe from '../model/Recipe';
-import { translateText } from '../services/TransaltionService';
+import { translateText } from '../repository/services/TransaltionService';
 import ToastUtil from '../utils/ToastUtil';
 
 //@ts-ignore

@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 import LanguageContext from '../context/LanguageProvider';
 import Ingredient from '../model/Ingredient';
 import { addIngredientsToShoppingList, getCurrentUser, updateIngredientFromShoppingList } from '../repository/FirebaseUser';
-import { translateText } from '../services/TransaltionService';
+import { translateText } from '../repository/services/TransaltionService';
 import ToastUtil from '../utils/ToastUtil';
 
 const windowWidth = Dimensions.get('window').width;

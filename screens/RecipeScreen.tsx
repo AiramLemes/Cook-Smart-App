@@ -9,14 +9,14 @@ import LanguageContext from '../context/LanguageProvider';
 import { auth } from '../firebaseConfig';
 import Recipe from '../model/Recipe';
 import { addIngredientsToShoppingList, addOrRemoveLikedRecipe, getCurrentUser, getUserNameById } from '../repository/FirebaseUser';
-import { translateRecipe } from '../services/TransaltionService';
+import { translateRecipe } from '../repository/services/TransaltionService';
 import { consumeIngredients } from '../repository/FirebasePantry';
 import ConfirmationDialog from '../components/Dialogs/ConfirmationDialog';
 import ToastUtil from '../utils/ToastUtil';
 import Toast from 'react-native-root-toast';
 import Ingredient from '../model/Ingredient';
 import TextInputDialog from '../components/Dialogs/TextInputDialog';
-import { modifyRecipe } from '../services/Openai';
+import { modifyRecipe } from '../repository/services/Openai';
 import LottieView from 'lottie-react-native';
 
 

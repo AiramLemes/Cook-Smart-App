@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import Recipe from '../model/Recipe';
+import Recipe from '../../model/Recipe';
 
 const openai = new OpenAI({
   apiKey: process.env.EXPO_PUBLIC_OPEN_AI_API_KEY, 
